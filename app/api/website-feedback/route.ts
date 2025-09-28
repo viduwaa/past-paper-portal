@@ -2,16 +2,9 @@ export const runtime = "nodejs";
 
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
 
-// Initialize Prisma client for Edge Runtime with driver adapter
-const connectionString = process.env.DATABASE_URL;
-
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-
-const prisma = new PrismaClient({ adapter });
+// Use standard Prisma client for Node.js runtime
+const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
     try {
