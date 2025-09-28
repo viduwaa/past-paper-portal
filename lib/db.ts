@@ -1,12 +1,4 @@
-import { Pool } from "pg";
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl:
-        process.env.NODE_ENV === "production"
-            ? { rejectUnauthorized: false }
-            : false,
-});
+import { sql } from "@vercel/postgres";
 
 export interface WebsiteFeedback {
     id: number;
@@ -18,23 +10,26 @@ export interface WebsiteFeedback {
 
 export class Database {
     static async testConnection(): Promise<void> {
-        const client = await pool.connect();
         try {
-            await client.query("SELECT 1");
-        } finally {
-            client.release();
+            await sql`SELECT 1`;
+        } catch (error) {
+            throw new Error(`Database connection failed: ${error}`);
         }
     }
 
     static async findRecentFeedback(
         browserId: string
     ): Promise<WebsiteFeedback | null> {
-        const client = await pool.connect();
         try {
-            const result = await client.query(
-                "SELECT id, rating, browser_id, user_agent, timestamp FROM website_feedback WHERE browser_id = $1 AND timestamp >= $2 ORDER BY timestamp DESC LIMIT 1",
-                [browserId, new Date(Date.now() - 3600000)] // Last hour
-            );
+            const result = await sql`
+                SELECT id, rating, browser_id, user_agent, timestamp
+                FROM website_feedback
+                WHERE browser_id = ${browserId}
+                AND timestamp >= NOW() - INTERVAL '1 hour'
+                ORDER BY timestamp DESC
+                LIMIT 1
+            `;
+
             if (result.rows.length === 0) return null;
 
             const row = result.rows[0];
@@ -45,8 +40,8 @@ export class Database {
                 userAgent: row.user_agent,
                 timestamp: row.timestamp,
             };
-        } finally {
-            client.release();
+        } catch (error) {
+            throw new Error(`Failed to find recent feedback: ${error}`);
         }
     }
 
@@ -55,32 +50,20 @@ export class Database {
         browserId: string,
         userAgent: string | null
     ): Promise<WebsiteFeedback> {
-        const client = await pool.connect();
         try {
-            // First try to update existing record
-            const updateResult = await client.query(
-                "UPDATE website_feedback SET rating = $1, timestamp = $2, user_agent = $3 WHERE browser_id = $4 RETURNING id, rating, browser_id, user_agent, timestamp",
-                [rating, new Date(), userAgent, browserId]
-            );
+            // Use ON CONFLICT for upsert functionality
+            const result = await sql`
+                INSERT INTO website_feedback (rating, browser_id, user_agent)
+                VALUES (${rating}, ${browserId}, ${userAgent})
+                ON CONFLICT (browser_id)
+                DO UPDATE SET
+                    rating = EXCLUDED.rating,
+                    user_agent = EXCLUDED.user_agent,
+                    timestamp = CURRENT_TIMESTAMP
+                RETURNING id, rating, browser_id, user_agent, timestamp
+            `;
 
-            if (updateResult.rows.length > 0) {
-                const row = updateResult.rows[0];
-                return {
-                    id: row.id,
-                    rating: row.rating,
-                    browserId: row.browser_id,
-                    userAgent: row.user_agent,
-                    timestamp: row.timestamp,
-                };
-            }
-
-            // If no existing record, insert new one
-            const insertResult = await client.query(
-                "INSERT INTO website_feedback (rating, browser_id, user_agent) VALUES ($1, $2, $3) RETURNING id, rating, browser_id, user_agent, timestamp",
-                [rating, browserId, userAgent]
-            );
-
-            const row = insertResult.rows[0];
+            const row = result.rows[0];
             return {
                 id: row.id,
                 rating: row.rating,
@@ -88,37 +71,37 @@ export class Database {
                 userAgent: row.user_agent,
                 timestamp: row.timestamp,
             };
-        } finally {
-            client.release();
+        } catch (error) {
+            throw new Error(`Failed to upsert feedback: ${error}`);
         }
     }
 
     static async getAllFeedback(): Promise<WebsiteFeedback[]> {
-        const client = await pool.connect();
         try {
-            const result = await client.query(
-                "SELECT id, rating, browser_id, user_agent, timestamp FROM website_feedback ORDER BY timestamp DESC"
-            );
+            const result = await sql`
+                SELECT id, rating, browser_id, user_agent, timestamp
+                FROM website_feedback
+                ORDER BY timestamp DESC
+            `;
 
-            return result.rows.map(
-                (row: {
+            return result.rows.map((row: unknown) => {
+                const r = row as {
                     id: number;
                     rating: number;
                     browser_id: string;
                     user_agent: string | null;
                     timestamp: Date;
-                }) => ({
-                    id: row.id,
-                    rating: row.rating,
-                    browserId: row.browser_id,
-                    userAgent: row.user_agent,
-                    timestamp: row.timestamp,
-                })
-            );
-        } finally {
-            client.release();
+                };
+                return {
+                    id: r.id,
+                    rating: r.rating,
+                    browserId: r.browser_id,
+                    userAgent: r.user_agent,
+                    timestamp: r.timestamp,
+                };
+            });
+        } catch (error) {
+            throw new Error(`Failed to get all feedback: ${error}`);
         }
     }
 }
-
-export default pool;

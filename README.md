@@ -1,6 +1,6 @@
 # 📚 FOT Past Papers Portal
 
-A m- **Database**: PostgreSQL with @vercel/postgres (Edge Runtime compatible)dern, responsive web portal for accessing Rajarata University Faculty of Technology (FOT) past examination papers. Built with Next.js, featuring advanced filtering, search, and a clean user interface.
+Responsive web portal for accessing Rajarata University Faculty of Technology (FOT) past examination papers. Built with Next.js, featuring advanced filtering, search, and a clean user interface.
 
 ## ✨ Features included
 
@@ -18,7 +18,7 @@ A m- **Database**: PostgreSQL with @vercel/postgres (Edge Runtime compatible)der
 
 -   🔄 **Pagination** - Load more papers dynamically
 
--   🎯 **Department Filtering** - Filter by ITT, CMT, and other departmentsYou can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   🎯 **Department Filtering** - Filter by ITT, CMT, and other departments. The page auto-updates as you edit the file.
 
 -   📅 **Year & Semester Filtering** - Filter by study year and semester
 
@@ -30,46 +30,10 @@ A m- **Database**: PostgreSQL with @vercel/postgres (Edge Runtime compatible)der
 
 -   **Styling**: Tailwind CSS, Shadcn/UI, Framer Motion
 
--   **Database**: PostgreSQL with direct SQL queries (no ORM)
+-   **Database**: PostgreSQL with @vercel/postgres (Edge Runtime compatible)
 
-## 🗄️ Database Setup
 
-The application uses PostgreSQL for storing website feedback. We use direct SQL queries with the `pg` library instead of an ORM.
 
-### 1. Database Connection
-
-Set your `DATABASE_URL` environment variable:
-
-```bash
-DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
-```
-
-### 2. Create Tables
-
-Run the SQL script in `database-setup.sql` to create the required tables:
-
-```sql
--- Create the website_feedback table
-CREATE TABLE IF NOT EXISTS website_feedback (
-    id SERIAL PRIMARY KEY,
-    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-    browser_id VARCHAR(255) NOT NULL UNIQUE,
-    user_agent TEXT,
-    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_website_feedback_browser_id ON website_feedback(browser_id);
-CREATE INDEX IF NOT EXISTS idx_website_feedback_timestamp ON website_feedback(timestamp DESC);
-```
-
-### 3. Alternative: Using a Database GUI
-
-You can also run these commands in any PostgreSQL client like pgAdmin, DBeaver, or the psql command line tool.
-
--   **Deployment**: Cloudfare Pages
-
--   **Icons**: Lucide React
 
 ## 📖 Usage
 
