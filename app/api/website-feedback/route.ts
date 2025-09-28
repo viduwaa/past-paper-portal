@@ -1,10 +1,7 @@
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-// Use standard Prisma client for Node.js runtime
-const prisma = new PrismaClient();
+import { Database, WebsiteFeedback } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
     try {
@@ -36,7 +33,7 @@ export async function POST(request: NextRequest) {
 
         // Test database connection
         try {
-            await prisma.$connect();
+            await Database.testConnection();
             console.log("Database connection successful");
         } catch (dbError) {
             console.error("Database connection failed:", dbError);
@@ -53,14 +50,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Check if user rated recently (within last hour)
-        const recentFeedback = await prisma.websiteFeedback.findFirst({
-            where: {
-                browserId,
-                timestamp: {
-                    gte: new Date(Date.now() - 3600000), // Last hour
-                },
-            },
-        });
+        const recentFeedback = await Database.findRecentFeedback(browserId);
 
         if (recentFeedback) {
             return NextResponse.json(
@@ -72,21 +62,11 @@ export async function POST(request: NextRequest) {
         }
 
         // Create or update feedback (upsert)
-        const feedback = await prisma.websiteFeedback.upsert({
-            where: {
-                browserId: browserId,
-            },
-            update: {
-                rating: parseInt(rating),
-                timestamp: new Date(),
-                userAgent: request.headers.get("user-agent") || null,
-            },
-            create: {
-                rating: parseInt(rating),
-                browserId,
-                userAgent: request.headers.get("user-agent") || null,
-            },
-        });
+        const feedback = await Database.upsertFeedback(
+            parseInt(rating),
+            browserId,
+            request.headers.get("user-agent") || null
+        );
 
         console.log("Feedback saved successfully:", feedback.id);
         return NextResponse.json({
@@ -117,7 +97,7 @@ export async function GET(_request: NextRequest) {
 
         // Test database connection
         try {
-            await prisma.$connect();
+            await Database.testConnection();
             console.log("Database connection successful for GET");
         } catch (dbError) {
             console.error("Database connection failed for GET:", dbError);
@@ -133,28 +113,21 @@ export async function GET(_request: NextRequest) {
             );
         }
 
-        const feedbacks = await prisma.websiteFeedback.findMany({
-            select: {
-                rating: true,
-                timestamp: true,
-            },
-            orderBy: { timestamp: "desc" },
-        });
+        const feedbacks = await Database.getAllFeedback();
 
         const totalReviews = feedbacks.length;
         const averageRating =
             totalReviews > 0
                 ? feedbacks.reduce(
-                      (sum: number, f: { rating: number }) => sum + f.rating,
+                      (sum: number, f: WebsiteFeedback) => sum + f.rating,
                       0
                   ) / totalReviews
                 : 0;
 
         const ratingDistribution = [1, 2, 3, 4, 5].map((stars) => ({
             stars,
-            count: feedbacks.filter(
-                (f: { rating: number }) => f.rating === stars
-            ).length,
+            count: feedbacks.filter((f: WebsiteFeedback) => f.rating === stars)
+                .length,
         }));
 
         console.log("GET request successful, returning stats");

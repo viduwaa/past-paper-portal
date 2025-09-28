@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    // Enable experimental features for Cloudflare Pages
-    experimental: {
-        serverComponentsExternalPackages: ["@prisma/client", "prisma"],
-    },
+    // Configuration for Cloudflare Pages deployment
 };
 
 export default nextConfig;
