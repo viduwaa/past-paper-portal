@@ -4,7 +4,6 @@ import * as React from "react";
 import { ChevronsUpDown } from "lucide-react";
 import { motion } from "framer-motion";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

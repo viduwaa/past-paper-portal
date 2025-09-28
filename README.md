@@ -30,11 +30,11 @@ A m- **Database**: PostgreSQL with @vercel/postgres (Edge Runtime compatible)der
 
 -   **Styling**: Tailwind CSS, Shadcn/UI, Framer Motion
 
--   **Database**: PostgreSQL with @vercel/postgres (Edge Runtime compatible)
+-   **Database**: PostgreSQL with direct SQL queries (no ORM)
 
 ## 🗄️ Database Setup
 
-The application uses PostgreSQL for storing website feedback. We use `@vercel/postgres` which is compatible with Edge Runtime for optimal performance.
+The application uses PostgreSQL for storing website feedback. We use direct SQL queries with the `pg` library instead of an ORM.
 
 ### 1. Database Connection
 

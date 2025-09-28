@@ -1,4 +1,4 @@
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 import { NextRequest, NextResponse } from "next/server";
 import { Database, WebsiteFeedback } from "@/lib/db";
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     }
 }
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
     try {
         console.log("GET request received");
 
