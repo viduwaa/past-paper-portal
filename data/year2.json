@@ -2081,16 +2081,6 @@
     },
     {
         "id": "209",
-        "title": "CML 2204 Foreighn Lanuages - Japanese",
-        "subjectCode": "CML 2204",
-        "department": "CML",
-        "studyYear": "2",
-        "semester": "2",
-        "pastPaperYear": "2024",
-        "link": "https://drive.google.com/file/d/1FcY1xYZZPUnYvYRF9f-HNRB9Q0pCPJzG/view?usp=sharing"
-    },
-    {
-        "id": "210",
         "title": "CML 2204 Foreighn Lanuages - German",
         "subjectCode": "CML 2204",
         "department": "CML",
@@ -2100,7 +2090,167 @@
         "link": "https://drive.google.com/file/d/1Kfa9fInM6IBGm001m-eFR9sxtUcIF431/view?usp=sharing"
     },
     {
+        "id": "210",
+        "title": "MTT 2209 Introduction to Polymer Technology",
+        "subjectCode": "MTT 2209",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1hS9fDTDQyPGCPBWoGMM5_WZDEuFUBnX2/view?usp=sharing"
+    },
+    {
         "id": "211",
+        "title": "MTT 2210 Mechanical Behavior of Materials",
+        "subjectCode": "MTT 2210",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1kJtCnZdPCYzXmNRn5prAvazdQALS9y0I/view?usp=sharing"
+    },
+    {
+        "id": "212",
+        "title": "MTT 2311 Ceramic Technology I",
+        "subjectCode": "MTT 2311",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1rd5sWpVDkbXYcuAxEMZOAN6K0uEqDLuc/view?usp=sharing"
+    },
+    {
+        "id": "213",
+        "title": "MTT 2108 Chemical Engineering Sciences",
+        "subjectCode": "MTT 2108",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1cJ3WbPt2wHWTHqz9NV14b00PadwghPrz/view?usp=sharing"
+    },
+    {
+        "id": "214",
+        "title": "MTT 2112 Introduction to Thermodynamics",
+        "subjectCode": "MTT 2112",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1ilV_5kT98DoKF18fObRb0U5ILPN7yjP6/view?usp=sharing"
+    },
+    {
+        "id": "215",
+        "title": "CMT 2203 Computational Mathematics",
+        "subjectCode": "CMT 2203",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1nFZYbeFiu4ySkjyldDaRNIHuKLSv6V5S/view?usp=sharing"
+    },
+    {
+        "id": "216",
+        "title": "CML 2208 Introduction to Marketing",
+        "subjectCode": "CML 2208",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1kfuTtbUX9zHeawfrzCGggkSuYgR4RV17/view?usp=sharing"
+    },
+    {
+        "id": "217",
+        "title": "MTT 2205 Introduction to Metallurgy",
+        "subjectCode": "MTT 2205",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1-nwcZulZZVEQR9ezaWgvwBrBrkpOhFbs/view?usp=sharing"
+    },
+    {
+        "id": "218",
+        "title": "MTT 2207 Measurement,Error Analysis and Instrumentation",
+        "subjectCode": "MTT 2207",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1RGR84uFv7BBiRid06OzrwrDf9rgFcJfc/view?usp=sharing"
+    },
+    {
+        "id": "219",
+        "title": "FDT 2209 Introduction to Human Nutrition",
+        "subjectCode": "FDT 2209",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1FH18Kqdxup0fhAh5TRMwZsGwPXW6R-PS/view?usp=sharing"
+    },
+    {
+        "id": "220",
+        "title": "FDT 2210 Food Biotechnology",
+        "subjectCode": "FDT 2210",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1j5n_jFwFyIFvOhdO6YBJPMBdcmFqc2wG/view?usp=sharing"
+    },
+    {
+        "id": "221",
+        "title": "FDT 2206 Food Physics",
+        "subjectCode": "FDT 2206",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1vLyK8hOzchlVLtZvED2XDTNXRPc81JSl/view?usp=sharing"
+    },
+    {
+        "id": "222",
+        "title": "FDT 2207 Food Chemistry",
+        "subjectCode": "FDT 2207",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1XiVBnKk3nj7yZ5ewIHr5brnOg9PcIPa_/view?usp=sharing"
+    },
+    {
+        "id": "223",
+        "title": "FDT 2305 Analytical Chemistry",
+        "subjectCode": "FDT 2305",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1A5z1wRfqd9oWjSWUi81Rb1kHvNdkFLFX/view?usp=sharing"
+    },
+    {
+        "id": "224",
+        "title": "FDT 2208 Food Microbiology",
+        "subjectCode": "FDT 2208",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1OY3Bxov_1fEzF4_5zJ-UIRM-Qeig7o39/view?usp=sharing"
+    },
+    {
+        "id": "225",
+        "title": "CML 2204 Foreighn Lanuages - Japanese",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1FcY1xYZZPUnYvYRF9f-HNRB9Q0pCPJzG/view?usp=sharing"
+    },
+    {
+        "id": "226",
         "title": "ICT 2308 Database Systems (Practical)",
         "subjectCode": "ICT 2308",
         "department": "ITT",
@@ -2110,7 +2260,7 @@
         "link": "https://drive.google.com/file/d/1R-ggz_PkQkyschKNbDKewDzemIxUUxFL/view?usp=sharing"
     },
     {
-        "id": "212",
+        "id": "227",
         "title": "ICT 2308 Database Systems",
         "subjectCode": "ICT 2308",
         "department": "ITT",
@@ -2120,7 +2270,7 @@
         "link": "https://drive.google.com/file/d/1jKf-rXJRvZ6EaIUxWZOm-fMxOEwknYNP/view?usp=sharing"
     },
     {
-        "id": "213",
+        "id": "228",
         "title": "ICT 2305 Computational Mathematics",
         "subjectCode": "ICT 2305",
         "department": "ITT",
@@ -2130,7 +2280,7 @@
         "link": "https://drive.google.com/file/d/1QH04YB5R1poJGIk7ZpF39hdqpHW1iFVb/view?usp=sharing"
     },
     {
-        "id": "214",
+        "id": "229",
         "title": "ICT 2214 Introduction to Information Systems",
         "subjectCode": "ICT 2214",
         "department": "ITT",
@@ -2140,7 +2290,7 @@
         "link": "https://drive.google.com/file/d/1VHtm4PNkD3nA7g_QckcegF3JcBQ0JmxN/view?usp=sharing"
     },
     {
-        "id": "215",
+        "id": "230",
         "title": "ICT 2213 Data Communication and Networking",
         "subjectCode": "ICT 2213",
         "department": "ITT",
@@ -2150,7 +2300,7 @@
         "link": "https://drive.google.com/file/d/1H1SJXqpP4fA7jJ_44apeuXjU6Qkh3HW8/view?usp=sharing"
     },
     {
-        "id": "216",
+        "id": "231",
         "title": "ICT 2109 Communication and Learning Skills",
         "subjectCode": "ICT 2109",
         "department": "ITT",
@@ -2160,7 +2310,7 @@
         "link": "https://drive.google.com/file/d/1fAkfJQCnjIOaE-6TS0oiBEbAp6JVImXk/view?usp=sharing"
     },
     {
-        "id": "217",
+        "id": "232",
         "title": "ICT 2211 Fundamentals of Statistics",
         "subjectCode": "ICT 2211",
         "department": "ITT",

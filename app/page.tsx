@@ -64,7 +64,8 @@ export default function Home() {
             if (
                 filters.department &&
                 paper.department !== filters.department &&
-                paper.department !== "CMT"
+                paper.department !== "CMT" &&
+                paper.department !== "CML"
             ) {
                 return false;
             }
