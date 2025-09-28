@@ -1,7 +1,7 @@
 {
     "name": "FOT Past Papers Portal",
     "short_name": "FOT Papers",
-    "description": "Faculty of Technology Past Papers Portal - Rajarata University Sri Lanka",
+    "description": "Faculty of Technology Past Papers Portal by viduwa - Rajarata University Sri Lanka",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
@@ -11,16 +11,6 @@
     "lang": "en",
     "dir": "ltr",
     "icons": [
-        {
-            "src": "/favicon-16x16.png",
-            "sizes": "16x16",
-            "type": "image/png"
-        },
-        {
-            "src": "/favicon-32x32.png",
-            "sizes": "32x32",
-            "type": "image/png"
-        },
         {
             "src": "/apple-touch-icon.png",
             "sizes": "180x180",

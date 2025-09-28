@@ -102,7 +102,6 @@ export default function RootLayout({
                     content="FOT Past Papers Portal"
                 />
                 <meta name="apple-mobile-web-app-title" content="FOT Papers" />
-                <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta
                     name="apple-mobile-web-app-status-bar-style"
                     content="default"
