@@ -101,7 +101,7 @@ export function WebsiteFeedback() {
             } else {
                 setError(data.error || "Failed to submit rating");
             }
-        } catch (error) {
+        } catch (_error) {
             setError("Network error. Please try again.");
         } finally {
             setIsSubmitting(false);
