@@ -105,18 +105,6 @@ export default function Home() {
 
     return (
         <div className="space-y-8 relative">
-            <div className="absolute top-0 right-0 flex justify-end items-center gap-4 mb-6">
-                <a
-                    href="https://github.com/viduwaa"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-md hover:bg-muted"
-                    aria-label="GitHub Profile"
-                >
-                    <Github className="h-6 w-6" />
-                </a>
-                <ThemeSwitcher />
-            </div>
             <motion.div
                 className="text-center space-y-4"
                 initial={{ opacity: 0, y: -30 }}

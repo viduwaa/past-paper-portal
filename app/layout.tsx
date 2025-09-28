@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./_components/ThemeProvider";
+import { TopNavigation } from "./_components/TopNavigation";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -119,10 +120,7 @@ export default function RootLayout({
                     name="DC.description"
                     content="Faculty of Technology past examination papers for Rajarata University Sri Lanka students"
                 />
-                <meta
-                    name="DC.publisher"
-                    content="Vidula Deneth Salwathura"
-                />
+                <meta name="DC.publisher" content="Vidula Deneth Salwathura" />
                 <meta name="DC.type" content="InteractiveResource" />
                 <meta name="DC.format" content="text/html" />
                 <meta name="DC.language" content="en" />
@@ -132,7 +130,7 @@ export default function RootLayout({
                     sizes="180x180"
                     href="/apple-touch-icon.png"
                 />
-        
+
                 <link rel="manifest" href="/site.webmanifest" />
             </head>
             <body
@@ -163,7 +161,7 @@ export default function RootLayout({
                                 provider: {
                                     "@type": "Student Developer",
                                     name: "Vidula Deneth Salwathura",
-                                    address: {                                   
+                                    address: {
                                         addressCountry: "LK",
                                     },
                                 },
@@ -182,6 +180,7 @@ export default function RootLayout({
                         }}
                     />
                     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+                        <TopNavigation />
                         <main className="container mx-auto px-4 py-8 w-full sm:w-4/5 max-w-7xl">
                             {children}
                         </main>
