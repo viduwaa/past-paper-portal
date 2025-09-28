@@ -1,0 +1,2172 @@
+[
+    {
+        "id": "1",
+        "title": "Introduction to Information Systems",
+        "subjectCode": "ICT 2314",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1cUBbL0VqFdhxsXLQttaJGER3p5HwyZhy/view?usp=sharing"
+    },
+    {
+        "id": "2",
+        "title": "Database Systems",
+        "subjectCode": "ICT 2308",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1ym8SA0lTgxflmzNVmn2tH1ZsjplFDfSK/view?usp=sharing"
+    },
+    {
+        "id": "3",
+        "title": "Database Systems (Practical)",
+        "subjectCode": "ICT 2308",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1o5d262S2bhKJfwFzNbfn1zpdIwcYBUNl/view?usp=sharing"
+    },
+    {
+        "id": "4",
+        "title": "Computational Mathematics",
+        "subjectCode": "ICT 2305",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1OMrQmudw5s5Ks6yIVwKS02WqzCHZ3gS2/view?usp=sharing"
+    },
+    {
+        "id": "5",
+        "title": "Data Communication and Networking",
+        "subjectCode": "ICT 2213",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1GRa6mVwqs0A2WktYnN76oBml4TTEALNd/view?usp=sharing"
+    },
+    {
+        "id": "6",
+        "title": "Workshop Technology I",
+        "subjectCode": "ENT 1204",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1ViqB3a5QM6G0MRTUbOBmyWNtR9x9RHSK/view?usp=sharing"
+    },
+    {
+        "id": "7",
+        "title": "Computational Mathematics",
+        "subjectCode": "CMT 2203",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1xtYW9MLnf5gyXVKjBew5yZoramktg-zG/view?usp=sharing"
+    },
+    {
+        "id": "8",
+        "title": "Introduction to Marketing",
+        "subjectCode": "CML 2208",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1UAa8C563RdjlEVY0RahiWr5wPhlI_pxU/view?usp=sharing"
+    },
+    {
+        "id": "9",
+        "title": "Foreign Language (Japanese) - Copy",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1rM-f9KO4nBTurAfmsYeRnyVLHXsVU6rT/view?usp=sharing"
+    },
+    {
+        "id": "10",
+        "title": "Foreign Language (German)",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1Udj9fZmL7dgSQEh0HDP648B8CtIMQ4DU/view?usp=sharing"
+    },
+    {
+        "id": "11",
+        "title": "Ceramic Technology I",
+        "subjectCode": "MTT 2311",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1td09_oKkWN0jzsAM8RLjYp-LvDq0KoSS/view?usp=sharing"
+    },
+    {
+        "id": "12",
+        "title": "Mechanical Behavior of Materials",
+        "subjectCode": "MTT 2210",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1PRiE8wukIeYCSeWBBfsJ-xqzgRkj8BAs/view?usp=sharing"
+    },
+    {
+        "id": "13",
+        "title": "Introduction to Polymer Technology",
+        "subjectCode": "MTT 2209",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1Oq4tyfLixwWlDUVFdrYBomtjcod4MSX_/view?usp=sharing"
+    },
+    {
+        "id": "14",
+        "title": "Measurement, Error Analysis and Instrumentation",
+        "subjectCode": "MTT 2207",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1c3kkEPG_lii6c8-F6gk3dEMleZW1A0Px/view?usp=sharing"
+    },
+    {
+        "id": "15",
+        "title": "Introduction to Metallurgy",
+        "subjectCode": "MTT 2205",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1ukqZd5wg8F3peF5c_UkANqBYIOp7GWCC/view?usp=sharing"
+    },
+    {
+        "id": "16",
+        "title": "Computer Aided Design",
+        "subjectCode": "MTT 2204",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/112XmjmSlxezDx-u2_G8Q2y8CWmUgeWWk/view?usp=sharing"
+    },
+    {
+        "id": "17",
+        "title": "Introduction to Thermodynamics",
+        "subjectCode": "MTT 2112",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/15LRc_4qAHCXsM-DG7L-hXh-jQ9hUCZwX/view?usp=sharing"
+    },
+    {
+        "id": "18",
+        "title": "Chemical Engineering Sciences",
+        "subjectCode": "MTT 2108",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1Tijo_zSTkSm1GkMd253xGxjn_kChJv8w/view?usp=sharing"
+    },
+    {
+        "id": "19",
+        "title": "Fundamentals of Statistics",
+        "subjectCode": "ICT 2211",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1uAYLkrPrvdbkbCZvqYVwYuNGYppmj0dg/view?usp=sharing"
+    },
+    {
+        "id": "20",
+        "title": "Multimedia and Web Technology",
+        "subjectCode": "ICT 2206",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/12-v_7UJH3teH8kW-Gvjdb4d1UVKgveFg/view?usp=sharing"
+    },
+    {
+        "id": "21",
+        "title": "Software System Design",
+        "subjectCode": "ICT 2207",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1ny3fZDIxunr-AGAyV7e4UHjMepIc7zTs/view?usp=sharing"
+    },
+    {
+        "id": "22",
+        "title": "Food Microbiology",
+        "subjectCode": "FDT 2308",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/11nxeMxuwxwNRHbe58peiJpNDCY1hhEl2/view?usp=sharing"
+    },
+    {
+        "id": "23",
+        "title": "Analytical Chemistry",
+        "subjectCode": "FDT 2305",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1Cva7tM6pHqg6Dr8KCdOrICM2yD5WIeh8/view?usp=sharing"
+    },
+    {
+        "id": "24",
+        "title": "Food Biotechnology",
+        "subjectCode": "FDT 2210",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1tZLQqdVBCULjztVarfHnsgfNuKWLOSvW/view?usp=sharing"
+    },
+    {
+        "id": "25",
+        "title": "Food Microbiology",
+        "subjectCode": "FDT 2208",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1A5GryB4O9SxX_Tdyk2Dqvjj8N6As7Gs_/view?usp=sharing"
+    },
+    {
+        "id": "26",
+        "title": "Introduction to Human Nutrition",
+        "subjectCode": "FDT 2209",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1_XyaFRHbeDXw_q5lyO-at057Ofk5BiNQ/view?usp=sharing"
+    },
+    {
+        "id": "27",
+        "title": "Food Physics",
+        "subjectCode": "FDT 2206",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1RRdYPX1Zx1Qtq7JdYNdvMDufZPVJnpBx/view?usp=sharing"
+    },
+    {
+        "id": "28",
+        "title": "Food Chemistry",
+        "subjectCode": "FDT 2207",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1uGmOqeNtVwHWt0m5NVxRQZ1W_dAg3oIG/view?usp=sharing"
+    },
+    {
+        "id": "29",
+        "title": "Electrical Machines",
+        "subjectCode": "EET 2305",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1TpIfvjreLi87U0YAo6ygpE-VPjt9RPYy/view?usp=sharing"
+    },
+    {
+        "id": "30",
+        "title": "Signals and Systems",
+        "subjectCode": "EET 2206",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/12LE-BfAK6sq3I3vVmYywSpF1lD3ZTkXb/view?usp=sharing"
+    },
+    {
+        "id": "31",
+        "title": "Electronic Devices and Circuits",
+        "subjectCode": "EET 2203",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1RcZHYz0lp1hTHplEczkdrTFf3jh6P6RY/view?usp=sharing"
+    },
+    {
+        "id": "32",
+        "title": "Electrical Measurements and Instrumentation",
+        "subjectCode": "EET 2204",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1sBuoss_U3svHXe2bywIzKrk-XAGC8YL3/view?usp=sharing"
+    },
+    {
+        "id": "33",
+        "title": "Molecular Biotechnology",
+        "subjectCode": "BPT 2209",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/13uyLpT0Dkv7m3psz-5xdNMZnECvXmCbt/view?usp=sharing"
+    },
+    {
+        "id": "34",
+        "title": "Bioreactor Operation and Design",
+        "subjectCode": "BPT 2206",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/13FQ1looMWCNECu5NkiUsEtKNGXxG_WHQ/view?usp=sharing"
+    },
+    {
+        "id": "35",
+        "title": "Basic Immunology",
+        "subjectCode": "BPT 2207",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1lAbZbnYafwgQFUAKGgyvwI53AfqN2LQi/view?usp=sharing"
+    },
+    {
+        "id": "36",
+        "title": "Quality Assurance and Safety of Bioprocess Products",
+        "subjectCode": "BPT 2108",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1IbL19leG5nPzn-h7aBte1jk5h7njNqXP/view?usp=sharing"
+    },
+    {
+        "id": "37",
+        "title": "Graphical Programming",
+        "subjectCode": "MTT 2206",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1IwOn-uvcFBTBFDKaUpT7A64zRShn6lsD/view?usp=sharing"
+    },
+    {
+        "id": "38",
+        "title": "Computer Aided Design",
+        "subjectCode": "MTT 2204",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1Kih_xsi_T0VpkWww1qN7qo5D3wWCGfDX/view?usp=sharing"
+    },
+    {
+        "id": "39",
+        "title": "Introduction to Ceramic Technology",
+        "subjectCode": "MTT 2203",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1uss7MK84RJN1Hp7glclO5NkDiWrCvPcO/view?usp=sharing"
+    },
+    {
+        "id": "40",
+        "title": "Chemistry for Materials Technology",
+        "subjectCode": "MTT 2202",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1KmnLu3bqQalZLjpCXwq9CNvLhx-FPfCe/view?usp=sharing"
+    },
+    {
+        "id": "41",
+        "title": "Fundamentals of Solid-State Physics",
+        "subjectCode": "MTT 2201",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1bHcmfk3Q5lJ1ROXHObQPdQJAAFROj86X/view?usp=sharing"
+    },
+    {
+        "id": "42",
+        "title": "Software System Design",
+        "subjectCode": "ICT 2207",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1--iNQRQh2XHx9n_4vnRzvIS0t6_93PUS/view?usp=sharing"
+    },
+    {
+        "id": "43",
+        "title": "Object Oriented Programming",
+        "subjectCode": "ICT 2304",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1YC6Buuwb6PflBifDeTRbNo37PClZ8kMp/view?usp=sharing"
+    },
+    {
+        "id": "44",
+        "title": "Data Structures and Algorithms",
+        "subjectCode": "ICT 2303",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/13WzJSFL-Si7LB-jyNNdodtcsZ4g1s6Wc/view?usp=sharing"
+    },
+    {
+        "id": "45",
+        "title": "Advanced Applications",
+        "subjectCode": "ICT 2101",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1qjEueYtATjTRQz-aK1MSA7Ji7isbgsDc/view?usp=sharing"
+    },
+    {
+        "id": "46",
+        "title": "Operating Systems",
+        "subjectCode": "ICT 2202",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1uUK0j4Hs9GrLafDpojZT1B6b-z4w65Bq/view?usp=sharing"
+    },
+    {
+        "id": "47",
+        "title": "Human Computer Interaction",
+        "subjectCode": "ICT 1207",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/126Poexrv8EGwRCKTGq2vRy-t67YhIlbr/view?usp=sharing"
+    },
+    {
+        "id": "48",
+        "title": "Food Preservation",
+        "subjectCode": "FDT 2204",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1G9Oe2InAMuPx8TtgYYIS828_z6JkAoes/view?usp=sharing"
+    },
+    {
+        "id": "49",
+        "title": "Introduction to Food Industry Part  I - Structured Questions",
+        "subjectCode": "FDT 2203",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1y8YLgykKWPxHhmtc0TflRm0Oxo7GiOmK/view?usp=sharing"
+    },
+    {
+        "id": "50",
+        "title": "Introduction to Food Industry Part II- Essay Questions",
+        "subjectCode": "FDT 2203",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/15pe38cf3TmP7AlzK5vArzcFl6cy1l1tN/view?usp=sharing"
+    },
+    {
+        "id": "51",
+        "title": "Basic Biochemistry",
+        "subjectCode": "FDT 2202",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1mApiApHUqViuVVZK0vf-VjZcLoi0MAmp/view?usp=sharing"
+    },
+    {
+        "id": "52",
+        "title": "Workshop Technology I",
+        "subjectCode": "ENT 1204",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1jbyk3r8Ossh4nYEWvhEMrHwQ5FAh0nEV/view?usp=sharing"
+    },
+    {
+        "id": "53",
+        "title": "Analog and Digital Electronics",
+        "subjectCode": "EET 2301",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1wgMtDjcj384iTciE46QDeulisExoGMtO/view?usp=sharing"
+    },
+    {
+        "id": "54",
+        "title": "Physical Chemistry",
+        "subjectCode": "FDT 2201",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1yxSoijefzICIJ1EiAEeLN7zRuxcsTrkN/view?usp=sharing"
+    },
+    {
+        "id": "55",
+        "title": "Introduction to Electrical Power",
+        "subjectCode": "EET 2208",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1ICDVEp4nNBLBFcPqSsJq6yBtMusbGU4m/view?usp=sharing"
+    },
+    {
+        "id": "56",
+        "title": "Introduction to Electrical Power (Repeat)",
+        "subjectCode": "EET 2208",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1gNNkFl2gP19TPXiH9M0ZV6eYFszSeEqH/view?usp=sharing"
+    },
+    {
+        "id": "57",
+        "title": "Mathematics for Technology II",
+        "subjectCode": "CMT 2306",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1GHBymjh5k-uad8Y7dMl0g3SJOA6Fd7KA/view?usp=sharing"
+    },
+    {
+        "id": "58",
+        "title": "Communication Skills III (Written Test)",
+        "subjectCode": "CMT 2202",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1qQo_Taa45_ok23hkqY86sNhoNzuXPaC8/view?usp=sharing"
+    },
+    {
+        "id": "59",
+        "title": "Electricity Networks",
+        "subjectCode": "EET 2202",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/17gKaK1V7PMOiZYClVx8WpA-E4Abanv4I/view?usp=sharing"
+    },
+    {
+        "id": "60",
+        "title": "Fundamentals of Statistics for Technology",
+        "subjectCode": "CMT 2301",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1RVZ_celT-otwpqxc_GX3CUyD_Rbk2t9M/view?usp=sharing"
+    },
+    {
+        "id": "61",
+        "title": "Computer Programming for Technology",
+        "subjectCode": "CMT 1208",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1YqYoXP84ClMqvChCCUbemZ6buF-7Xnda/view?usp=sharing"
+    },
+    {
+        "id": "62",
+        "title": "Communication Skills III (Oral Test)",
+        "subjectCode": "CMT 2202",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/141tqmG0luOyikdkLokPq0Kng3qaryED0/view?usp=sharing"
+    },
+    {
+        "id": "63",
+        "title": "Engineering Economics",
+        "subjectCode": "CML 2202",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1T9d3czerN84b64UZsK7inJQNrU8Ot2_9/view?usp=sharing"
+    },
+    {
+        "id": "64",
+        "title": "Molecular Biology",
+        "subjectCode": "BPT 2205",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/151GTrj_2_C8y-QTUUW_TgK2cKcDruyhf/view?usp=sharing"
+    },
+    {
+        "id": "65",
+        "title": "Genetics and Evolution",
+        "subjectCode": "BPT 2203",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1Sptk_wR2paxhF5wKNfijCuy239ahQ-n8/view?usp=sharing"
+    },
+    {
+        "id": "66",
+        "title": "Plant Tissue Culture",
+        "subjectCode": "BPT 2204",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1iUkVSl65kvJZsAQr-KWvXj7w2rUw4RAC/view?usp=sharing"
+    },
+    {
+        "id": "67",
+        "title": "Introduction to Bioprocess Technology",
+        "subjectCode": "BPT 2202",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1o5CJ7c9wGGkFn3uD_Qn9AokSASyvk-D5/view?usp=sharing"
+    },
+    {
+        "id": "68",
+        "title": "Quality Management",
+        "subjectCode": "BPT 2201",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1wcBmdZShnAunS9dMnNQ-2mPH2PesremU/view?usp=sharing"
+    },
+    {
+        "id": "69",
+        "title": "MTT_2311_ceramic_technology",
+        "subjectCode": "MTT 2311",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1umwByVuyPdTPKbYo58JcogTGsRUak3xM/view?usp=sharing"
+    },
+    {
+        "id": "70",
+        "title": "MTT_2110__introduction_to_thermodynamics",
+        "subjectCode": "MTT 2110",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1pW44zgBm8pHqdECzYZ-oJQlLmmeVRUA_/view?usp=sharing"
+    },
+    {
+        "id": "71",
+        "title": "MTT_2108_chemical_engineering_sciences",
+        "subjectCode": "MTT 2108",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/17pbri45ghxuyHn7DvZK_qcbzr5iuAfXb/view?usp=sharing"
+    },
+    {
+        "id": "72",
+        "title": "BPT_2207_Basic_Immunology",
+        "subjectCode": "BPT 2207",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1x4sBClOpoLFoGBs1gxV-wgukHRWnWtfO/view?usp=sharing"
+    },
+    {
+        "id": "73",
+        "title": "MTT 2303 Introduction to Ceramic Technology",
+        "subjectCode": "MTT 2303",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1emfQCUL_y8TQRl0Q6O25RoZflqSmetZT/view?usp=sharing"
+    },
+    {
+        "id": "74",
+        "title": "CMT 2306 Mathematics for Technology II",
+        "subjectCode": "CMT 2306",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1TcnxbK7odKGhml9PFxq7KHsogF1pGjie/view?usp=sharing"
+    },
+    {
+        "id": "75",
+        "title": "CMT 2301 Fundementals of Statistics for Technology",
+        "subjectCode": "CMT 2301",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1_6T9imAHi6PDiyq4FnWMCbhdj5-9EDGX/view?usp=sharing"
+    },
+    {
+        "id": "76",
+        "title": "CMT 2002 Communication Skills III (Writen Test)",
+        "subjectCode": "CMT 2002",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1AFwKhwkgEQ6xLjorEJYjPgadSePJnaQe/view?usp=sharing"
+    },
+    {
+        "id": "77",
+        "title": "MTT 2302 Chemistry for Materials Technology",
+        "subjectCode": "MTT 2302",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1VnbSBLD1WPtS4bXrMGDKkhp5sfzad2U0/view?usp=sharing"
+    },
+    {
+        "id": "78",
+        "title": "MTT 2301 Fundamentals of Solid State Physics",
+        "subjectCode": "MTT 2301",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/10zHFdK8JQl71dK0IOwTlvDdw61OsYrA_/view?usp=sharing"
+    },
+    {
+        "id": "79",
+        "title": "MTT 2206 Graphical Programming",
+        "subjectCode": "MTT 2206",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1ab-Lvof4jlIfLl9-xv4jCyJ-hmm5ToCq/view?usp=sharing"
+    },
+    {
+        "id": "80",
+        "title": "MTT 2205 Introduction to Metallurgy Repeat",
+        "subjectCode": "MTT 2205",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1eS2XTQKLFsMZRuoO1RERn3uAVq5ejzgd/view?usp=sharing"
+    },
+    {
+        "id": "81",
+        "title": "MTT 2204 Computer Aided Desighn (CAD)",
+        "subjectCode": "MTT 2204",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/15bGrqD-717nBcBZkfKh6pK08InXXvFde/view?usp=sharing"
+    },
+    {
+        "id": "82",
+        "title": "MTT 2203 Introduction to Ceramic Technology",
+        "subjectCode": "MTT 2203",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1ZHF1892gaVIRqyQz7BaZtpLtrN_sjTS9/view?usp=sharing"
+    },
+    {
+        "id": "83",
+        "title": "MTT 2202 Chmestry for Materials Technology",
+        "subjectCode": "MTT 2202",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1vuFk2Watk2oXeFIlZP1RuTXw6O2TxrwW/view?usp=sharing"
+    },
+    {
+        "id": "84",
+        "title": "MTT 2202 Chmestry for Materials Technology Repeat",
+        "subjectCode": "MTT 2202",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1eZ9QZdqMIzTVwrOR17q5yvH-M4bBOGK5/view?usp=sharing"
+    },
+    {
+        "id": "85",
+        "title": "MTT 2201 Fundamentals of Solid State Physics",
+        "subjectCode": "MTT 2201",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1Q1YLKhu705Wt7fmL6xfgTYdrG3_Dvse8/view?usp=sharing"
+    },
+    {
+        "id": "86",
+        "title": "ICT 2303 Data Structures and Algorithms",
+        "subjectCode": "ICT 2303",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1_TRflEQ42ZI7_a62SuXARwBn4LbOo44E/view?usp=sharing"
+    },
+    {
+        "id": "87",
+        "title": "ICT 2207 Software System Design",
+        "subjectCode": "ICT 2207",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1UgdfX7aO8BYfcnXMxb4fuNR6sMG5GGOX/view?usp=sharing"
+    },
+    {
+        "id": "88",
+        "title": "ICT 2202 Operating Systems",
+        "subjectCode": "ICT 2202",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/13sKjiSqixoY02bSMJ2HOr50F_krpiGQN/view?usp=sharing"
+    },
+    {
+        "id": "89",
+        "title": "ICT 2201 Advanced Applications",
+        "subjectCode": "ICT 2201",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1Cly3xh96tTpOM1gg7RYLoPRbIOg6GL6V/view?usp=sharing"
+    },
+    {
+        "id": "90",
+        "title": "ICT 2101 Advanced Application",
+        "subjectCode": "ICT 2101",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1WxZWmPpuVmch_eCJLUKMPZcx7XYfR5E5/view?usp=sharing"
+    },
+    {
+        "id": "91",
+        "title": "FDT 3204 Meat and Fish Proccesing Technology",
+        "subjectCode": "FDT 3204",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1iuuJfjc13ksqP0OSbvNjjc3c0pCEXXus/view?usp=sharing"
+    },
+    {
+        "id": "92",
+        "title": "FDT 2204 Food Reservation",
+        "subjectCode": "FDT 2204",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1oM3wjdIrCkiOUC15FGnrNQFxVCg2Yjci/view?usp=sharing"
+    },
+    {
+        "id": "93",
+        "title": "FDT 2202 Basic Biochemistry",
+        "subjectCode": "FDT 2202",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1GHLtLp4XJckKnhlOWglAueI3tVV7tyZG/view?usp=sharing"
+    },
+    {
+        "id": "94",
+        "title": "FDT 2201 Physical Chemistry",
+        "subjectCode": "FDT 2201",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/17P1OUq_-qmhpFVIftLr_jG4ichtfElJX/view?usp=sharing"
+    },
+    {
+        "id": "95",
+        "title": "EET 2301 Digital and Analog Electronics",
+        "subjectCode": "EET 2301",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1Ey0S9DrqIqHGhShnrr1TaC16YAXwohc-/view?usp=sharing"
+    },
+    {
+        "id": "96",
+        "title": "EET 2208 Introduction to Electrical Power",
+        "subjectCode": "EET 2208",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1bgXoU4IJptc1_ov63zGKGZHZsorcRQrl/view?usp=sharing"
+    },
+    {
+        "id": "97",
+        "title": "EET 2202 Electrical Measurements and Intrumentation",
+        "subjectCode": "EET 2202",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1ter6fqKChh2kj41hwRCESJhsT8bDl5ur/view?usp=sharing"
+    },
+    {
+        "id": "98",
+        "title": "CML 2202 Engineering Economics",
+        "subjectCode": "CML 2202",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1hTi6asGEN0APGH5RMA28JNDSvcsJBxfG/view?usp=sharing"
+    },
+    {
+        "id": "99",
+        "title": "BPT 2205 Molecular Biology",
+        "subjectCode": "BPT 2205",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/13lCcPtKV6MMWgCCy7wrUvzcU5UNEJnPc/view?usp=sharing"
+    },
+    {
+        "id": "100",
+        "title": "BPT 2204 Plant Tissue Culture",
+        "subjectCode": "BPT 2204",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1rI6GWUckKQK4bIC1IURYE45eeDPx6jDZ/view?usp=sharing"
+    },
+    {
+        "id": "101",
+        "title": "BPT 2203 Genetics and Evolution",
+        "subjectCode": "BPT 2203",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1jyne8aMz9AXbkwI4u1HeOMo-sF0Qo73O/view?usp=sharing"
+    },
+    {
+        "id": "102",
+        "title": "BPT 2202 Introduction to Bioprocess Technology",
+        "subjectCode": "BPT 2202",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1C7sQ9KC3d82UMyO-Pqo4vsTLOT_g6BNV/view?usp=sharing"
+    },
+    {
+        "id": "103",
+        "title": "BPT 2201 Quality Management",
+        "subjectCode": "BPT 2201",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2021",
+        "link": "https://drive.google.com/file/d/1S-dh6CigFFl_TQxG--k506okCsFPi81o/view?usp=sharing"
+    },
+    {
+        "id": "104",
+        "title": "MTT_2210_mechanical_behavior_of_materials",
+        "subjectCode": "MTT 2210",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/12ZeZAEfBN5XJ8P0WBLBy8OK9rVHY6Sia/view?usp=sharing"
+    },
+    {
+        "id": "105",
+        "title": "MTT_2209_introduction_to_polymer_technology",
+        "subjectCode": "MTT 2209",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1icqEgutEXDdAn-LFcdBhQ37w_H57UNue/view?usp=sharing"
+    },
+    {
+        "id": "106",
+        "title": "ICT_2308 Database Systems",
+        "subjectCode": "ICT 2308",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1EqIyLLhySJPIgMpVHr6P69Y4Yc1e3XJ2/view?usp=sharing"
+    },
+    {
+        "id": "107",
+        "title": "ICT_2305 Computational Mathematics",
+        "subjectCode": "ICT 2305",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/14am9E3Sz10HYuLvjWIiX5tdYEjLY8rba/view?usp=sharing"
+    },
+    {
+        "id": "108",
+        "title": "ICT_2213 Data Communication and Networking",
+        "subjectCode": "ICT 2213",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1TEEpFNBdFSc8KXLDVUTYujJ9BhlqnsST/view?usp=sharing"
+    },
+    {
+        "id": "109",
+        "title": "ICT_2206 Multimedia and Web Technologies",
+        "subjectCode": "ICT 2206",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1wHJTUJewmy1lg2FwxXkVsrJ1er_efJQh/view?usp=sharing"
+    },
+    {
+        "id": "110",
+        "title": "FDT_4109_flavor_science",
+        "subjectCode": "FDT 4109",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/19YxMy-mZmZ-K7VW0udnm8K9Ok1xITaUz/view?usp=sharing"
+    },
+    {
+        "id": "111",
+        "title": "FDT_3211__meat_and_fish_processing_technology",
+        "subjectCode": "FDT 3211",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/14kPEgjku25EkgbpANOUeR9ge5SW6cBlW/view?usp=sharing"
+    },
+    {
+        "id": "112",
+        "title": "FDT_3204_food_biotechnology",
+        "subjectCode": "FDT 3204",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1tdCe_r9oRfqOFrUsA6l6E4zu3R0gNa87/view?usp=sharing"
+    },
+    {
+        "id": "113",
+        "title": "FDT_2305_analytical_chemistry",
+        "subjectCode": "FDT 2305",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1JxaJBEAGw3KxkX4--Th9S73KPtDqPCQ9/view?usp=sharing"
+    },
+    {
+        "id": "114",
+        "title": "FDT_2209__introduction_to_human_nutrition",
+        "subjectCode": "FDT 2209",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1H4mV6SS4u5aJzQRI1acts0fShIh6cc7w/view?usp=sharing"
+    },
+    {
+        "id": "115",
+        "title": "FDT_2207_food_chemistry",
+        "subjectCode": "FDT 2207",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1bhMpU0uB2PlIAN7RnEWk1qTX92TJ8QXh/view?usp=sharing"
+    },
+    {
+        "id": "116",
+        "title": "EET_2305 Electrical Power Systems",
+        "subjectCode": "EET 2305",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1_2WpFZxVlBxrk1-KbfCB23t_jCaVebUK/view?usp=sharing"
+    },
+    {
+        "id": "117",
+        "title": "EET_2203 Electronics Devices and Circuits",
+        "subjectCode": "EET 2203",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1w1kDzyXYLmSrMaLZfsoIqQzH82lyE6MC/view?usp=sharing"
+    },
+    {
+        "id": "118",
+        "title": "EET_2304 Electronic Measurement and Instrumentation",
+        "subjectCode": "EET 2304",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1M_Q5Lq4tLvppyFEb9Y3IpYtyXY0bxPmB/view?usp=sharing"
+    },
+    {
+        "id": "119",
+        "title": "EET_2206 Signals and Systems",
+        "subjectCode": "EET 2206",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1NqiGtI-hC-Zmd4HibegIwUN6d4EJ89lV/view?usp=sharing"
+    },
+    {
+        "id": "120",
+        "title": "CMT_1109_chemistry_laboratory_1",
+        "subjectCode": "CMT 1109",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1ZcfYR9zMGvjHMn5Lbf8vZ4Wh9xNH7oEw/view?usp=sharing"
+    },
+    {
+        "id": "121",
+        "title": "CML_2204_foreign_languages_german",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/16g8OJ-7dxmKN__Je9NM8g6E26GMC7yiu/view?usp=sharing"
+    },
+    {
+        "id": "122",
+        "title": "CML_2204_ Foreign Language Japanese",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1B2_f2_weIIf90NVkkQ6eCjK-0mtI5IN7/view?usp=sharing"
+    },
+    {
+        "id": "123",
+        "title": "BPT_3302_bioinformatics",
+        "subjectCode": "BPT 3302",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1iFPUsrnw5E_3z4E0LzqLoQsV50rcEmSL/view?usp=sharing"
+    },
+    {
+        "id": "124",
+        "title": "BPT_3208_industrial_microbiology",
+        "subjectCode": "BPT 3208",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1FQzpbDZUKrWAhT-w1BW5nSPaquqXGXbJ/view?usp=sharing"
+    },
+    {
+        "id": "125",
+        "title": "BPT_2206_bioreactor_operation_and_design",
+        "subjectCode": "BPT 2206",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/1-bqCHNaViz15q0BBFOxPhHVwImTyYfEl/view?usp=sharing"
+    },
+    {
+        "id": "126",
+        "title": "BPT_2201 Quality Management",
+        "subjectCode": "BPT 2201",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2020",
+        "link": "https://drive.google.com/file/d/15I1e15o3VTPhx1KeOREwcVWJgVewnXiO/view?usp=sharing"
+    },
+    {
+        "id": "127",
+        "title": "Mechanical Behavior of Materials",
+        "subjectCode": "MTT 2310",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1bv0pCPuK8ptjagCygzkkb1geqBtG4F9g/view?usp=sharing"
+    },
+    {
+        "id": "128",
+        "title": "Chemical Engineering Sciences",
+        "subjectCode": "MTT 2208",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/122h9jCXFw1HzvSZoHYxp3H2tlMc4viYt/view?usp=sharing"
+    },
+    {
+        "id": "129",
+        "title": "Database Systems",
+        "subjectCode": "ICT 2308",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1G0wu9UiVHjMzOT1hePYMhvrIpOkvT-Be/view?usp=sharing"
+    },
+    {
+        "id": "130",
+        "title": "Intruduction to Polymer Technology",
+        "subjectCode": "MTT 2209",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1SNwQcI48Vgdp8lPNSmyZl0WWtNemryml/view?usp=sharing"
+    },
+    {
+        "id": "131",
+        "title": "Coputational Mathematics",
+        "subjectCode": "ICT 2305",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1mP3YR4rOO5S4-Z64RlVHr5izC4kCx00E/view?usp=sharing"
+    },
+    {
+        "id": "132",
+        "title": "Measurements, Error Analysis  Instrumentation",
+        "subjectCode": "MTT 2207",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1Q0zGa7JK0adetdu7DdRGk8YKB5pDSS21/view?usp=sharing"
+    },
+    {
+        "id": "133",
+        "title": "Ceramic Technology I",
+        "subjectCode": "MTT 2311",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1uaopDVNhbt4xWlD8ad2xtTTl8uwsrH5h/view?usp=sharing"
+    },
+    {
+        "id": "134",
+        "title": "Sofware System Design",
+        "subjectCode": "ICT 2207",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1yJgF6rET6Pzf6SasS9SD1-H4R_JLKP4P/view?usp=sharing"
+    },
+    {
+        "id": "135",
+        "title": "Multimedia and Web Technology",
+        "subjectCode": "ICT 2206",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1WxXeQFd2GSH28dsgqe2MCKLssOXwgaSj/view?usp=sharing"
+    },
+    {
+        "id": "136",
+        "title": "Food Microbiology",
+        "subjectCode": "FDT 2308",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1qeLT1-7ig2th1Iz2JAtd51JrB8ZESCxf/view?usp=sharing"
+    },
+    {
+        "id": "137",
+        "title": "Food Chemistry (Section I)",
+        "subjectCode": "FDT 2207",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1WVn-Z3e1FLDKIxIskhO94-jvo48r1PdC/view?usp=sharing"
+    },
+    {
+        "id": "138",
+        "title": "Food Physics Part II",
+        "subjectCode": "FDT 2206",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1JkqgG3kyNtikQhN3Rdp3yQAAYRruQ69F/view?usp=sharing"
+    },
+    {
+        "id": "139",
+        "title": "Food Physics Part I",
+        "subjectCode": "FDT 2206",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1QMjHGNAC9ldVwTxlBy1XWFmmbrcpuEF6/view?usp=sharing"
+    },
+    {
+        "id": "140",
+        "title": "Food Chemistry (Section II )",
+        "subjectCode": "FDT 2207",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1_bTAfh19M06UucrW5UouOX5C3Pu-6wml/view?usp=sharing"
+    },
+    {
+        "id": "141",
+        "title": "Flavor Science",
+        "subjectCode": "FDT 4109",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1dgJAPpFUq2DxKLTBg3tWbT8stHXuJfvF/view?usp=sharing"
+    },
+    {
+        "id": "142",
+        "title": "Food Chemistry (Section III)",
+        "subjectCode": "FDT 2207",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1sDkLDoaEClWLtVBb0a-XeXih9xGL9Kh4/view?usp=sharing"
+    },
+    {
+        "id": "143",
+        "title": "Food Chemistry (Practical Paper)",
+        "subjectCode": "FDT 2207",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1xhslNJ1sFeSHcp8f_uXwvZ2yfyjsvAgE/view?usp=sharing"
+    },
+    {
+        "id": "144",
+        "title": "Fundamentals of Electricity  Magnetism",
+        "subjectCode": "ENT 1302",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1B7WShRp7xnPsviLrnWFZUuZ6tZfymoMY/view?usp=sharing"
+    },
+    {
+        "id": "145",
+        "title": "Introduction to Basic Electronics",
+        "subjectCode": "ENT 1301",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1iYIH9me_zfO4fCIaEHJvOaKSB302by4O/view?usp=sharing"
+    },
+    {
+        "id": "146",
+        "title": "Electrical Power Systems",
+        "subjectCode": "EET 2305",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1ru2IAdG6_e_v3Lzf3EWY8tuabOkmPHLP/view?usp=sharing"
+    },
+    {
+        "id": "147",
+        "title": "Electronics Devices and Sircuits",
+        "subjectCode": "EET 2203",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/18ozbS0bNp3irIM_TmtGVlTDO_KfH28In/view?usp=sharing"
+    },
+    {
+        "id": "148",
+        "title": "Electricity Networks",
+        "subjectCode": "EET 2304",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1VHTaRLahSj1mYljlD98cJ63YgySmIk0L/view?usp=sharing"
+    },
+    {
+        "id": "149",
+        "title": "Mathamatics for Technology II",
+        "subjectCode": "EET 2206",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1vSVe-SQCnrsWm7V7hwB3KBepfgYyGz7d/view?usp=sharing"
+    },
+    {
+        "id": "150",
+        "title": "Fundamentals of Statistics for Technology",
+        "subjectCode": "CMT 2301",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1IFr64BIb9WjX2vCuabx2BZuOI1REECQq/view?usp=sharing"
+    },
+    {
+        "id": "151",
+        "title": "Foreign Languages - German",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1ljLk8qJiumrdnax_TTciv8I6kKpggzNo/view?usp=sharing"
+    },
+    {
+        "id": "152",
+        "title": "Engineering Economics",
+        "subjectCode": "CML 2202",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1JHg6PVfu46aB3e50YSW_1pabnWIiBMWR/view?usp=sharing"
+    },
+    {
+        "id": "153",
+        "title": "Foreign Language (Japanese - Written Test)",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1uS1MuPgZvYVKlmfzcqUnFpvkZRBWRbrl/view?usp=sharing"
+    },
+    {
+        "id": "154",
+        "title": "Mathethamatical methods and Computational methods",
+        "subjectCode": "CMT 2203",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1Ehjowc_zZotZ69xlDrNVGXaso3Uo2quz/view?usp=sharing"
+    },
+    {
+        "id": "155",
+        "title": "Principles of Management",
+        "subjectCode": "CML 1203",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1KbqAjORPenOEwSnYkrFZqDcsz8MXPX-d/view?usp=sharing"
+    },
+    {
+        "id": "156",
+        "title": "Quality Management",
+        "subjectCode": "BPT 2201",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/15WLyA28IJod8UREdsxCpOE8BfGrJ1yso/view?usp=sharing"
+    },
+    {
+        "id": "157",
+        "title": "Industrial Microbilogy",
+        "subjectCode": "BPT 3208",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1Bn5sFdYVJasG2sos5nDtl8Yy7aquSt_E/view?usp=sharing"
+    },
+    {
+        "id": "158",
+        "title": "Intruduction to Bioprocess Technology",
+        "subjectCode": "BPT 2202",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1gDaKisedcLZT3pOTKuuhNDNltKY7y4Wm/view?usp=sharing"
+    },
+    {
+        "id": "159",
+        "title": "Bioinformatics ( Practical)",
+        "subjectCode": "BPT 3302",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1CxIKl3NhFcI2-YGY7l1VbFqX4OhHA3zl/view?usp=sharing"
+    },
+    {
+        "id": "160",
+        "title": "Bioinformatics",
+        "subjectCode": "BPT 3302",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1d0EDLkgTRhSILhymp28tEex7BDLihLxp/view?usp=sharing"
+    },
+    {
+        "id": "161",
+        "title": "ENT 1204 Workshop Technology I",
+        "subjectCode": "ENT 1204",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1mXN4Ae0YSs1HfkCBxZBI0dhNJ3fziuoA/view?usp=sharing"
+    },
+    {
+        "id": "162",
+        "title": "ICT 2207 Software System Design",
+        "subjectCode": "ICT 2207",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1gj6Ob2E5PPgNM_VS1gcATMMnw6gQwsYD/view?usp=sharing"
+    },
+    {
+        "id": "163",
+        "title": "FDT-2202 Basic Biochemistry",
+        "subjectCode": "",
+        "department": "",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1pwehXJrwn1wmVC19AEj9euKC0dZhAiuR/view?usp=sharing"
+    },
+    {
+        "id": "164",
+        "title": "FDT 2204 Food Preservation",
+        "subjectCode": "FDT 2204",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1AUjKOElRfsEIPKs5PPH2d4i_bVs8pxXB/view?usp=sharing"
+    },
+    {
+        "id": "165",
+        "title": "ICT 2202 Operating Systems",
+        "subjectCode": "ICT 2202",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1eT4IvM0dCgGrH5jh08NP9O9gPSytkrl6/view?usp=sharing"
+    },
+    {
+        "id": "166",
+        "title": "ICT 1207 Human Computer Iteraction",
+        "subjectCode": "ICT 1207",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1j_k2ohuZGs26jSGM8Q6hGBDDDNUHltGR/view?usp=sharing"
+    },
+    {
+        "id": "167",
+        "title": "ICT 2101 Advanced Applications",
+        "subjectCode": "ICT 2101",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1P-pLA58aPL_ZodI1-uYRzlYzmIBdlV9R/view?usp=sharing"
+    },
+    {
+        "id": "168",
+        "title": "ENT 1203 Engineering Drawing (Group III)",
+        "subjectCode": "ENT 1203",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1ryyAF_k4QJkI1YnLQqeun-UcjswuK1WY/view?usp=sharing"
+    },
+    {
+        "id": "169",
+        "title": "ENT 1203 Engineering Drawing (Group I)",
+        "subjectCode": "ENT 1203",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1SSNJ4kYzVhNQo8d2Fo3OIPAYYTFXYkWg/view?usp=sharing"
+    },
+    {
+        "id": "170",
+        "title": "CMT 2002 Communication Skills III (Written Test)",
+        "subjectCode": "CMT 2002",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1wc1jwirpMWcU8CKdJeTaaRrYDcL7NAk0/view?usp=sharing"
+    },
+    {
+        "id": "171",
+        "title": "BPT 2205 Molecular Biology",
+        "subjectCode": "BPT 2205",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1ZGHdphNF5G0czPLSVp8FmNu-GfNAF_rK/view?usp=sharing"
+    },
+    {
+        "id": "172",
+        "title": "CMT 2301 Fundementals of Statistics for Technology",
+        "subjectCode": "CMT 2301",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1tjKIUROczfuyRyD-Vw637QHgmhxheFRx/view?usp=sharing"
+    },
+    {
+        "id": "173",
+        "title": "CML 2202 Engineering Economics",
+        "subjectCode": "CML 2202",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1BdTt9AhFysWxoK5PmkMjx-6MhPTvfs_W/view?usp=sharing"
+    },
+    {
+        "id": "174",
+        "title": "CMT 2002 Communication Skills III (Oral Test)",
+        "subjectCode": "CMT 2002",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1sSJBdXFX2BKSh6eY5u1gmHPaVrlwGX7j/view?usp=sharing"
+    },
+    {
+        "id": "175",
+        "title": "ENT 1203 Engineering Drawing (Group II)",
+        "subjectCode": "ENT 1203",
+        "department": "ENT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1Z8oyyuctoPh8kdV50JJ_Pl80_5PXA_AE/view?usp=sharing"
+    },
+    {
+        "id": "176",
+        "title": "BPT 2204 Plant Tissue Culture",
+        "subjectCode": "BPT 2204",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/12S7UgKsHLY2w_e80NHlWRv1JbCyfB0MH/view?usp=sharing"
+    },
+    {
+        "id": "177",
+        "title": "BPT 2202 Introduction to Bioprocess Technology",
+        "subjectCode": "BPT 2202",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1eTTCGYHnb56qoc44ZfE53cAWkKkRarTT/view?usp=sharing"
+    },
+    {
+        "id": "178",
+        "title": "BPT 2204 Plant Tissu Culture (Practical)",
+        "subjectCode": "BPT 2204",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1CY4r3BE8MaoB9AS98gb245V9eX-C6v2f/view?usp=sharing"
+    },
+    {
+        "id": "179",
+        "title": "MTT 2303 Introduction to Ceramic Technology",
+        "subjectCode": "MTT 2303",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1Vajkt8FsVXTMUxSWuFh51AxRglk91JuP/view?usp=sharing"
+    },
+    {
+        "id": "180",
+        "title": "Chemistry for Materials Technology (Repeat Paper)",
+        "subjectCode": "MTT 2302",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1icPFTOYMKbsxA9Gt-UA4DFloV_wPer_j/view?usp=sharing"
+    },
+    {
+        "id": "181",
+        "title": "Fundamentals of Solid State physics",
+        "subjectCode": "MTT 2301",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1kboTskP7URxN0H0lf-fjnl-Zq0GAbo5r/view?usp=sharing"
+    },
+    {
+        "id": "182",
+        "title": "Graphical Programing",
+        "subjectCode": "MTT 2206",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/11ubcB5cmzB77FnCeStCyvcHJ7Grlnjuu/view?usp=sharing"
+    },
+    {
+        "id": "183",
+        "title": "Fundamentals of Solid State physics",
+        "subjectCode": "MTT 2201",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/14xWSrCR7uA3omlTIWbVSa7xuPou0QdLX/view?usp=sharing"
+    },
+    {
+        "id": "184",
+        "title": "Introduction to  Metallurgy",
+        "subjectCode": "MTT 2205",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1UKO-2Jq9ShBfUTMraKHLtgFFpSE-oj-8/view?usp=sharing"
+    },
+    {
+        "id": "185",
+        "title": "Chemistry for Materials Technology",
+        "subjectCode": "MTT 2202",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1hwJKK2fI4SEsehDlsf6RvjadT0l38Jk4/view?usp=sharing"
+    },
+    {
+        "id": "186",
+        "title": "Object Oriented Programming",
+        "subjectCode": "ICT 2304",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1z7ZP7UCe1ZgP5mjXLF_MRWvUKSGHtsOp/view?usp=sharing"
+    },
+    {
+        "id": "187",
+        "title": "Computer Aided  Design (CAD)",
+        "subjectCode": "MTT 2204",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1PwFGpXR4YhlhMOCgts1-e02BKz_cba3m/view?usp=sharing"
+    },
+    {
+        "id": "188",
+        "title": "Advanced Applications",
+        "subjectCode": "ICT 2201",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2019",
+        "link": "https://drive.google.com/file/d/1ZkRGXUCfqUctSN9Grq2N6kBGMANwm184/view?usp=sharing"
+    },
+    {
+        "id": "189",
+        "title": "ICT 2304 Object Oriented Programming",
+        "subjectCode": "ICT 2304",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1YxyL28i0VpGUl7ir6uUCAH78ptjuFzd8/view?usp=sharing"
+    },
+    {
+        "id": "190",
+        "title": "MMT 2303 Introduction to Ceramic Technology",
+        "subjectCode": "MMT 2303",
+        "department": "MMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1u2O4FK6VYCW1--bMepV4Bvrj1plBZBF9/view?usp=sharing"
+    },
+    {
+        "id": "191",
+        "title": "MTT 2302 Chemistry for Materials Technology",
+        "subjectCode": "MTT 2302",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1lWSdqBvW12Yu2iSSQxGdiY4Y5_LYDpIg/view?usp=sharing"
+    },
+    {
+        "id": "192",
+        "title": "MTT 2204 Computer Aided Design",
+        "subjectCode": "MTT 2204",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1z6YsmCXotG7xYHVPdPtGW7AYAhSDIo76/view?usp=sharing"
+    },
+    {
+        "id": "193",
+        "title": "MMT 2205 Introduction to Metallurgy",
+        "subjectCode": "MMT 2205",
+        "department": "MMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1v3YFK7xthaKNhJNF6I7m-QNg7UBs1gxP/view?usp=sharing"
+    },
+    {
+        "id": "194",
+        "title": "MTT 2301 Fundamentals of Solid State Physics",
+        "subjectCode": "MTT 2301",
+        "department": "MTT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1AQz1Rb1-wbXvbMiw3Qx2Y1zrOn60RsPp/view?usp=sharing"
+    },
+    {
+        "id": "195",
+        "title": "ICT 2201 Advanced Applications",
+        "subjectCode": "ICT 2201",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1ZLA2Fzge2AnkEbaZaGPSjZO1SvG-zweF/view?usp=sharing"
+    },
+    {
+        "id": "196",
+        "title": "ICT 2205 Technical Writing",
+        "subjectCode": "ICT 2205",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1ep4FJ-Ect5kJY5gSewdTLTHcCGxruFQu/view?usp=sharing"
+    },
+    {
+        "id": "197",
+        "title": "ICT 2202 Operating Systems",
+        "subjectCode": "ICT 2202",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1h-MG_nCsHIOxwGK83iEyBgPQrWMm8wbz/view?usp=sharing"
+    },
+    {
+        "id": "198",
+        "title": "ICT 2303 Deta Structure and Algorithms",
+        "subjectCode": "ICT 2303",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1SWrtgLnfXJxfckn-vAdHe5RgRaEaBjwF/view?usp=sharing"
+    },
+    {
+        "id": "199",
+        "title": "FDT 2301 Physical Chemistry",
+        "subjectCode": "FDT 2301",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1XvGRojZL4__hCW1R063vid3VFWmAZhHm/view?usp=sharing"
+    },
+    {
+        "id": "200",
+        "title": "Food Preservation",
+        "subjectCode": "FDT 2204",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1nI3IPSzZMC5NHw8CKixYX5WboFKzuAEe/view?usp=sharing"
+    },
+    {
+        "id": "201",
+        "title": "Basic Biochemistry",
+        "subjectCode": "FDT 2202",
+        "department": "FDT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1ydA6XQpxFVsc99RC0aqQ3lCr8pvecvYx/view?usp=sharing"
+    },
+    {
+        "id": "202",
+        "title": "CMT 2002 Communication Skills III",
+        "subjectCode": "CMT 2002",
+        "department": "CMT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1fmDlie-niWlEbnTUHCAXtl8Xz-HOmV_V/view?usp=sharing"
+    },
+    {
+        "id": "203",
+        "title": "EET 2202 Electrical Measurements and Instrumentation",
+        "subjectCode": "EET 2202",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1xujwhXDOOUPAiNy8vjPamjtKMQbboVBH/view?usp=sharing"
+    },
+    {
+        "id": "204",
+        "title": "EET 2301 Digital and Analog Electronics",
+        "subjectCode": "EET 2301",
+        "department": "EET",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1dXnkE_LJDb6B7DDNkb6SzZV0EYgnnM3r/view?usp=sharing"
+    },
+    {
+        "id": "205",
+        "title": "BPT 2204 Plant Tissue Culture",
+        "subjectCode": "BPT 2204",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1_jFQb9WPE0sgp4uLNRTO5kndzQStJJf-/view?usp=sharing"
+    },
+    {
+        "id": "206",
+        "title": "Plant Tissue Culture (Practical)",
+        "subjectCode": "BPT 2204",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1Or_jS6TvSDNiuhfkkjFHIeiShS89-Vx6/view?usp=sharing"
+    },
+    {
+        "id": "207",
+        "title": "BPT 2203 Genetics and Evaluation",
+        "subjectCode": "BPT 2203",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1kOoFSZ7EA3dkn9sekyeqw7tB4m6T1qo1/view?usp=sharing"
+    },
+    {
+        "id": "208",
+        "title": "BPT 2205 Molecular Biology",
+        "subjectCode": "BPT 2205",
+        "department": "BPT",
+        "studyYear": "2",
+        "semester": "1",
+        "pastPaperYear": "2018",
+        "link": "https://drive.google.com/file/d/1gFjffHHqiFEhsvcErd4NiME44ORaTLPd/view?usp=sharing"
+    },
+    {
+        "id": "209",
+        "title": "CML 2204 Foreighn Lanuages - Japanese",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1FcY1xYZZPUnYvYRF9f-HNRB9Q0pCPJzG/view?usp=sharing"
+    },
+    {
+        "id": "210",
+        "title": "CML 2204 Foreighn Lanuages - German",
+        "subjectCode": "CML 2204",
+        "department": "CML",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1Kfa9fInM6IBGm001m-eFR9sxtUcIF431/view?usp=sharing"
+    },
+    {
+        "id": "211",
+        "title": "ICT 2308 Database Systems (Practical)",
+        "subjectCode": "ICT 2308",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1R-ggz_PkQkyschKNbDKewDzemIxUUxFL/view?usp=sharing"
+    },
+    {
+        "id": "212",
+        "title": "ICT 2308 Database Systems",
+        "subjectCode": "ICT 2308",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1jKf-rXJRvZ6EaIUxWZOm-fMxOEwknYNP/view?usp=sharing"
+    },
+    {
+        "id": "213",
+        "title": "ICT 2305 Computational Mathematics",
+        "subjectCode": "ICT 2305",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1QH04YB5R1poJGIk7ZpF39hdqpHW1iFVb/view?usp=sharing"
+    },
+    {
+        "id": "214",
+        "title": "ICT 2214 Introduction to Information Systems",
+        "subjectCode": "ICT 2214",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1VHtm4PNkD3nA7g_QckcegF3JcBQ0JmxN/view?usp=sharing"
+    },
+    {
+        "id": "215",
+        "title": "ICT 2213 Data Communication and Networking",
+        "subjectCode": "ICT 2213",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1H1SJXqpP4fA7jJ_44apeuXjU6Qkh3HW8/view?usp=sharing"
+    },
+    {
+        "id": "216",
+        "title": "ICT 2109 Communication and Learning Skills",
+        "subjectCode": "ICT 2109",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1fAkfJQCnjIOaE-6TS0oiBEbAp6JVImXk/view?usp=sharing"
+    },
+    {
+        "id": "217",
+        "title": "ICT 2211 Fundamentals of Statistics",
+        "subjectCode": "ICT 2211",
+        "department": "ITT",
+        "studyYear": "2",
+        "semester": "2",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/1LrR8FiqoJE63jNw8O1-bSAeAN-t5AuAo/view?usp=sharing"
+    }
+]

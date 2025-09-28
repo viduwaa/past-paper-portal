@@ -1,0 +1,322 @@
+[
+    {
+        "id": "1",
+        "title": "Metallurgy II",
+        "subjectCode": "MTT 4307",
+        "department": "MTT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1VirMfO6J2WH6O3PK0Lf4QcfGJl6as3-l/view?usp=sharing"
+    },
+    {
+        "id": "2",
+        "title": "Polymer Technology II",
+        "subjectCode": "MTT 4305",
+        "department": "MTT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1UGQYqBrYlnzrdBQhgNQ9nKWurZZncEf1/view?usp=sharing"
+    },
+    {
+        "id": "3",
+        "title": "Applied Mechanics",
+        "subjectCode": "MTT 4219",
+        "department": "MTT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1N_KpY9koMvqVPkQbWdCv-p8WAIWTTLNd/view?usp=sharing"
+    },
+    {
+        "id": "4",
+        "title": "Mineral Processing",
+        "subjectCode": "MTT 4206",
+        "department": "MTT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1mmEJijuCGq0gZ9t5FR1DWPABtm9dt7As/view?usp=sharing"
+    },
+    {
+        "id": "5",
+        "title": "Ceramic Technology III",
+        "subjectCode": "MTT 4303",
+        "department": "MTT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1qN-jYSkTBPaOWqhyka48axUlppZ5Encv/view?usp=sharing"
+    },
+    {
+        "id": "6",
+        "title": "Fluid Mechanics",
+        "subjectCode": "MTT 4201",
+        "department": "MTT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/13DRKwjoeY_4UIefSgaldhztZ-AR83DYR/view?usp=sharing"
+    },
+    {
+        "id": "7",
+        "title": "Research Methodology and Scientific Writing",
+        "subjectCode": "MTT 4121",
+        "department": "MTT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1ZuNKmog_Dgxd1hUuECRWNLIGXWIGHFgL/view?usp=sharing"
+    },
+    {
+        "id": "8",
+        "title": "Internet Applications",
+        "subjectCode": "ICT 4302",
+        "department": "ITT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/106w4a-mZFaEeicgLzHAIZD2eBnxBd7gX/view?usp=sharing"
+    },
+    {
+        "id": "9",
+        "title": "Mobile Computing",
+        "subjectCode": "ICT 4301",
+        "department": "ITT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/19pkwwalWDmesmN1-JJUFgf9-jN10BkTc/view?usp=sharing"
+    },
+    {
+        "id": "10",
+        "title": "Artificial Intelligence",
+        "subjectCode": "ICT 4207",
+        "department": "ITT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1BPQhgJQHNli5Sd-gLct7pWmKt1KhX4CS/view?usp=sharing"
+    },
+    {
+        "id": "11",
+        "title": "Graphics and Image Processing",
+        "subjectCode": "ICT 4204",
+        "department": "ITT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1opilScBMAoCosfCxqK5oYgwtMJyNndS3/view?usp=sharing"
+    },
+    {
+        "id": "12",
+        "title": "Software Engineering",
+        "subjectCode": "ICT 4103",
+        "department": "ITT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/13jimywVDtiQkoDXcPe0ADIcZoS_7adPc/view?usp=sharing"
+    },
+    {
+        "id": "13",
+        "title": "Sensory Evaluation",
+        "subjectCode": "FDT 4209",
+        "department": "FDT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/154ZnvTyOEVofIDuxY-BeaACe642s1Tx6/view?usp=sharing"
+    },
+    {
+        "id": "14",
+        "title": "Food Product Development",
+        "subjectCode": "FDT 4302",
+        "department": "FDT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1GgYwc_UOloQJlu2rWTAAJO6czv9xD8x1/view?usp=sharing"
+    },
+    {
+        "id": "15",
+        "title": "Cleaner Production",
+        "subjectCode": "FDT 4208",
+        "department": "FDT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1y3_Ga0IFTu8JHJqZkXI0qsm_-gsvxm5G/view?usp=sharing"
+    },
+    {
+        "id": "16",
+        "title": "Supply Chain Analysis",
+        "subjectCode": "FDT 4206",
+        "department": "FDT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1GoS4-QiVW_2GTSldCN_9uDpfN6VeCdRE/view?usp=sharing"
+    },
+    {
+        "id": "17",
+        "title": "Water Science  Technology",
+        "subjectCode": "FDT 4203",
+        "department": "FDT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1CJh-BcR7g96tatAtQt3Imef2JNdMXume/view?usp=sharing"
+    },
+    {
+        "id": "18",
+        "title": "Food Marketing",
+        "subjectCode": "FDT 4205",
+        "department": "FDT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1lNVeu1G-YZ6csorftyNahMr4N6X1mmSa/view?usp=sharing"
+    },
+    {
+        "id": "19",
+        "title": "Power Electronics",
+        "subjectCode": "EET 4304",
+        "department": "EET",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1vkcIoGkijFTT2g9kxMykz7x_qLcXxs6x/view?usp=sharing"
+    },
+    {
+        "id": "20",
+        "title": "Scientific Writing",
+        "subjectCode": "FDT 4107",
+        "department": "FDT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/18qtez1sJRYg63ciCUZnaVjm4WfC99pJz/view?usp=sharing"
+    },
+    {
+        "id": "21",
+        "title": "Electronic Circuit Design and Simulations",
+        "subjectCode": "EET 4301",
+        "department": "EET",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1Y2RbM64diZA9cNwMO_W1VKtt4HCpNLu4/view?usp=sharing"
+    },
+    {
+        "id": "22",
+        "title": "Energy  Environment",
+        "subjectCode": "EET 4216",
+        "department": "EET",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1lhxdGNp0n79gPApBWa4VYmkBUF8h7qy4/view?usp=sharing"
+    },
+    {
+        "id": "23",
+        "title": "Bioremediation and waste management",
+        "subjectCode": "BPT 4303",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1TLh7sUSgFsHBziegBBf462ZBX3KFB8mz/view?usp=sharing"
+    },
+    {
+        "id": "24",
+        "title": "Downstream Process Technology",
+        "subjectCode": "BPT 4302",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1JagCS-fODorgJg8HqZor-irPsDgpqwfA/view?usp=sharing"
+    },
+    {
+        "id": "25",
+        "title": "Drug Designing",
+        "subjectCode": "BPT 4301",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1tFm3L-ZlxacnuQVHEMyzM0bsDIvLXSFh/view?usp=sharing"
+    },
+    {
+        "id": "26",
+        "title": "Pharmaceutical Biotechnology",
+        "subjectCode": "BPT 4206",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1G6RQ9J26tkum5umQsPQI1Qwtmhf5CKkb/view?usp=sharing"
+    },
+    {
+        "id": "27",
+        "title": "Plant Cell Culture",
+        "subjectCode": "BPT 4205",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1SYqFh0_k8FiskX4gqvTE8XWbe-Doe6NV/view?usp=sharing"
+    },
+    {
+        "id": "28",
+        "title": "Molecular Virology",
+        "subjectCode": "BPT 4204",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/186695X_E5ju7pjH9d9p5lXNPNm3YDgxv/view?usp=sharing"
+    },
+    {
+        "id": "29",
+        "title": "Molecular Virology Repeat",
+        "subjectCode": "BPT 4204",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1IZTPEPuETcQPw_aFkS706LA8kr90JAJ7/view?usp=sharing"
+    },
+    {
+        "id": "30",
+        "title": "Bioinformatics - Practical",
+        "subjectCode": "BPT 3302",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/19aztETvBUONYKu7tQGwEgygBsXFVNXHZ/view?usp=sharing"
+    },
+    {
+        "id": "31",
+        "title": "Bioinformatics",
+        "subjectCode": "BPT 3302",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1xsGy7GIhquZqekVCnmxkPMOAHRavT8PK/view?usp=sharing"
+    },
+    {
+        "id": "32",
+        "title": "Molecular Immunilogy and current applications",
+        "subjectCode": "BPT 3206",
+        "department": "BPT",
+        "studyYear": "4",
+        "semester": "1",
+        "pastPaperYear": "2023",
+        "link": "https://drive.google.com/file/d/1x92LoRFTscN3GnSSG9yROo5WJ8exgcvT/view?usp=sharing"
+    }
+]
