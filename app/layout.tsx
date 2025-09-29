@@ -130,7 +130,7 @@ export default function RootLayout({
                     sizes="180x180"
                     href="/apple-touch-icon.png"
                 />
-
+                <meta name="google-site-verification" content="RYaAiNrcPHHq2GcpqImIhWliNIJJ_U-VtbLAbcGwSoE" />
                 <link rel="manifest" href="/site.webmanifest" />
             </head>
             <body
