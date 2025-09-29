@@ -11,7 +11,7 @@ Disallow: /api/
 Disallow: /admin/
 
 # Sitemap
-Sitemap: https://past-paper-portal.vercel.app/sitemap.xml`;
+Sitemap: https://past-paper-portal.pages.dev/sitemap.xml`;
 
     return new NextResponse(robotsTxt, {
         headers: {
