@@ -26,13 +26,35 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
-const departments = [
-    { value: "ITT", label: "ITT" },
-    { value: "EET", label: "EET" },
-    { value: "MTT", label: "MTT" },
-    { value: "BPT", label: "BPT" },
-    { value: "FDT", label: "FDT" },
-];
+// Department options based on study year
+const departmentsByYear: Record<string, { value: string; label: string }[]> = {
+    "1": [
+        { value: "ITT", label: "ITT" },
+        { value: "BST", label: "BST" },
+        { value: "ENT", label: "ENT" },
+    ],
+    "2": [
+        { value: "ITT", label: "ITT" },
+        { value: "EET", label: "EET" },
+        { value: "MTT", label: "MTT" },
+        { value: "BPT", label: "BPT" },
+        { value: "FDT", label: "FDT" },
+    ],
+    "3": [
+        { value: "ITT", label: "ITT" },
+        { value: "EET", label: "EET" },
+        { value: "MTT", label: "MTT" },
+        { value: "BPT", label: "BPT" },
+        { value: "FDT", label: "FDT" },
+    ],
+    "4": [
+        { value: "ITT", label: "ITT" },
+        { value: "EET", label: "EET" },
+        { value: "MTT", label: "MTT" },
+        { value: "BPT", label: "BPT" },
+        { value: "FDT", label: "FDT" },
+    ],
+};
 
 const pastPaperYears = ["2024", "2023", "2022", "2021", "2020", "2019"];
 const semesters = ["1", "2"];
@@ -47,27 +69,76 @@ interface FiltersProps {
     }) => void;
 }
 
+const STORAGE_KEY = "fot_paper_filters";
+
+// Default filters
+const DEFAULT_FILTERS = {
+    department: "ITT",
+    studyYear: "2",
+    pastPaperYears: [] as string[],
+    semesters: ["2"] as string[],
+    search: "",
+};
+
 export function Filters({ onFilterChange }: FiltersProps) {
-    const [department, setDepartment] = React.useState("ITT");
-    const [studyYear, setStudyYear] = React.useState("2");
+    const [mounted, setMounted] = React.useState(false);
+    const [department, setDepartment] = React.useState(
+        DEFAULT_FILTERS.department
+    );
+    const [studyYear, setStudyYear] = React.useState(DEFAULT_FILTERS.studyYear);
     const [selectedPastPaperYears, setSelectedPastPaperYears] = React.useState<
         string[]
-    >([]);
-    const [selectedSemesters, setSelectedSemesters] = React.useState<string[]>([
-        "2",
-    ]);
-    const [search, setSearch] = React.useState("");
+    >(DEFAULT_FILTERS.pastPaperYears);
+    const [selectedSemesters, setSelectedSemesters] = React.useState<string[]>(
+        DEFAULT_FILTERS.semesters
+    );
+    const [search, setSearch] = React.useState(DEFAULT_FILTERS.search);
     const [pastPaperYearOpen, setPastPaperYearOpen] = React.useState(false);
     const [semesterOpen, setSemesterOpen] = React.useState(false);
 
+    // Load from localStorage on mount
     React.useEffect(() => {
-        onFilterChange({
+        setMounted(true);
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                setDepartment(parsed.department || DEFAULT_FILTERS.department);
+                setStudyYear(parsed.studyYear || DEFAULT_FILTERS.studyYear);
+                setSelectedPastPaperYears(
+                    parsed.pastPaperYears || DEFAULT_FILTERS.pastPaperYears
+                );
+                setSelectedSemesters(
+                    parsed.semesters || DEFAULT_FILTERS.semesters
+                );
+                setSearch(parsed.search || DEFAULT_FILTERS.search);
+            } catch (error) {
+                console.error("Failed to parse saved filters:", error);
+            }
+        }
+    }, []);
+
+    // Get available departments based on selected study year
+    const availableDepartments =
+        departmentsByYear[studyYear] || departmentsByYear["2"];
+
+    // Save to localStorage and notify parent whenever filters change
+    React.useEffect(() => {
+        if (!mounted) return; // Don't save on initial mount
+
+        const filters = {
             department,
             studyYear,
             pastPaperYears: selectedPastPaperYears,
             semesters: selectedSemesters,
             search,
-        });
+        };
+
+        // Save to localStorage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
+
+        // Notify parent component
+        onFilterChange(filters);
     }, [
         department,
         studyYear,
@@ -75,7 +146,20 @@ export function Filters({ onFilterChange }: FiltersProps) {
         selectedSemesters,
         search,
         onFilterChange,
+        mounted,
     ]);
+
+    // When study year changes, reset department if it's not valid for the new year
+    React.useEffect(() => {
+        if (!mounted) return;
+
+        const validDepartments =
+            departmentsByYear[studyYear]?.map((d) => d.value) || [];
+        if (!validDepartments.includes(department)) {
+            // Reset to first available department for that year
+            setDepartment(validDepartments[0] || "ITT");
+        }
+    }, [studyYear, department, mounted]);
 
     const togglePastPaperYear = (year: string) => {
         setSelectedPastPaperYears((prev) =>
@@ -97,6 +181,35 @@ export function Filters({ onFilterChange }: FiltersProps) {
         setSearch("");
     };
 
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        // Clear filters when searching
+        if (value.trim()) {
+            setDepartment("");
+            setStudyYear("");
+            setSelectedPastPaperYears([]);
+            setSelectedSemesters([]);
+        } else {
+            // Restore defaults when search is cleared
+            setDepartment(DEFAULT_FILTERS.department);
+            setStudyYear(DEFAULT_FILTERS.studyYear);
+            setSelectedPastPaperYears(DEFAULT_FILTERS.pastPaperYears);
+            setSelectedSemesters(DEFAULT_FILTERS.semesters);
+        }
+    };
+
+    const handleDepartmentChange = (value: string) => {
+        setDepartment(value);
+        // Reset search when using filters
+        setSearch("");
+    };
+
+    const handleStudyYearChange = (value: string) => {
+        setStudyYear(value);
+        // Reset search when using filters
+        setSearch("");
+    };
+
     return (
         <motion.div
             className="flex flex-wrap gap-6 mb-8 p-6 bg-card rounded-lg border shadow-sm justify-between"
@@ -112,17 +225,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
                     type="text"
                     placeholder="Search by title or subject code"
                     value={search}
-                    onChange={(e) => {
-                        const newSearch = e.target.value;
-                        setSearch(newSearch);
-                        // If search has text, reset all other filters
-                        if (newSearch.trim()) {
-                            setDepartment("");
-                            setStudyYear("");
-                            setSelectedPastPaperYears([]);
-                            setSelectedSemesters([]);
-                        }
-                    }}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     className="bg-background border-2 hover:border-primary/50 transition-colors"
                 />
             </div>
@@ -130,52 +233,16 @@ export function Filters({ onFilterChange }: FiltersProps) {
             <div className="flex gap-9 w-[300px] justify-evenly align-baseline">
                 <div className="flex-1">
                     <label className="text-sm font-semibold mb-3 block text-foreground">
-                        Department
-                    </label>
-                    <Select
-                        value={department}
-                        onValueChange={(value) => {
-                            setDepartment(value);
-                            // Reset search when using filters
-                            setSearch("");
-                        }}
-                    >
-                        <SelectTrigger className="w-full bg-background border-2 hover:border-primary/50 transition-colors">
-                            <SelectValue placeholder="Select department" />
-                        </SelectTrigger>
-                        <SelectContent className="w-full">
-                            {departments.map((dept) => (
-                                <SelectItem
-                                    key={dept.value}
-                                    value={dept.value}
-                                    className="cursor-pointer"
-                                >
-                                    {dept.label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                <div className="flex-1">
-                    <label className="text-sm font-semibold mb-3 block text-foreground">
                         Study Year
                     </label>
                     <Select
                         value={studyYear}
-                        onValueChange={(value) => {
-                            setStudyYear(value);
-                            // Reset search when using filters
-                            setSearch("");
-                        }}
+                        onValueChange={handleStudyYearChange}
                     >
                         <SelectTrigger className="w-full bg-background border-2 hover:border-primary/50 transition-colors">
                             <SelectValue placeholder="Select study year" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="0" className="cursor-pointer">
-                                All
-                            </SelectItem>
                             <SelectItem value="1" className="cursor-pointer">
                                 Year 1
                             </SelectItem>
@@ -188,6 +255,31 @@ export function Filters({ onFilterChange }: FiltersProps) {
                             <SelectItem value="4" className="cursor-pointer">
                                 Year 4
                             </SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <div className="flex-1">
+                    <label className="text-sm font-semibold mb-3 block text-foreground">
+                        Department
+                    </label>
+                    <Select
+                        value={department}
+                        onValueChange={handleDepartmentChange}
+                    >
+                        <SelectTrigger className="w-full bg-background border-2 hover:border-primary/50 transition-colors">
+                            <SelectValue placeholder="Select department" />
+                        </SelectTrigger>
+                        <SelectContent className="w-full">
+                            {availableDepartments.map((dept) => (
+                                <SelectItem
+                                    key={dept.value}
+                                    value={dept.value}
+                                    className="cursor-pointer"
+                                >
+                                    {dept.label}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                 </div>
@@ -298,6 +390,13 @@ export function Filters({ onFilterChange }: FiltersProps) {
                         </PopoverContent>
                     </Popover>
                 </div>
+            </div>
+
+            {/* Info text about saved preferences */}
+            <div className="w-full text-center">
+                <p className="text-xs text-muted-foreground">
+                    💾 Your filter preferences are automatically saved
+                </p>
             </div>
         </motion.div>
     );
