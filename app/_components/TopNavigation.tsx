@@ -35,7 +35,7 @@ export function TopNavigation() {
                                 <div className="flex items-center space-x-2">
                                     <Sparkles className="h-4 w-4 animate-pulse" />
                                     <span className="text-sm font-medium">
-                                        🎉 New papers added for Year 2024 Y1 S2
+                                        Good Luck on you Exams!🙌
                                     </span>
                                 </div>
                                 <button
