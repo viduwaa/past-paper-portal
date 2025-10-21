@@ -47,10 +47,10 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                     <TableHeader>
                         <TableRow className="bg-muted/50">
                             <TableHead className="font-semibold">
-                                Title
-                            </TableHead>
-                            <TableHead className="font-semibold">
                                 Subject Code
+                            </TableHead>
+                             <TableHead className="font-semibold">
+                                Title
                             </TableHead>
                             <TableHead className="font-semibold">
                                 Department
