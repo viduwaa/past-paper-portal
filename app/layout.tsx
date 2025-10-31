@@ -1,25 +1,34 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "./_components/ThemeProvider";
 import { TopNavigation } from "./_components/TopNavigation";
+import { PageTransition } from "./_components/PageTransition";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
+const aeonik = localFont({
+    src: [
+        {
+            path: "../public/assets/fonts/fonnts.com-Aeonik-Regular.ttf",
+            weight: "400",
+            style: "normal",
+        },
+        {
+            path: "../public/assets/fonts/fonnts.com-Aeonik-Bold.ttf",
+            weight: "700",
+            style: "normal",
+        },
+    ],
+    variable: "--font-aeonik",
+    display: "swap",
 });
 
 export const metadata: Metadata = {
-    title: "FOT Past Papers Portal | Rajarata University Sri Lanka",
+    title: "FOT Portal | Past Papers & GPA Calculator",
     description:
-        "Access Faculty of Technology (FOT) past examination papers for Rajarata University Sri Lanka. Find ITT, CMT and other department papers by year, semester, and subject. Created for FOT students.",
+        "Access Faculty of Technology (FOT) past examination papers and calculate your GPA for Rajarata University Sri Lanka. Find ITT, CMT and other department papers by year, semester, and subject. Created for FOT students.",
     keywords: [
         "FOT past papers",
+        "GPA calculator",
         "Rajarata University",
         "Faculty of Technology",
         "Sri Lanka",
@@ -27,6 +36,7 @@ export const metadata: Metadata = {
         "university exams",
         "study materials",
         "exam papers",
+        "grade calculator",
         "Rajarata University Sri Lanka",
         "FOT Rajarata",
         "past papers download",
@@ -46,11 +56,11 @@ export const metadata: Metadata = {
         canonical: "/",
     },
     openGraph: {
-        title: "FOT Past Papers Portal | Rajarata University Sri Lanka",
+        title: "FOT Portal | Past Papers & GPA Calculator",
         description:
-            "Access Faculty of Technology (FOT) past examination papers for Rajarata University Sri Lanka. Find ITT, CMT and other department papers by year, semester, and subject.",
+            "Access Faculty of Technology (FOT) past examination papers and calculate your GPA for Rajarata University Sri Lanka. Find ITT, CMT and other department papers by year, semester, and subject.",
         url: "https://past-paper-portal.pages.dev",
-        siteName: "RUSL FOT Past Papers Portal",
+        siteName: "RUSL FOT Portal",
         locale: "en_US",
         type: "website",
         images: [
@@ -64,9 +74,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "FOT Past Papers Portal | Rajarata University Sri Lanka",
+        title: "FOT Portal | Past Papers & GPA Calculator",
         description:
-            "Access Faculty of Technology (FOT) past examination papers for Rajarata University Sri Lanka. Find ITT, CMT and other department papers by year, semester, and subject.",
+            "Access Faculty of Technology (FOT) past examination papers and calculate your GPA for Rajarata University Sri Lanka. Find ITT, CMT and other department papers by year, semester, and subject.",
         images: ["/og-image.png"],
         creator: "Vidula Deneth Salwathura",
     },
@@ -130,12 +140,13 @@ export default function RootLayout({
                     sizes="180x180"
                     href="/apple-touch-icon.png"
                 />
-                <meta name="google-site-verification" content="RYaAiNrcPHHq2GcpqImIhWliNIJJ_U-VtbLAbcGwSoE" />
+                <meta
+                    name="google-site-verification"
+                    content="RYaAiNrcPHHq2GcpqImIhWliNIJJ_U-VtbLAbcGwSoE"
+                />
                 <link rel="manifest" href="/site.webmanifest" />
             </head>
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
+            <body className={`${aeonik.variable} antialiased font-sans`}>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="light"
@@ -181,8 +192,8 @@ export default function RootLayout({
                     />
                     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
                         <TopNavigation />
-                        <main className="container mx-auto px-4 py-8 w-full sm:w-4/5 max-w-7xl">
-                            {children}
+                        <main className="mx-auto px-4 py-8 md:w-[90%] sm:w-4/5">
+                            <PageTransition>{children}</PageTransition>
                         </main>
                     </div>
                 </ThemeProvider>
