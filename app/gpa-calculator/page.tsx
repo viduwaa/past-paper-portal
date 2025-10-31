@@ -57,9 +57,10 @@ const grades = [
     "D+",
     "D",
     "E",
+    "None",
 ];
 
-const nonGPAGrades = ["Pass", "Fail"];
+const nonGPAGrades = ["Pass", "Fail", "None"];
 
 export default function GPACalculator() {
     const [selectedProgram, setSelectedProgram] = useState<string>(() => {
@@ -92,10 +93,12 @@ export default function GPACalculator() {
 
     const updateGrade = (subjectCode: string, grade: string) => {
         setSubjectGrades((prev) => {
-            const updated = {
-                ...prev,
-                [subjectCode]: grade,
-            };
+            // If user chose 'None', remove the subject from assigned grades
+            const updated = { ...prev } as { [key: string]: string };
+            // Store explicit 'None' so the select shows the choice,
+            // but the calculations treat it as unassigned (no gradePoints)
+            updated[subjectCode] = grade;
+
             // Save to localStorage with program-specific key
             if (typeof window !== "undefined") {
                 localStorage.setItem(
@@ -103,6 +106,7 @@ export default function GPACalculator() {
                     JSON.stringify(updated)
                 );
             }
+
             return updated;
         });
     };
