@@ -277,10 +277,10 @@ export default function GPACalculator() {
                     transition={{ duration: 0.5, delay: 0.6 }}
                 >
                     <p className="text-[10px] sm:text-xs text-orange-600 dark:text-orange-400 font-medium">
-                        Currently Year 1 & Year 2 have proper values for 21/22
+                        Year 1, Year 2 & Year 3 S1 Subjects and credits are up to date.
                     </p>
                     <p className="text-[10px] sm:text-xs text-orange-600 dark:text-orange-400">
-                        Y3, Y4 subjects & credit values are according to the
+                        Year 3 S2, Year 4 subjects & credit values are according to the
                         Prospectus 2018/2019. These will update when we get the
                         proper subject details.
                     </p>

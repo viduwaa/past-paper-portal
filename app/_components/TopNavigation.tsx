@@ -41,7 +41,7 @@ export function TopNavigation() {
                                 <div className="flex items-center space-x-2">
                                     <Sparkles className="h-4 w-4 animate-pulse" />
                                     <span className="text-sm font-medium">
-                                        Good Luck on you Exams!🙌
+                                        Site Updated for 2026 Year!
                                     </span>
                                 </div>
                                 <button
