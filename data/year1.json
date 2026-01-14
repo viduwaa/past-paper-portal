@@ -1448,5 +1448,35 @@
         "semester": "2",
         "pastPaperYear": "2024",
         "link": "https://drive.google.com/file/d/1VGpZ7gZ52tgy3voD4itu2aEXUF-M_xU9/view?usp=sharing"
+    },
+    {
+        "id": "146",
+        "title": "Electronic Circuits",
+        "subjectCode": "ICT 1202",
+        "department": "ITT",
+        "studyYear": "1",
+        "semester": "1",
+        "pastPaperYear": "2022",
+        "link": "https://drive.google.com/file/d/1-A6f-2Qkkh1fHFuSCR1P1kFR2GBJAY2C/view?usp=sharing"
+    },
+    {
+        "id": "147",
+        "title": "Electronic Circuits",
+        "subjectCode": "ICT 1204",
+        "department": "ITT",
+        "studyYear": "1",
+        "semester": "1",
+        "pastPaperYear": "2024",
+        "link": "https://drive.google.com/file/d/11a5HzO8i-mFImUteSn0SR7hc-iyc_rx3/viewusp=sharing"
+    },
+    {
+        "id": "148",
+        "title": "Electronic Circuits",
+        "subjectCode": "ICT 1204",
+        "department": "ITT",
+        "studyYear": "1",
+        "semester": "1",
+        "pastPaperYear": "2025",
+        "link": "https://drive.google.com/file/d/1ijaoyn_WvAyer2R3fusOGswGnnxKRnFN/view?usp=sharing"
     }
 ]
