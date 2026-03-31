@@ -1,10 +1,7 @@
+// First lines to remove unused imports completely:
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import papersYear1 from "../data/year1.json";
-import papersYear2 from "../data/year2.json";
-import papersYear3 from "../data/year3.json";
-import papersYear4 from "../data/year4.json";
 import { Filters } from "./_components/Filters";
 import { PaperTable } from "./_components/PaperTable";
 import { Button } from "@/components/ui/button";
@@ -12,69 +9,72 @@ import { motion } from "framer-motion";
 import { ThemeSwitcher } from "./_components/ThemeSwitcher";
 import { Github } from "lucide-react";
 import { WebsiteFeedback } from "./_components/WebsiteFeedback";
-
-interface Paper {
-    id: string;
-    title: string;
-    subjectCode: string;
-    department: string;
-    studyYear: string;
-    semester: string;
-    pastPaperYear: string;
-    link: string;
-}
-
-const papers: Paper[] = [
-    ...papersYear1,
-    ...papersYear2,
-    ...papersYear3,
-    ...papersYear4,
-];
+import { PastPaper } from "@/lib/db";
 
 export default function Home() {
+    const [papers, setPapers] = useState<PastPaper[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
     const [filters, setFilters] = useState({
         department: "ITT",
-        studyYear: "2",
+        studyYear: "2nd Year",
         pastPaperYears: [] as string[],
-        semesters: ["2"] as string[],
+        semesters: ["2nd Semester"] as string[],
         search: "",
     });
 
-    const [visibleCount, setVisibleCount] = useState(15); // Start with 15 items
+    const [visibleCount, setVisibleCount] = useState(15);
     const ITEMS_PER_LOAD = 20;
 
-    const filteredPapers = useMemo(() => {
-        return papers.filter((paper) => {
-            // If there's a search term, only filter by search and ignore other filters
-            if (filters.search) {
-                const searchLower = filters.search.toLowerCase();
-                const titleMatch = paper.title
-                    .toLowerCase()
-                    .includes(searchLower);
-                const subjectCodeMatch = paper.subjectCode
-                    .toLowerCase()
-                    .includes(searchLower);
-                const departmentMatch = paper.department
-                    .toLowerCase()
-                    .includes(searchLower);
-                return titleMatch || subjectCodeMatch || departmentMatch;
-            }
+    // Fetch papers from API
+    useEffect(() => {
+        const fetchPapers = async () => {
+            setIsLoading(true);
+            try {
+                // Build query params ensuring we match the URL structure from our new route
+                const params = new URLSearchParams();
 
-            // If no search term, apply all other filters normally
-            if (
-                filters.department &&
-                paper.department !== filters.department &&
-                paper.department !== "CMT" &&
-                paper.department !== "CML"
-            ) {
-                return false;
+                if (filters.search) {
+                    params.append("searchQuery", filters.search);
+                } else {
+                    if (filters.department)
+                        params.append("department", filters.department);
+                    if (filters.studyYear)
+                        params.append("year", filters.studyYear);
+                    // Handle array values properly depending on how we set up the UI filters
+                    // If semesters array has values, we use the first for now or adapt the API to handle multiple
+                    if (filters.semesters.length > 0)
+                        params.append("semester", filters.semesters[0]);
+                }
+
+                const res = await fetch(`/api/papers?${params.toString()}`);
+                if (!res.ok) throw new Error("Failed to fetch");
+
+                const data = await res.json();
+                setPapers(data);
+            } catch (err) {
+                console.error("Error loading papers:", err);
+            } finally {
+                setIsLoading(false);
             }
-            if (filters.studyYear && paper.studyYear !== filters.studyYear) {
-                return false;
-            }
+        };
+
+        // Add a small debounce for search typing
+        const timeoutId = setTimeout(() => {
+            fetchPapers();
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [filters]);
+
+    // Apply local client-side filtering if API doesn't handle multiple checkbox values natively yet
+    const filteredPapers = useMemo(() => {
+        if (filters.search) return papers; // Search already handled securely by backend
+
+        return papers.filter((paper) => {
             if (
                 filters.pastPaperYears.length > 0 &&
-                !filters.pastPaperYears.includes(paper.pastPaperYear)
+                !filters.pastPaperYears.includes(paper.exam_year)
             ) {
                 return false;
             }
@@ -86,9 +86,8 @@ export default function Home() {
             }
             return true;
         });
-    }, [filters]);
+    }, [papers, filters]);
 
-    // Reset visible count when filters change
     useEffect(() => {
         setVisibleCount(15);
     }, [filters]);

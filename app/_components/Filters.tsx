@@ -28,26 +28,26 @@ import { Input } from "@/components/ui/input";
 
 // Department options based on study year
 const departmentsByYear: Record<string, { value: string; label: string }[]> = {
-    "1": [
+    "1st Year": [
         { value: "ITT", label: "ITT" },
         { value: "BST", label: "BST" },
         { value: "ENT", label: "ENT" },
     ],
-    "2": [
+    "2nd Year": [
         { value: "ITT", label: "ITT" },
         { value: "EET", label: "EET" },
         { value: "MTT", label: "MTT" },
         { value: "BPT", label: "BPT" },
         { value: "FDT", label: "FDT" },
     ],
-    "3": [
+    "3rd Year": [
         { value: "ITT", label: "ITT" },
         { value: "EET", label: "EET" },
         { value: "MTT", label: "MTT" },
         { value: "BPT", label: "BPT" },
         { value: "FDT", label: "FDT" },
     ],
-    "4": [
+    "4th Year": [
         { value: "ITT", label: "ITT" },
         { value: "EET", label: "EET" },
         { value: "MTT", label: "MTT" },
@@ -57,7 +57,7 @@ const departmentsByYear: Record<string, { value: string; label: string }[]> = {
 };
 
 const pastPaperYears = ["2024", "2023", "2022", "2021", "2020", "2019"];
-const semesters = ["1", "2"];
+const semesters = ["1st Semester", "2nd Semester"];
 
 interface FiltersProps {
     onFilterChange: (filters: {
@@ -74,23 +74,23 @@ const STORAGE_KEY = "fot_paper_filters";
 // Default filters
 const DEFAULT_FILTERS = {
     department: "ITT",
-    studyYear: "2",
+    studyYear: "2nd Year",
     pastPaperYears: [] as string[],
-    semesters: ["2"] as string[],
+    semesters: ["2nd Semester"] as string[],
     search: "",
 };
 
 export function Filters({ onFilterChange }: FiltersProps) {
     const [mounted, setMounted] = React.useState(false);
     const [department, setDepartment] = React.useState(
-        DEFAULT_FILTERS.department
+        DEFAULT_FILTERS.department,
     );
     const [studyYear, setStudyYear] = React.useState(DEFAULT_FILTERS.studyYear);
     const [selectedPastPaperYears, setSelectedPastPaperYears] = React.useState<
         string[]
     >(DEFAULT_FILTERS.pastPaperYears);
     const [selectedSemesters, setSelectedSemesters] = React.useState<string[]>(
-        DEFAULT_FILTERS.semesters
+        DEFAULT_FILTERS.semesters,
     );
     const [search, setSearch] = React.useState(DEFAULT_FILTERS.search);
     const [pastPaperYearOpen, setPastPaperYearOpen] = React.useState(false);
@@ -106,10 +106,10 @@ export function Filters({ onFilterChange }: FiltersProps) {
                 setDepartment(parsed.department || DEFAULT_FILTERS.department);
                 setStudyYear(parsed.studyYear || DEFAULT_FILTERS.studyYear);
                 setSelectedPastPaperYears(
-                    parsed.pastPaperYears || DEFAULT_FILTERS.pastPaperYears
+                    parsed.pastPaperYears || DEFAULT_FILTERS.pastPaperYears,
                 );
                 setSelectedSemesters(
-                    parsed.semesters || DEFAULT_FILTERS.semesters
+                    parsed.semesters || DEFAULT_FILTERS.semesters,
                 );
                 setSearch(parsed.search || DEFAULT_FILTERS.search);
             } catch (error) {
@@ -120,7 +120,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
     // Get available departments based on selected study year
     const availableDepartments =
-        departmentsByYear[studyYear] || departmentsByYear["2"];
+        departmentsByYear[studyYear] || departmentsByYear["2nd Year"];
 
     // Save to localStorage and notify parent whenever filters change
     React.useEffect(() => {
@@ -165,7 +165,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
         setSelectedPastPaperYears((prev) =>
             prev.includes(year)
                 ? prev.filter((y) => y !== year)
-                : [...prev, year]
+                : [...prev, year],
         );
         // Reset search when using filters
         setSearch("");
@@ -175,7 +175,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
         setSelectedSemesters((prev) =>
             prev.includes(semester)
                 ? prev.filter((s) => s !== semester)
-                : [...prev, semester]
+                : [...prev, semester],
         );
         // Reset search when using filters
         setSearch("");
@@ -218,16 +218,22 @@ export function Filters({ onFilterChange }: FiltersProps) {
             transition={{ duration: 0.4, ease: "easeOut" }}
         >
             <div className="flex-1 min-w-50 max-w-[300px]">
-                <label className="text-sm font-semibold mb-3 block text-foreground">
+                <label className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground">
                     Search Papers
                 </label>
-                <Input
-                    type="text"
-                    placeholder="Search by title or subject code"
-                    value={search}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    className="bg-background border-2 hover:border-primary/50 transition-colors"
-                />
+                <div className="relative group">
+                    <Input
+                        type="text"
+                        placeholder="Search by title or subject code"
+                        value={search}
+                        onChange={(e) => handleSearchChange(e.target.value)}
+                        className="bg-background border-2 hover:border-primary/50 transition-colors"
+                    />
+                    <div className="absolute top-full left-0 mt-2 hidden group-hover:block w-max bg-popover text-popover-foreground text-xs rounded-md shadow-md border py-1.5 px-3 z-10">
+                        💡 Tip: If results are not shown, try using the exact
+                        course code here (e.g. ICT 1209).
+                    </div>
+                </div>
             </div>
 
             <div className="flex gap-9 w-[300px] justify-evenly align-baseline">
@@ -243,17 +249,29 @@ export function Filters({ onFilterChange }: FiltersProps) {
                             <SelectValue placeholder="Select study year" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="1" className="cursor-pointer">
-                                Year 1
+                            <SelectItem
+                                value="1st Year"
+                                className="cursor-pointer"
+                            >
+                                1st Year
                             </SelectItem>
-                            <SelectItem value="2" className="cursor-pointer">
-                                Year 2
+                            <SelectItem
+                                value="2nd Year"
+                                className="cursor-pointer"
+                            >
+                                2nd Year
                             </SelectItem>
-                            <SelectItem value="3" className="cursor-pointer">
-                                Year 3
+                            <SelectItem
+                                value="3rd Year"
+                                className="cursor-pointer"
+                            >
+                                3rd Year
                             </SelectItem>
-                            <SelectItem value="4" className="cursor-pointer">
-                                Year 4
+                            <SelectItem
+                                value="4th Year"
+                                className="cursor-pointer"
+                            >
+                                4th Year
                             </SelectItem>
                         </SelectContent>
                     </Select>
@@ -325,7 +343,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
                                             >
                                                 <Checkbox
                                                     checked={selectedPastPaperYears.includes(
-                                                        year
+                                                        year,
                                                     )}
                                                     className="mr-3"
                                                 />
@@ -377,7 +395,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
                                             >
                                                 <Checkbox
                                                     checked={selectedSemesters.includes(
-                                                        semester
+                                                        semester,
                                                     )}
                                                     className="mr-3"
                                                 />

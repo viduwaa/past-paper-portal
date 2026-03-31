@@ -12,14 +12,15 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Paper {
-    id: string;
-    title: string;
-    subjectCode: string;
-    department: string;
-    studyYear: string;
+    id: number;
+    file_name: string;
+    course_name: string;
+    course_code: string;
+    department_code: string;
+    academic_year: string;
     semester: string;
-    pastPaperYear: string;
-    link: string;
+    exam_year: string;
+    view_url: string;
 }
 
 interface PaperTableProps {
@@ -29,8 +30,8 @@ interface PaperTableProps {
 
 export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
     const handleViewClick = (paper: Paper) => {
-        onPaperClick?.(paper.id);
-        window.open(paper.link, "_blank");
+        onPaperClick?.(paper.id.toString());
+        window.open(paper.view_url, "_blank");
     };
 
     return (
@@ -49,7 +50,7 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                             <TableHead className="font-semibold">
                                 Subject Code
                             </TableHead>
-                             <TableHead className="font-semibold">
+                            <TableHead className="font-semibold">
                                 Title
                             </TableHead>
                             <TableHead className="font-semibold">
@@ -102,19 +103,19 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                                         className="hover:bg-muted/30 transition-colors"
                                     >
                                         <TableCell className="font-mono text-sm">
-                                            {paper.subjectCode}
+                                            {paper.course_code}
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            {paper.title}
+                                            {paper.file_name}
                                         </TableCell>
                                         <TableCell>
-                                            {paper.department}
+                                            {paper.department_code}
                                         </TableCell>
-                                        <TableCell>{paper.studyYear}</TableCell>
+                                        <TableCell>
+                                            {paper.academic_year}
+                                        </TableCell>
                                         <TableCell>{paper.semester}</TableCell>
-                                        <TableCell>
-                                            {paper.pastPaperYear}
-                                        </TableCell>
+                                        <TableCell>{paper.exam_year}</TableCell>
                                         <TableCell className="text-right">
                                             <Button
                                                 variant="default"
@@ -168,7 +169,7 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                                         {/* Title and View Button */}
                                         <div className="flex flex-col space-y-2">
                                             <h3 className="font-semibold text-lg leading-tight">
-                                                {paper.title}
+                                                {paper.file_name}
                                             </h3>
                                             <Button
                                                 variant="default"
@@ -177,7 +178,7 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                                                     handleViewClick(paper)
                                                 }
                                                 className="bg-primary hover:bg-primary/90 self-start"
-                                                aria-label={`View ${paper.title} paper`}
+                                                aria-label={`View ${paper.file_name} paper`}
                                             >
                                                 View Paper
                                             </Button>
@@ -190,7 +191,7 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                                                     Subject Code:
                                                 </span>
                                                 <div className="font-mono mt-1">
-                                                    {paper.subjectCode}
+                                                    {paper.course_code}
                                                 </div>
                                             </div>
                                             <div>
@@ -198,7 +199,7 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                                                     Department:
                                                 </span>
                                                 <div className="mt-1">
-                                                    {paper.department}
+                                                    {paper.department_code}
                                                 </div>
                                             </div>
                                             <div>
@@ -206,7 +207,7 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                                                     Study Year:
                                                 </span>
                                                 <div className="mt-1">
-                                                    {paper.studyYear}
+                                                    {paper.academic_year}
                                                 </div>
                                             </div>
                                             <div>
@@ -222,7 +223,7 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                                                     Past Paper Year:
                                                 </span>
                                                 <div className="mt-1">
-                                                    {paper.pastPaperYear}
+                                                    {paper.exam_year}
                                                 </div>
                                             </div>
                                         </div>

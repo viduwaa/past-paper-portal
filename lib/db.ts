@@ -8,6 +8,29 @@ export interface WebsiteFeedback {
     timestamp: Date;
 }
 
+export interface PastPaper {
+    id: number;
+    file_name: string;
+    view_url: string;
+    preview_url: string;
+    department_code: string;
+    department_name: string;
+    academic_year: string;
+    semester: string;
+    exam_year: string;
+    course_code: string;
+    course_name: string;
+    created_at: Date;
+}
+
+export interface PaperFilters {
+    year?: string;
+    semester?: string;
+    department?: string;
+    courseCode?: string;
+    searchQuery?: string;
+}
+
 export class Database {
     static async testConnection(): Promise<void> {
         try {
@@ -17,8 +40,88 @@ export class Database {
         }
     }
 
+    // ============================================================
+    // Past Papers Methods
+    // ============================================================
+
+    static async getPapers(filters: PaperFilters): Promise<PastPaper[]> {
+        const { year, semester, department, courseCode, searchQuery } = filters;
+
+        try {
+            // Start the base query
+            let query = `SELECT * FROM past_papers WHERE 1=1`;
+            const params: any[] = [];
+            let paramIndex = 1;
+
+            if (year) {
+                query += ` AND academic_year = $${paramIndex}`;
+                params.push(year);
+                paramIndex++;
+            }
+
+            if (semester) {
+                query += ` AND semester = $${paramIndex}`;
+                params.push(semester);
+                paramIndex++;
+            }
+
+            if (department) {
+                // Include CMT and CML as they are common subjects for all departments
+                query += ` AND department_code IN ($${paramIndex}, 'CMT', 'CML')`;
+                params.push(department);
+                paramIndex++;
+            }
+
+            if (courseCode) {
+                query += ` AND course_code ILIKE $${paramIndex}`;
+                params.push(`%${courseCode}%`);
+                paramIndex++;
+            }
+
+            if (searchQuery) {
+                query += ` AND (course_name ILIKE $${paramIndex} OR file_name ILIKE $${paramIndex} OR course_code ILIKE $${paramIndex})`;
+                params.push(`%${searchQuery}%`);
+                paramIndex++;
+            }
+
+            query += ` ORDER BY exam_year DESC, course_code ASC`;
+
+            // Using raw query for dynamic filtering since Vercel Postgres template tags
+            // don't support dynamic WHERE clauses easily without query builders
+            const result = await sql.query(query, params);
+            return result.rows as PastPaper[];
+        } catch (error) {
+            console.error("Failed to fetch papers:", error);
+            throw new Error("Failed to fetch papers");
+        }
+    }
+
+    static async getFilterOptions() {
+        try {
+            // Fetch unique values for the filter dropdowns efficiently
+            const [years, semesters, departments] = await Promise.all([
+                sql`SELECT DISTINCT academic_year FROM past_papers WHERE academic_year IS NOT NULL ORDER BY academic_year`,
+                sql`SELECT DISTINCT semester FROM past_papers WHERE semester IS NOT NULL ORDER BY semester`,
+                sql`SELECT DISTINCT department_code FROM past_papers WHERE department_code IS NOT NULL ORDER BY department_code`,
+            ]);
+
+            return {
+                years: years.rows.map((r) => r.academic_year),
+                semesters: semesters.rows.map((r) => r.semester),
+                departments: departments.rows.map((r) => r.department_code),
+            };
+        } catch (error) {
+            console.error("Failed to fetch filter options:", error);
+            return { years: [], semesters: [], departments: [] };
+        }
+    }
+
+    // ============================================================
+    // Feedback Methods
+    // ============================================================
+
     static async findRecentFeedback(
-        browserId: string
+        browserId: string,
     ): Promise<WebsiteFeedback | null> {
         try {
             const result = await sql`
@@ -48,7 +151,7 @@ export class Database {
     static async upsertFeedback(
         rating: number,
         browserId: string,
-        userAgent: string | null
+        userAgent: string | null,
     ): Promise<WebsiteFeedback> {
         try {
             // Use ON CONFLICT for upsert functionality
