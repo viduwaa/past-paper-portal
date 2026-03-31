@@ -67,7 +67,12 @@ export class Database {
 
             if (department) {
                 // Include CMT and CML as they are common subjects for all departments
-                query += ` AND department_code IN ($${paramIndex}, 'CMT', 'CML')`;
+                // Treat ITT and ICT as equivalent since they share/cross-list same core subjects
+                if (department === "ITT" || department === "ICT") {
+                    query += ` AND department_code IN ($${paramIndex}, 'ICT', 'ITT', 'CMT', 'CML')`;
+                } else {
+                    query += ` AND department_code IN ($${paramIndex}, 'CMT', 'CML')`;
+                }
                 params.push(department);
                 paramIndex++;
             }

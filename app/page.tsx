@@ -5,13 +5,14 @@ import { useEffect, useState, useMemo } from "react";
 import { Filters } from "./_components/Filters";
 import { PaperTable } from "./_components/PaperTable";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Github } from "lucide-react";
 import { WebsiteFeedback } from "./_components/WebsiteFeedback";
 import { PastPaper } from "@/lib/db";
 
 export default function Home() {
     const [papers, setPapers] = useState<PastPaper[]>([]);
+    const [isRateLimited, setIsRateLimited] = useState(false);
 
     const [filters, setFilters] = useState({
         department: "ITT",
@@ -45,6 +46,14 @@ export default function Home() {
                 }
 
                 const res = await fetch(`/api/papers?${params.toString()}`);
+
+                if (res.status === 429) {
+                    setIsRateLimited(true);
+                    return; // Stop processing further
+                } else {
+                    setIsRateLimited(false);
+                }
+
                 if (!res.ok) throw new Error("Failed to fetch");
 
                 const data = await res.json();
@@ -134,6 +143,24 @@ export default function Home() {
                 </motion.p>
             </motion.div>
             <Filters onFilterChange={setFilters} />
+
+            <AnimatePresence>
+                {isRateLimited && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="bg-red-500/10 border border-red-500/50 text-red-600 dark:text-red-400 p-4 rounded-lg text-center"
+                    >
+                        <p className="font-semibold">Too many requests</p>
+                        <p className="text-sm mt-1">
+                            Please wait a moment before trying to search or
+                            filter again.
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <motion.div
                 className="text-sm text-muted-foreground mb-4"
                 initial={{ opacity: 0 }}

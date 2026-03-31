@@ -41,7 +41,8 @@ export function TopNavigation() {
                                 <div className="flex items-center space-x-2">
                                     <Sparkles className="h-4 w-4 animate-pulse" />
                                     <span className="text-sm font-medium">
-                                        Site Updated for 2026 Year!
+                                        Good luck for exams! All available
+                                        university past papers are here.
                                     </span>
                                 </div>
                                 <button
