@@ -1,151 +1,123 @@
-# 📚 FOT Past Papers Portal
+﻿# 📚 FOT Past Papers Portal
 
-Responsive web portal for accessing Rajarata University Faculty of Technology (FOT) past examination papers. Built with Next.js, featuring advanced filtering, search, and a clean user interface.
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Upstash Redis](https://img.shields.io/badge/Upstash_Redis-00B86B?style=for-the-badge&logo=redis&logoColor=white)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)
 
-## ✨ Features included
+A responsive, open-source web portal for accessing **Rajarata University Faculty of Technology (FOT)** past examination papers and calculating GPA. Built with Next.js App Router and deployed on Cloudflare Pages using Edge runtime.
 
-# or
+## ✨ Features
 
--   🔍 **Advanced Search & Filtering** - Search by title, subject code, or departmentpnpm dev
-
--   📱 **Responsive Design** - Works seamlessly on desktop and mobile devices# or
-
--   🌙 **Dark/Light Theme** - Toggle between themes with smooth transitionsbun dev
-
--   ⭐ **Website Feedback** - Rate the website with 1-5 star ratings```
-
--   🎨 **Modern UI** - Built with Shadcn/UI components and Framer Motion animations
-
--   🔄 **Pagination** - Load more papers dynamically
-
--   🎯 **Department Filtering** - Filter by ITT, CMT, and other departments. The page auto-updates as you edit the file.
-
--   📅 **Year & Semester Filtering** - Filter by study year and semester
-
-## 🛠️ Tech Stack
-
-## Learn More
-
--   **Frontend**: Next.js 15, React 19, TypeScript
-
--   **Styling**: Tailwind CSS, Shadcn/UI, Framer Motion
-
--   **Database**: PostgreSQL with @vercel/postgres (Edge Runtime compatible)
-
-
-
-
-## 📖 Usage
-
-### For Students
-
-1. **Browse Papers**: Use the filters to find papers by department, year, semester, or subject
-2. **Search**: Use the search bar to find specific papers by title or subject code
-3. **Access Papers**: Click "View Paper" to open papers in a new tab
-4. **Rate Website**: Use the star rating system at the bottom to provide feedback
-
-### For Contributors
-
-See the [Contributing](#contributing) section below.
-
-## 🤝 Contributing
-
-We welcome contributions! You can help by adding missing past papers to expand our collection.
-
-### How to Contribute Past Papers
-
-1. **Upload the Paper**
-
-    - Upload your past paper PDF to Google Drive
-    - Make sure the sharing settings allow "Anyone with the link can view"
-    - Copy the shareable link
-
-2. **Add to the Database**
-
-    - Open the appropriate `data/year[X].json` file (year1.json, year2.json, etc.)
-    - Add a new entry following this format:
-
-    ```json
-    {
-        "id": "unique_id",
-        "title": "Subject Name",
-        "subjectCode": "DEPT XXXX",
-        "department": "ITT/CMT/etc",
-        "studyYear": "1/2/3/4",
-        "semester": "1/2",
-        "pastPaperYear": "2023/2024/etc",
-        "link": "https://drive.google.com/file/d/XXXXXXXXXXXXXXXXXXXX/view?usp=sharing"
-    }
-    ```
-
-3. **Create a Pull Request**
-    - Fork this repository
-    - Create a new branch: `git checkout -b add-paper-[subject]-[year]`
-    - Add your changes to the appropriate year.json file
-    - Commit your changes: `git commit -m "Add [Subject] past paper for [Year]"`
-    - Push to your branch: `git push origin add-paper-[subject]-[year]`
-    - Open a Pull Request
-
-### Contribution Guidelines
-
--   **File Naming**: Use descriptive, consistent naming for papers
--   **Data Accuracy**: Ensure all fields are correctly filled
--   **Link Validity**: Test that Google Drive links work and are publicly accessible
--   **Unique IDs**: Use unique, sequential IDs for new entries
--   **Quality**: Only upload legitimate past papers from official sources
-
-### Adding New Features
-
-We also welcome code contributions! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request with a clear description
-
-## 📁 Project Structure
-
-```
-past-paper-portal/
-├── app/                    # Next.js app directory
-│   ├── api/               # API routes
-│   ├── _components/       # React components
-│   └── page.tsx          # Main page
-├── data/                  # Past paper data (JSON files)
-├── components/           # Reusable UI components
-├── lib/                  # Database utilities and helper functions
-└── database-setup.sql   # SQL script for database initialization
-```
-
-## 🔧 Available Scripts
-
--   `npm run dev` - Start development server
--   `npm run build` - Build for production
--   `npm run start` - Start production server
--   `npm run lint` - Run ESLint
-
-## 📄 Data Format
-
-Each past paper entry in the JSON files contains:
-
-```typescript
-{
-    id: string; // Unique identifier
-    title: string; // Subject name
-    subjectCode: string; // Department code (e.g., "ICT 1305")
-    department: string; // Department (ITT, CMT, etc.)
-    studyYear: string; // Study year (1, 2, 3, 4)
-    semester: string; // Semester (1 or 2)
-    pastPaperYear: string; // Year of the past paper
-    link: string; // Google Drive shareable link
-}
-```
-
-## 🚨 Important Notice
-
-**These papers can only be viewed with a valid tec.rjt.ac.lk domain email.** You need to use your student email to access the papers hosted on Google Drive.
+- **🔍 Advanced Search & Filtering**: Instantly search by title, subject code, department, study year, and semester.
+- **🛡️ Secure & Resilient**: Database queries are protected globally using Upstash Redis rate-limiting (sliding window).
+- **🧮 GPA Calculator**: Highly customized semester-wise GPA tracking tool specifically built for FOT grading standards.
+- **📱 Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices.
+- **🌙 Dark/Light Theme**: Native theme toggling integration for comfortable late-night studying.
+- **🎨 Modern UI/UX**: Built heavily utilizing Shadcn/UI primitives, Radix UI, and Framer Motion animations.
+- **⚡ Edge Optimized**: Deployed on Cloudflare Pages using native Edge runtime with direct SQL queries.
 
 ---
 
-**Created with ❤️ for FOT students**
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 (React 19), TypeScript
+- **Styling**: Tailwind CSS, Shadcn UI (Radix)
+- **Animations**: Framer Motion
+- **Database**: PostgreSQL (via @vercel/postgres)
+- **Rate Limiting**: Upstash Redis (@upstash/ratelimit)
+- **Deployment**: Cloudflare Pages
+
+---
+
+## 🚀 Getting Started (Local Development)
+
+### Prerequisites
+- [Node.js](https://nodejs.org/en/) & pnpm (recommended)
+- A [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres) Database (or any valid Postgres instance)
+- An [Upstash Redis](https://upstash.com/) Database (for rate limiting)
+
+### Installation
+
+1. **Clone the repository:**
+   \\\ash
+   git clone https://github.com/viduwaa/past-paper-portal.git
+   cd past-paper-portal
+   \\\
+
+2. **Install dependencies:**
+   \\\ash
+   pnpm install
+   \\\
+
+3. **Set up Environment Variables:**
+   Create a \.env\ file in the root directory and add your credentials:
+   \\\env
+   POSTGRES_URL="postgres://default:xyz@ep-your-db-region.postgres.vercel-storage.com:5432/verceldb"
+   POSTGRES_PRISMA_URL="postgres://default:xyz@ep-your-db-region.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
+   POSTGRES_URL_NON_POOLING="postgres://default:xyz@ep-your-db-region.postgres.vercel-storage.com:5432/verceldb"
+   POSTGRES_USER="default"
+   POSTGRES_HOST="ep-your-db.postgres.vercel-storage.com"
+   POSTGRES_PASSWORD="xyz"
+   POSTGRES_DATABASE="verceldb"
+
+   UPSTASH_REDIS_REST_URL="https://your-upstash-url.upstash.io"
+   UPSTASH_REDIS_REST_TOKEN="your_upstash_token"
+   \\\
+
+4. **Initialize the Database:**
+   Run the SQL commands found in \database-setup.sql\ on your connected PostgreSQL instance to create the \past_papers\ and \website_feedback\ schemas.
+   *(Optional)* Use \scripts/generate_seed.py\ to generate seed combinations from raw data files.
+
+5. **Start the Development Server:**
+   \\\ash
+   pnpm run dev
+   \\\
+   Visit [http://localhost:3000](http://localhost:3000) to view the portal.
+
+---
+
+## 🤝 Contributing
+
+This is a totally open-source project aimed at helping RUSL FOT students. If you have past papers, or want to enhance the site's code, we welcome your PRs!
+
+### Adding New Past Papers
+To contribute past papers, please create an Issue or submit a Pull Request. Since the database is relational (PostgreSQL), data edits will need to be made via SQL seeds provided to the repository maintainer.
+1. Upload your past paper PDF to Google Drive and ensure it's restricted to **tec.rjt.ac.lk** domain or accessible publicly.
+2. Provide the Subject Name, Subject Code, Year, Semester, and URL via an Issue.
+
+### Contributing Code
+1. Fork the repository
+2. Create a feature branch (\git checkout -b feature/amazing-feature\)
+3. Commit your changes (\git commit -m "Add some amazing feature"\)
+4. Push to the branch (\git push origin feature/amazing-feature\)
+5. Open a Pull Request
+
+---
+
+## 📁 Project Structure
+
+\\\
+past-paper-portal/
+├── app/
+│   ├── api/               # Next.js Serverless/Edge API Routes
+│   ├── _components/       # Reusable modular React UI components
+│   ├── gpa-calculator/    # Dedicated GPA Calculator pages
+│   └── page.tsx           # Home Portal view
+├── components/ui/         # Shadcn/UI primitive components
+├── lib/                   # Database interfaces and API logic (ratelimits)
+├── scripts/               # Python ETL scripts for seed formatting
+└── database-setup.sql     # PostgreSQL core tables setup 
+\\\
+
+---
+
+## 🚨 Important Notice
+
+**Paper Privacy:** Many of the physical papers hosted on the associated drive domains can **only be viewed with a valid 	ec.rjt.ac.lk domain email**. You need to use your university active student email to access them successfully.
+
+---
+
+**Created with ❤️ for FOT students by [viduwaa](https://github.com/viduwaa)**
