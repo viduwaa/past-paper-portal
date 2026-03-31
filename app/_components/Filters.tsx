@@ -56,7 +56,7 @@ const departmentsByYear: Record<string, { value: string; label: string }[]> = {
     ],
 };
 
-const pastPaperYears = ["2024", "2023", "2022", "2021", "2020", "2019"];
+const pastPaperYears = ["2025", "2024", "2023", "2022", "2021", "2020", "2019"];
 const semesters = ["1st Semester", "2nd Semester"];
 
 interface FiltersProps {
