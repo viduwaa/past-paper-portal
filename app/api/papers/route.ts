@@ -2,7 +2,7 @@ export const runtime = "edge";
 
 import { NextResponse } from "next/server";
 import { Database, PaperFilters } from "@/lib/db";
-
+export const runtime = "edge";
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
 

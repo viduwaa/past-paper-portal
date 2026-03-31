@@ -196,7 +196,7 @@ export default function GPACalculator() {
 
     useEffect(() => {
         calculateOverallGPA();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [subjectGrades]);
 
     useEffect(() => {

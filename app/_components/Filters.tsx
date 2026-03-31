@@ -212,19 +212,19 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
     return (
         <motion.div
-            className="flex flex-wrap gap-6 mb-8 p-6 bg-card rounded-lg border shadow-sm justify-between"
+            className="flex flex-col gap-6 mb-8 p-6 bg-card rounded-lg border shadow-sm"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
         >
-            <div className="flex-1 min-w-50 max-w-[300px]">
+            <div className="w-full">
                 <label className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground">
                     Search Papers
                 </label>
                 <div className="relative group">
                     <Input
                         type="text"
-                        placeholder="Search by title or subject code"
+                        placeholder="Search by title or subject code (e.g. ICT 1209)"
                         value={search}
                         onChange={(e) => handleSearchChange(e.target.value)}
                         className="bg-background border-2 hover:border-primary/50 transition-colors"
@@ -236,8 +236,8 @@ export function Filters({ onFilterChange }: FiltersProps) {
                 </div>
             </div>
 
-            <div className="flex gap-9 w-[300px] justify-evenly align-baseline">
-                <div className="flex-1">
+            <div className="flex gap-4 flex-wrap w-full md:flex-nowrap">
+                <div className="flex-1 min-w-[200px]">
                     <label className="text-sm font-semibold mb-3 block text-foreground">
                         Study Year
                     </label>
@@ -277,35 +277,58 @@ export function Filters({ onFilterChange }: FiltersProps) {
                     </Select>
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 min-w-[200px]">
                     <label className="text-sm font-semibold mb-3 block text-foreground">
-                        Department
+                        Semester
                     </label>
-                    <Select
-                        value={department}
-                        onValueChange={handleDepartmentChange}
-                    >
-                        <SelectTrigger className="w-full bg-background border-2 hover:border-primary/50 transition-colors">
-                            <SelectValue placeholder="Select department" />
-                        </SelectTrigger>
-                        <SelectContent className="w-full">
-                            {availableDepartments.map((dept) => (
-                                <SelectItem
-                                    key={dept.value}
-                                    value={dept.value}
-                                    className="cursor-pointer"
-                                >
-                                    {dept.label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <Popover open={semesterOpen} onOpenChange={setSemesterOpen}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={semesterOpen}
+                                className="w-full justify-between bg-background border-2 hover:border-primary/50 transition-colors"
+                            >
+                                {selectedSemesters.length > 0
+                                    ? selectedSemesters
+                                          .map((sem) => `${sem}`)
+                                          .join(", ")
+                                    : "Select semesters"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 bg-card border-2">
+                            <Command>
+                                <CommandList>
+                                    <CommandGroup>
+                                        {semesters.map((semester) => (
+                                            <CommandItem
+                                                key={semester}
+                                                onSelect={() =>
+                                                    toggleSemester(semester)
+                                                }
+                                                className="flex items-center cursor-pointer hover:bg-muted p-2"
+                                                onClick={() =>
+                                                    toggleSemester(semester)
+                                                }
+                                            >
+                                                <Checkbox
+                                                    checked={selectedSemesters.includes(
+                                                        semester,
+                                                    )}
+                                                    className="mr-3"
+                                                />
+                                                <span>{semester}</span>
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
                 </div>
-            </div>
 
-            <div className="flex gap-4">
-                {/* Past Paper Year */}
-                <div className="w-48">
+                <div className="flex-1 min-w-[200px]">
                     <label className="text-sm font-semibold mb-3 block text-foreground">
                         Past Paper Year
                     </label>
@@ -357,56 +380,29 @@ export function Filters({ onFilterChange }: FiltersProps) {
                     </Popover>
                 </div>
 
-                {/* Semester */}
-                <div className="md:w-48">
+                <div className="flex-1 min-w-[200px]">
                     <label className="text-sm font-semibold mb-3 block text-foreground">
-                        Semester
+                        Department
                     </label>
-                    <Popover open={semesterOpen} onOpenChange={setSemesterOpen}>
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                role="combobox"
-                                aria-expanded={semesterOpen}
-                                className="w-full justify-between bg-background border-2 hover:border-primary/50 transition-colors"
-                            >
-                                {selectedSemesters.length > 0
-                                    ? selectedSemesters
-                                          .map((sem) => `Semester ${sem}`)
-                                          .join(", ")
-                                    : "Select semesters"}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 bg-card border-2">
-                            <Command>
-                                <CommandList>
-                                    <CommandGroup>
-                                        {semesters.map((semester) => (
-                                            <CommandItem
-                                                key={semester}
-                                                onSelect={() =>
-                                                    toggleSemester(semester)
-                                                }
-                                                className="flex items-center cursor-pointer hover:bg-muted p-2"
-                                                onClick={() =>
-                                                    toggleSemester(semester)
-                                                }
-                                            >
-                                                <Checkbox
-                                                    checked={selectedSemesters.includes(
-                                                        semester,
-                                                    )}
-                                                    className="mr-3"
-                                                />
-                                                <span>Semester {semester}</span>
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
+                    <Select
+                        value={department}
+                        onValueChange={handleDepartmentChange}
+                    >
+                        <SelectTrigger className="w-full bg-background border-2 hover:border-primary/50 transition-colors">
+                            <SelectValue placeholder="Select department" />
+                        </SelectTrigger>
+                        <SelectContent className="w-full">
+                            {availableDepartments.map((dept) => (
+                                <SelectItem
+                                    key={dept.value}
+                                    value={dept.value}
+                                    className="cursor-pointer"
+                                >
+                                    {dept.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 
