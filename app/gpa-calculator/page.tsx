@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -16,18 +15,11 @@ import {
     RotateCcw,
     TrendingUp,
     Award,
-    Target,
     BookOpen,
-    GraduationCap,
     Github,
 } from "lucide-react";
 import { WebsiteFeedback } from "../_components/WebsiteFeedback";
 import programs, { type Subject as ProgramSubject } from "@/lib/subjectList";
-
-interface SubjectGrade extends ProgramSubject {
-    grade: string;
-    semester: string;
-}
 
 const gradePoints: { [key: string]: number } = {
     "A+": 4.0,
@@ -81,7 +73,7 @@ export default function GPACalculator() {
         return {};
     });
     const [semesterGPAs, setSemesterGPAs] = useState<{ [key: string]: number }>(
-        {}
+        {},
     );
     const [overallGPA, setOverallGPA] = useState<number | null>(null);
     const [totalCredits, setTotalCredits] = useState<number>(0);
@@ -103,7 +95,7 @@ export default function GPACalculator() {
             if (typeof window !== "undefined") {
                 localStorage.setItem(
                     `gpa-subject-grades-${selectedProgram}`,
-                    JSON.stringify(updated)
+                    JSON.stringify(updated),
                 );
             }
 
@@ -204,6 +196,7 @@ export default function GPACalculator() {
 
     useEffect(() => {
         calculateOverallGPA();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [subjectGrades]);
 
     useEffect(() => {
@@ -217,7 +210,7 @@ export default function GPACalculator() {
         // Load grades for the selected program
         if (typeof window !== "undefined") {
             const saved = localStorage.getItem(
-                `gpa-subject-grades-${selectedProgram}`
+                `gpa-subject-grades-${selectedProgram}`,
             );
             setSubjectGrades(saved ? JSON.parse(saved) : {});
         }
@@ -277,12 +270,13 @@ export default function GPACalculator() {
                     transition={{ duration: 0.5, delay: 0.6 }}
                 >
                     <p className="text-[10px] sm:text-xs text-orange-600 dark:text-orange-400 font-medium">
-                        Year 1, Year 2 & Year 3 S1 Subjects and credits are up to date.
+                        Year 1, Year 2 & Year 3 S1 Subjects and credits are up
+                        to date.
                     </p>
                     <p className="text-[10px] sm:text-xs text-orange-600 dark:text-orange-400">
-                        Year 3 S2, Year 4 subjects & credit values are according to the
-                        Prospectus 2018/2019. These will update when we get the
-                        proper subject details.
+                        Year 3 S2, Year 4 subjects & credit values are according
+                        to the Prospectus 2018/2019. These will update when we
+                        get the proper subject details.
                     </p>
                     <p className="text-[10px] sm:text-xs text-muted-foreground">
                         There will be some inaccuracies like ±0.01 for GPA
@@ -320,7 +314,7 @@ export default function GPACalculator() {
                                             </span>
                                             <span
                                                 className={`text-sm sm:text-base md:text-lg font-bold ${getGPAColor(
-                                                    semesterGPA
+                                                    semesterGPA,
                                                 )}`}
                                             >
                                                 {semesterGPA.toFixed(2)}
@@ -442,11 +436,11 @@ export default function GPACalculator() {
                                                                             ""
                                                                         }
                                                                         onValueChange={(
-                                                                            value
+                                                                            value,
                                                                         ) =>
                                                                             updateGrade(
                                                                                 subject.code,
-                                                                                value
+                                                                                value,
                                                                             )
                                                                         }
                                                                     >
@@ -458,7 +452,7 @@ export default function GPACalculator() {
                                                                             "Non GPA"
                                                                                 ? nonGPAGrades.map(
                                                                                       (
-                                                                                          gradeOption
+                                                                                          gradeOption,
                                                                                       ) => (
                                                                                           <SelectItem
                                                                                               key={
@@ -472,11 +466,11 @@ export default function GPACalculator() {
                                                                                                   gradeOption
                                                                                               }
                                                                                           </SelectItem>
-                                                                                      )
+                                                                                      ),
                                                                                   )
                                                                                 : grades.map(
                                                                                       (
-                                                                                          gradeOption
+                                                                                          gradeOption,
                                                                                       ) => (
                                                                                           <SelectItem
                                                                                               key={
@@ -490,7 +484,7 @@ export default function GPACalculator() {
                                                                                                   gradeOption
                                                                                               }
                                                                                           </SelectItem>
-                                                                                      )
+                                                                                      ),
                                                                                   )}
                                                                         </SelectContent>
                                                                     </Select>
@@ -500,15 +494,15 @@ export default function GPACalculator() {
                                                                         {gradeValue !==
                                                                         undefined
                                                                             ? gradeValue.toFixed(
-                                                                                  1
+                                                                                  1,
                                                                               )
                                                                             : grade ===
-                                                                              "Pass"
-                                                                            ? "Pass"
-                                                                            : grade ===
-                                                                              "Fail"
-                                                                            ? "Fail"
-                                                                            : "-"}
+                                                                                "Pass"
+                                                                              ? "Pass"
+                                                                              : grade ===
+                                                                                  "Fail"
+                                                                                ? "Fail"
+                                                                                : "-"}
                                                                     </span>
                                                                 </td>
                                                                 <td className="hidden md:table-cell px-2 py-2 text-center">
@@ -521,18 +515,18 @@ export default function GPACalculator() {
                                                                                       subject.credits *
                                                                                       1
                                                                                   ).toFixed(
-                                                                                      1
+                                                                                      1,
                                                                                   )
                                                                                 : grade ===
-                                                                                  "Fail"
-                                                                                ? "0.0"
-                                                                                : "-"
+                                                                                    "Fail"
+                                                                                  ? "0.0"
+                                                                                  : "-"
                                                                             : points}
                                                                     </span>
                                                                 </td>
                                                             </motion.tr>
                                                         );
-                                                    }
+                                                    },
                                                 )}
                                             </tbody>
                                         </table>
@@ -585,7 +579,7 @@ export default function GPACalculator() {
                                         >
                                             <p
                                                 className={`text-4xl sm:text-6xl font-bold ${getGPAColor(
-                                                    overallGPA
+                                                    overallGPA,
                                                 )} mb-2`}
                                             >
                                                 {overallGPA.toFixed(2)}
@@ -593,7 +587,7 @@ export default function GPACalculator() {
                                         </motion.div>
                                         <p
                                             className={`text-base sm:text-lg font-semibold ${getGPAColor(
-                                                overallGPA
+                                                overallGPA,
                                             )}`}
                                         >
                                             {getGPALabel(overallGPA)}
@@ -617,7 +611,7 @@ export default function GPACalculator() {
                                                     width: `${Math.min(
                                                         (totalCredits / 120) *
                                                             100,
-                                                        100
+                                                        100,
                                                     )}%`,
                                                 }}
                                             />

@@ -2,13 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import {
-    FileQuestion,
-    Home,
-    Calculator,
-    ArrowLeft,
-    Search,
-} from "lucide-react";
+import { FileQuestion, Home, Calculator } from "lucide-react";
 import Link from "next/link";
 
 export default function NotFound() {

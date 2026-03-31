@@ -6,14 +6,12 @@ import { Filters } from "./_components/Filters";
 import { PaperTable } from "./_components/PaperTable";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ThemeSwitcher } from "./_components/ThemeSwitcher";
 import { Github } from "lucide-react";
 import { WebsiteFeedback } from "./_components/WebsiteFeedback";
 import { PastPaper } from "@/lib/db";
 
 export default function Home() {
     const [papers, setPapers] = useState<PastPaper[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
 
     const [filters, setFilters] = useState({
         department: "ITT",
@@ -29,7 +27,6 @@ export default function Home() {
     // Fetch papers from API
     useEffect(() => {
         const fetchPapers = async () => {
-            setIsLoading(true);
             try {
                 // Build query params ensuring we match the URL structure from our new route
                 const params = new URLSearchParams();
@@ -54,8 +51,6 @@ export default function Home() {
                 setPapers(data);
             } catch (err) {
                 console.error("Error loading papers:", err);
-            } finally {
-                setIsLoading(false);
             }
         };
 

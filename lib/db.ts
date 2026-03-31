@@ -50,7 +50,7 @@ export class Database {
         try {
             // Start the base query
             let query = `SELECT * FROM past_papers WHERE 1=1`;
-            const params: any[] = [];
+            const params: (string | number)[] = [];
             let paramIndex = 1;
 
             if (year) {
