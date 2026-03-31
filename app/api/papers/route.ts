@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { NextResponse } from "next/server";
 import { Database, PaperFilters } from "@/lib/db";
 
