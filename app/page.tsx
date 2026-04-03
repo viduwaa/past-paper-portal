@@ -10,10 +10,12 @@ import { Github } from "lucide-react";
 import { WebsiteFeedback } from "./_components/WebsiteFeedback";
 import { PastPaper } from "@/lib/db";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { TimeTableDialog } from "./_components/TimeTableDialog";
 
 export default function Home() {
     const [papers, setPapers] = useState<PastPaper[]>([]);
     const [isRateLimited, setIsRateLimited] = useState(false);
+    const [isTimeTableOpen, setIsTimeTableOpen] = useState(false);
 
     const [filters, setFilters] = useState({
         department: "ITT",
@@ -159,15 +161,15 @@ export default function Home() {
                         <p className="text-sm opacity-90">The official exam time table for this semester is now available to view.</p>
                     </div>
                 </div>
-                <a 
-                    href="https://drive.google.com/file/d/1G_bDpXVkGsA5iNPdX6OPmWpDr4bTdjHk/view?usp=sharing" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                <Button
+                    onClick={() => setIsTimeTableOpen(true)}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap shadow-sm text-center"
                 >
                     View Time Table
-                </a>
+                </Button>
             </motion.div>
+            
+            <TimeTableDialog open={isTimeTableOpen} onOpenChange={setIsTimeTableOpen} />
             
             <Filters onFilterChange={setFilters} />
 

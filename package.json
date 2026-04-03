@@ -17,6 +17,7 @@
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.37.0",
     "@vercel/postgres": "^0.8.0",
+    "caniuse-lite": "^1.0.30001784",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
