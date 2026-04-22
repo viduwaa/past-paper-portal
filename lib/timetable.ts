@@ -46,50 +46,110 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title
 Date,Time,Dept.,Subject,Title
 
 27.04.2026,1.00 p.m. - 4.00 p.m.,ALL,CMT 2306,Mathematics For Technology II
-29.04.2026,9.00 a.m. - 11.00 a.m.,ALL,ICT 2303,Scientific Computer Applications (Th & Pr)
-29.04.2026,9.00 a.m. - 11.00 a.m.,ALL,FDT 2203,Introduction to Food Industry
-29.04.2026,9.00 a.m. - 11.00 a.m.,ALL,MTT 2203,Introduction to Ceramic Technology
-29.04.2026,9.00 a.m. - 12.00 p.m.,ALL,EET 2301,Digital & Analog Electronics
+20.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2204,Food Preservation
+22.04.2026,9.00 a.m. - 11.00 a.m.,ALL,CML 2202,Engineering Economics
+29.04.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 2204,Plant Tissue Culture (Theory)
+29.04.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2203,Introduction to Food Industry
+29.04.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 2203,Introduction to Ceramic Technology
+29.04.2026,9.00 a.m. - 12.00 p.m.,EET,EET 2301,Digital & Analog Electronics
+13.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2205,Molecular Biology (Theory)
+15.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2304,Object Oriented Programming
+01.06.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 2304,Object Oriented Programming (Practical)
 05.05.2026,1.00 p.m. - 4.00 p.m.,ALL,CMT 2301,Fundamental of Statistics for Technology
 07.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 2202,Communication Skills III (English)
 11.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2202,Basic Biochemistry
 11.05.2026,9.00 a.m. - 12.00 p.m.,ICT,ICT 2303,Data Structures and Algorithms
 11.05.2026,9.00 a.m. onwards,MTT,MTT 2206,Graphical Programming (Practical)
 13.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2207,Software System Design
-15.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2304,Object Oriented Programming
+13.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 2208,Introduction to Electrical Power
+15.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2203,Genetics and Evolution
+15.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 2201,Physical Chemistry
 18.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2202,Operating Systems
 25.05.2026,2.00 p.m. - 4.00 p.m.,ALL,CMT 2201,Fundamentals of Solid State Physics
 01.06.2026,9.00 a.m. onwards,ICT,ICT 2304,Object Oriented Programming (Practical)
 27.05.2026,9.00 a.m. onwards,ALL,CMT 2202,Communication Skills III - English (Practical)
 
 Date,Time,Dept.,Subject,Title
-
-28.04.2026,9.00 a.m. - 11.00 a.m.,ALL,FDT 3203,Food Analysis
-28.04.2026,9.00 a.m. - 12.00 p.m.,ALL,EET 3304,Digital Signal Processing
-28.04.2026,9.00 a.m. - 12.00 p.m.,ALL,MTT 3308,Polymer Technology I
-30.04.2026,2.00 p.m. - 4.00 p.m.,ALL,FDT 3209,Cereals and Pulses Processing Technology
-30.04.2026,2.00 p.m. - 4.00 p.m.,ALL,BPT 3304,Molecular Modelling (Theory)
-30.04.2026,2.00 p.m. - 4.00 p.m.,ALL,EET 3203,Computer Systems
-30.04.2026,2.00 p.m. - 4.00 p.m.,ALL,MTT 3204,Workshop Technology II
-30.04.2026,2.00 p.m. - 4.00 p.m.,ALL,ICT 3307,Computational Statistics (Theory)
-05.05.2026,9.00 a.m. - 11.00 a.m.,ALL,ICT 3208,Design and Analysis of Algorithm
+20.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3204,Meat and Fish Processing Technology
+14.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3208,Industrial Microbiology - Theory
+18.05.2026,9.00 a.m. - 12.00 p.m.,EET,EET 3301,Electrical Power Systems
+18.05.2026,9.00 a.m. - 12.00 p.m.,MTT,MTT 3307,Metallurgy I
+05.05.2026,9.00 a.m. - 12.00 p.m.,ICT,ICT 3312,Software Verification and Validation
+28.04.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 3203,Scientific Computer Applications (Th & Pr)
+27.04.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3203,Bioprocess Instrumentation and Control
+28.04.2026,9.00 a.m. - 11.00 p.m.,FDT,FDT 3203,Food Analysis
+28.04.2026,9.00 a.m. - 12.00 p.m.,EET,EET 3304,Digital Signal Processing
+28.04.2026,9.00 a.m. - 12.00 p.m.,MTT,MTT 3308,Polymer Technology I
+30.04.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3209,Cereals and Pulses Processing Technology
+30.04.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3304,Molecular Modelling (Theory)
+30.04.2026,2.00 p.m. - 4.00 p.m.,EET,EET 3203,Computer Systems
+30.04.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 3204,Workshop Technology II
+14.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 3307,Computational Statistics (Theory)
+05.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3205,Bioprocess Optimization and Simulation
+05.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 3205,Functional Food and Food Toxicology
+05.05.2026,9.00 a.m. - 11.00 a.m.,EET,EET 3206,Automation Technology I
+05.05.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 3212,Non Destructive Testing of Materials
+11.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3208,Design and Analysis of Algorithm
 07.05.2026,2.00 p.m. - 5.00 p.m.,ICT,ICT 3315,Internet of Things
-11.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3218,Basics of Virtual Reality
-14.05.2026,9.00 a.m. - 11.00 a.m.,ALL,FDT 3201,Fruits & Vegetables Processing Technology
-18.05.2026,9.00 a.m. - 11.00 a.m.,ALL,ICT 3201,Software Project Management
-20.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3217,Advance Computer Networks
+07.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3207,Enzyme Technology
+07.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3207,Confectionary and Beverage Technology
+07.05.2026,2.00 p.m. - 3.30 p.m.,MTT,MTT 3111,Thermodynamics for Materials Technology
+11.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3206,Dairy Product Technology
+11.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3206,Molecular Immunology and Current Application
+11.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 3202,Communication Systems
+11.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 3306,Ceramic Technology II
+30.04.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3218,Basics of Virtual Reality
+14.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 3201,Fruits & Vegetables Processing Technology
+14.05.2026,9.00 a.m. - 12.00 p.m.,EET,EET 3305,Control Systems
 26.05.2026,9.00 a.m. onwards,ICT,ICT 3307,Computational Statistics (Practical)
+26.05.2026,9.00 a.m. onwards,BPT,BPT 3208,Industrial Microbiology (Practical)
 
+26.05.2026,9.00 a.m. - 11.00 a.m.,EET,EET 3210,Electrical Installations
+02.06.2026,9.00 a.m. onwards,BPT,BPT 3304,Molecular Modelling (Practical)
+18.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 3202,Food Engineering
+20.05.2026,2.00 p.m. -4.00 p.m.,MTT,MTT 3202,Degradation of Materials
+19.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3209,Scientific Writing (20-21 Batch)
+20.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 3302,Bioinformatics (Theory)
+20.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3217,Advance Computer Networks
+22.05.2026,2.00 p.m. - 3.00 p.m.,ALL,CML 3101,Legal and Patent Aspects
+18.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3201,Molecular Microbiology
+18.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 3201,Software Project Management
+29.05.2026,9.00 a.m. onwards,BPT,BPT 3302,Bioinformatics (Practical)
+,,,,
+,,,,
+,,,,
 Date,Time,Dept.,Subject,Title
-
-04.05.2026,1.00 p.m. onwards,EET,EET 4301,Electronic Circuit Design and Simulations (Practical)
+21.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4203,Water Science & Technology
+21.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 4301,Drug Designing (Theory)
+04.05.2026,2.00 p.m. - 5.00 p.m.,EET,EET 4304,Power Electronics
+21.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 4303,Ceramic Technology III
+06.05.2026,1.00 p.m. - 3.00 p.m.,BPT,BPT 4205,Plant Cell Culture
+06.05.2026,1.00 p.m. - 3.00 p.m.,FDT,FDT 4209,Sensory Evaluation
+06.05.2026,1.00 p.m. - 3.00 p.m.,MTT,MTT 4201,Fluid Mechanics
+16.05.2026,1.00 p.m. - 3.00 p.m.,ALL,CML 4201,Entrepreneurship
+29.04.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 4206,Pharmaceutical Biotechnology
+29.04.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4206,Supply Chain Analysis
+29.04.2026,2.00 p.m. - 4.00 p.m.,EET,EET 4208,Fiber Optic Techniques
+29.04.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 4206,Mineral Processing
+26.05.2026,1.00 p.m. onwards,EET,EET 4301,Electronic Circuit Design and Simulations (Prac)
 04.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 4302,Downstream Process Technology
 04.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 4305,Polymer Technology II
-08.05.2026,2.00 p.m. - 5.00 p.m.,ALL,BPT 4303,Bioremediation and Waste Management
-12.05.2026,2.00 p.m. - 4.00 p.m.,ALL,EET 4216,Energy and Environment
-16.05.2026,9.00 a.m. - 11.00 a.m.,ALL,CML 4201,Entrepreneurship
-19.05.2026,9.00 a.m. - 11.00 a.m.,ALL,EET 4202,Embedded Systems
-21.05.2026,2.00 p.m. - 5.00 p.m.,ALL,EET 4304,Power Electronics
+
+04.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4302,Food Product Development (Theory)
+
+08.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 4303,Bioremediation and Waste Management
+08.05.2026,2.00 p.m. - 5.00 p.m.,EET,EET 4303,Electrical Energy Utilizations
+08.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 4307,Metallurgy II
+12.05.2026,9.00 a.m. onwards,BPT,BPT 4301,Drug Designing (Practical)
+12.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4208,Cleaner Production
+12.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 4216,Energy and Environment
+12.05.2026,2.00 p.m. - 3.30 p.m.,MTT,MTT 4121,Research Methodology and Scientific Writing
+21.05.2026,9.00 a.m. onwards,EET,EET 4206,Automation Technology II - Practical exam
+26.05.2026,9.00 a.m. - 10.00 a.m.,FDT,FDT 4107,Scientific Writing
+26.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 4204,Molecular Virology (Theory)
+26.05.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 4219,Applied Mechanics
+19.05.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4202,Embedded Systems
+19.05.2026,9.00 a.m. onwards,FDT,FDT 4302,Food Product Development (Viva)
 23.05.2026,9.00 a.m. - 11.00 a.m.,ALL,CML 4202,Human Resource Management
 26.05.2026,9.00 a.m. onwards,EET,EET 4206,Automation Technology II (Practical)
 01.06.2026,9.00 a.m. onwards,BPT,BPT 4204,Molecular Virology (Viva)
