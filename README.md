@@ -99,18 +99,25 @@ To contribute past papers, please create an Issue or submit a Pull Request. Sinc
 
 ## 📁 Project Structure
 
-\\\
+```
 past-paper-portal/
-├── app/
-│   ├── api/               # Next.js Serverless/Edge API Routes
-│   ├── _components/       # Reusable modular React UI components
-│   ├── gpa-calculator/    # Dedicated GPA Calculator pages
-│   └── page.tsx           # Home Portal view
-├── components/ui/         # Shadcn/UI primitive components
-├── lib/                   # Database interfaces and API logic (ratelimits)
-├── scripts/               # Python ETL scripts for seed formatting
-└── database-setup.sql     # PostgreSQL core tables setup 
-\\\
+├── app/                          # Next.js App Router directory
+│   ├── api/                      # Next.js Serverless/Edge API Routes
+│   ├── _components/              # Reusable modular React UI components
+│   ├── gpa-calculator/           # Dedicated GPA Calculator pages
+│   └── page.tsx                  # Home Portal view
+├── components/
+│   └── ui/                       # Shadcn/UI primitive components
+├── lib/                          # Database interfaces and API logic (ratelimits)
+├── public/                       # Static assets
+├── scripts/                      # Python ETL scripts for seed formatting
+├── database-setup.sql            # PostgreSQL core tables setup
+├── next.config.ts                # Next.js configuration
+├── tsconfig.json                 # TypeScript configuration
+├── postcss.config.mjs            # PostCSS configuration
+├── eslint.config.mjs             # ESLint configuration
+└── package.json                  # Project dependencies
+```
 
 ---
 
