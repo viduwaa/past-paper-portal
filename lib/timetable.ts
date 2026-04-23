@@ -26,25 +26,45 @@ function parseCSVLine(line: string): string[] {
 }
 
 const CSV_DATA = `Date,Time,Dept.,Subject,Title
-
 08.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 1303,Fundamentals of Mathematics for Technology
 28.04.2026,2.00 p.m. - 05.00 p.m.,ALL,CMT 1301,Fundamentals of Physics for Technology
-04.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 1302,Fundamentals of Chemistry for Technology
+
+04.05.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1302,Fundamentals of Chemistry for Technology
+04.05.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1302,Fundamentals of Chemistry for Technology
 04.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1305,Program Designing and Programming (Theory)
+
+
+27.05.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1304,Fundamentals of Computer for Technology
+27.05.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1304,Fundamentals of Computer for Technology
+
 06.05.2026,9.00 a.m. onwards,ICT,ICT 1305,Program Designing and Programming (Practical)
+
 12.05.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1306,Fundamentals of Biology for Technology
+
 12.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1202,Electronic Circuits
-13.05.2026,8.00 a.m. onwards,ALL,CML 1202,Presentation Skills - Group Presentations
-15.05.2026,9.00 a.m. onwards,ALL,CML 1202,Presentation Skills - Individual Speech (Group 01)
+
+13.05.2026,8.00 a.m. onwards,ENT,CML 1202,Presentation Skills - Group Presentations
+13.05.2026,8.00 a.m. onwards,BST,CML 1202,Presentation Skills - Group Presentations
+
+15.05.2026,9.00 a.m. onwards,ENT,CML 1202,Presentation Skills - Individual Speech (Group 01)
+15.05.2026,9.00 a.m. onwards,BST,CML 1202,Presentation Skills - Individual Speech (Group 01)
+
 15.05.2026,9.00 a.m. onwards,ICT,ICT 1111,Productivity & Collaborative Tools (Th & Pr)
-18.05.2026,9.00 a.m. onwards,ALL,CML 1202,Presentation Skills - Individual Speech (Group 02)
+
+18.05.2026,9.00 a.m. onwards,ENT,CML 1202,Presentation Skills - Individual Speech (Group 02)
+18.05.2026,9.00 a.m. onwards,BST,CML 1202,Presentation Skills - Individual Speech (Group 02)
+
 19.05.2026,2.30 p.m. - 4.00 p.m.,ALL,CML 1201,Personality Development
+
 21.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 1205,Communication Skills I - English (Theory)
-06.05.2026,9.00 a.m. - 10.00 a.m.,ALL,CML 1202,Presentation Skills (Theory)
-25.05.2026,9.00 a.m. onwards,ALL,CMT 1205,Communication Skills I - English (Practical)
 
+06.05.2026,9.00 a.m. - 10.00 a.m.,ENT,CML 1202,Presentation Skills (Theory)
+06.05.2026,9.00 a.m. - 10.00 a.m.,BST,CML 1202,Presentation Skills (Theory)
+
+25.05.2026,9.00 a.m. onwards,ALL,CMT 1205,Communication Skills 1 - English (Practical)
+,,,,
+,,,,
 Date,Time,Dept.,Subject,Title
-
 27.04.2026,1.00 p.m. - 4.00 p.m.,ALL,CMT 2306,Mathematics For Technology II
 20.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2204,Food Preservation
 22.04.2026,9.00 a.m. - 11.00 a.m.,ALL,CML 2202,Engineering Economics
@@ -56,7 +76,7 @@ Date,Time,Dept.,Subject,Title
 15.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2304,Object Oriented Programming
 01.06.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 2304,Object Oriented Programming (Practical)
 05.05.2026,1.00 p.m. - 4.00 p.m.,ALL,CMT 2301,Fundamental of Statistics for Technology
-07.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 2202,Communication Skills III (English)
+07.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 2202,Communication Skills III (English) (Theory)
 11.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2202,Basic Biochemistry
 11.05.2026,9.00 a.m. - 12.00 p.m.,ICT,ICT 2303,Data Structures and Algorithms
 11.05.2026,9.00 a.m. onwards,MTT,MTT 2206,Graphical Programming (Practical)
@@ -65,10 +85,17 @@ Date,Time,Dept.,Subject,Title
 15.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2203,Genetics and Evolution
 15.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 2201,Physical Chemistry
 18.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2202,Operating Systems
-25.05.2026,2.00 p.m. - 4.00 p.m.,ALL,CMT 2201,Fundamentals of Solid State Physics
-01.06.2026,9.00 a.m. onwards,ICT,ICT 2304,Object Oriented Programming (Practical)
+18.05.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2202,Chemistry for Materials Technology
+18.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2202,Introduction to Bioprocess Technology (Theory)
+20.05.2026,9.00 a.m. onwards,BPT,BPT 2202,Introduction to Bioprocess Technology (Practical)
+20.05.2026,9.00 a.m. onwards,MTT,MTT 2204,Computer Aided Design (CAD) (Practical)
+30.05.2026,9.00 a.m. onwards,BPT,BPT 2204,Plant Tissue Culture (Practical)
+25.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2201,Quality Management
+25.05.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2201,Fundamentals of Solid State Physics
+25.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 2202,Electricity Networks
+01.06.2026,9.00 a.m. onwards,BPT,BPT 2205,Molecular Biology (Practical)
 27.05.2026,9.00 a.m. onwards,ALL,CMT 2202,Communication Skills III - English (Practical)
-
+,,,,
 Date,Time,Dept.,Subject,Title
 20.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3204,Meat and Fish Processing Technology
 14.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3208,Industrial Microbiology - Theory
@@ -131,7 +158,7 @@ Date,Time,Dept.,Subject,Title
 29.04.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4206,Supply Chain Analysis
 29.04.2026,2.00 p.m. - 4.00 p.m.,EET,EET 4208,Fiber Optic Techniques
 29.04.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 4206,Mineral Processing
-26.05.2026,1.00 p.m. onwards,EET,EET 4301,Electronic Circuit Design and Simulations (Prac)
+06.05.2026,1.00 p.m. onwards,EET,EET 4301,Electronic Circuit Design and Simulations (Prac)
 04.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 4302,Downstream Process Technology
 04.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 4305,Polymer Technology II
 
@@ -151,9 +178,7 @@ Date,Time,Dept.,Subject,Title
 19.05.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4202,Embedded Systems
 19.05.2026,9.00 a.m. onwards,FDT,FDT 4302,Food Product Development (Viva)
 23.05.2026,9.00 a.m. - 11.00 a.m.,ALL,CML 4202,Human Resource Management
-26.05.2026,9.00 a.m. onwards,EET,EET 4206,Automation Technology II (Practical)
-01.06.2026,9.00 a.m. onwards,BPT,BPT 4204,Molecular Virology (Viva)
-`;
+01.06.2026,9.00 a.m. onwards,BPT,BPT 4204,Molecular Virology (Viva)`;
 
 export const TIMETABLE: Record<number, ExamEntry[]> = (() => {
     const result: Record<number, ExamEntry[]> = { 1: [], 2: [], 3: [], 4: [] };
