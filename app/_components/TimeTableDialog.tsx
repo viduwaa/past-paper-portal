@@ -51,6 +51,8 @@ const CalendarCell = ({ day, index, monthIndex, monthName, hoveredCell, setHover
     const isHovered = hoveredCell === index && hoveredMonth === monthIndex;
     const showTooltip = !day.isPast && (isTapped || isHovered) && day.exams.length > 0;
     const tooltipSide: 'left' | 'right' = monthIndex === 1 ? 'left' : 'right';
+    const isMobileLeft = (index % 7) <= 1;
+    const isMobileRight = (index % 7) >= 5;
 
     return (
         <div
@@ -65,7 +67,8 @@ const CalendarCell = ({ day, index, monthIndex, monthName, hoveredCell, setHover
                 setHoveredCell(null);
                 setHoveredMonth(null);
             }}
-            onClick={() => {
+            onClick={(e) => {
+                e.stopPropagation();
                 if (!day.isPast) handleCellTap(cellKey, day.exams.length > 0, day.dateStr);
             }}
             className={`
@@ -121,11 +124,15 @@ const CalendarCell = ({ day, index, monthIndex, monthName, hoveredCell, setHover
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className={`absolute z-[60] top-1/2 -translate-y-1/2 w-56 sm:w-60 ${
-                            tooltipSide === 'right'
-                                ? 'left-full ml-1 sm:ml-2'
-                                : 'right-full mr-1 sm:mr-2'
-                        }`}
+                        className={`absolute z-[60] w-[220px] sm:w-60
+                            top-full mt-2 translate-y-0
+                            ${isMobileLeft ? 'left-0 translate-x-0' : isMobileRight ? 'right-0 translate-x-0' : 'left-1/2 -translate-x-1/2'}
+                            md:top-1/2 md:bottom-auto md:mt-0 md:-translate-y-1/2
+                            ${tooltipSide === 'right'
+                                ? 'md:left-full md:right-auto md:ml-2 md:translate-x-0'
+                                : 'md:right-full md:left-auto md:mr-2 md:translate-x-0'
+                            }
+                        `}
                     >
                         <div className="bg-popover text-popover-foreground rounded-lg shadow-xl border p-2 sm:p-3 space-y-1.5 sm:space-y-2">
                             <div className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 border-b pb-1 sm:pb-1.5">
@@ -150,11 +157,15 @@ const CalendarCell = ({ day, index, monthIndex, monthName, hoveredCell, setHover
                                 </div>
                             ))}
                         </div>
-                        <div className={`absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-popover border ${
-                            tooltipSide === 'right'
-                                ? 'left-0 -ml-[3px] border-l-0 border-t-0 rotate-45'
-                                : 'right-0 -mr-[3px] border-r-0 border-b-0 rotate-45'
-                        }`} />
+                        <div className={`absolute w-1.5 h-1.5 sm:w-2 sm:h-2 bg-popover border rotate-45
+                            -top-[3px] sm:-top-[4px] border-b-0 border-r-0
+                            ${isMobileLeft ? 'left-4 translate-x-0' : isMobileRight ? 'right-4 translate-x-0' : 'left-1/2 -translate-x-1/2'}
+                            md:top-1/2 md:bottom-auto md:-translate-y-1/2
+                            ${tooltipSide === 'right'
+                                ? 'md:left-0 md:-ml-[4px] md:right-auto md:border-l-0 md:border-t-0 md:border-r md:border-b md:translate-x-0'
+                                : 'md:right-0 md:-mr-[4px] md:left-auto md:border-r-0 md:border-b-0 md:border-l md:border-t md:translate-x-0'
+                            }
+                        `} />
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -174,16 +185,29 @@ export function TimeTableDialog({ open, onOpenChange }: TimeTableDialogProps) {
     const mayDays = CALENDAR_DAYS[selectedYear]?.[1] || [];
 
     const displayExams = useMemo(() => {
-        if (selectedDate) {
-            return yearExams.filter((e) => e.date === selectedDate);
-        }
-        return yearExams;
+        let exams = selectedDate 
+            ? yearExams.filter((e) => e.date === selectedDate)
+            : yearExams;
+            
+        return [...exams].sort((a, b) => {
+            const partsA = a.date.split(".");
+            const dateA = new Date(2026, parseInt(partsA[1], 10) - 1, parseInt(partsA[0], 10));
+            const partsB = b.date.split(".");
+            const dateB = new Date(2026, parseInt(partsB[1], 10) - 1, parseInt(partsB[0], 10));
+            
+            if (dateA.getTime() !== dateB.getTime()) {
+                return dateA.getTime() - dateB.getTime();
+            }
+            return a.time.localeCompare(b.time);
+        });
     }, [yearExams, selectedDate]);
 
     const handleCellTap = (cellKey: string, hasExams: boolean, dateStr: string) => {
         if (!hasExams) return;
         setSelectedDate(tappedCell === cellKey ? null : dateStr);
         setTappedCell(tappedCell === cellKey ? null : cellKey);
+        setHoveredCell(null);
+        setHoveredMonth(null);
     };
 
     const renderCalendar = (monthName: string, days: typeof aprilDays, monthIndex: number) => (
@@ -221,7 +245,10 @@ export function TimeTableDialog({ open, onOpenChange }: TimeTableDialogProps) {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[98vw] sm:w-[95vw] max-w-[95vw] sm:max-w-[92vw] h-[95vh] sm:h-auto sm:max-h-[92vh] overflow-y-auto p-3 sm:p-6">
+            <DialogContent 
+                className="w-[98vw] sm:w-[95vw] max-w-[95vw] sm:max-w-[92vw] h-[95vh] sm:h-auto sm:max-h-[92vh] overflow-y-auto p-3 sm:p-6"
+                onClick={() => setTappedCell(null)}
+            >
                 <DialogHeader className="pb-2 sm:pb-4">
                     <DialogTitle className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
                         Exam Time Table 2026
