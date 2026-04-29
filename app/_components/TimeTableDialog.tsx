@@ -180,14 +180,14 @@ export function TimeTableDialog({ open, onOpenChange }: TimeTableDialogProps) {
     const [tappedCell, setTappedCell] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-    const yearExams = TIMETABLE[selectedYear] || [];
-    const aprilDays = CALENDAR_DAYS[selectedYear]?.[0] || [];
-    const mayDays = CALENDAR_DAYS[selectedYear]?.[1] || [];
+const aprilDays = CALENDAR_DAYS[selectedYear]?.[0] || [];
+  const mayDays = CALENDAR_DAYS[selectedYear]?.[1] || [];
 
-    const displayExams = useMemo(() => {
-        let exams = selectedDate 
-            ? yearExams.filter((e) => e.date === selectedDate)
-            : yearExams;
+  const displayExams = useMemo(() => {
+    const yearExams = TIMETABLE[selectedYear] || [];
+    const exams = selectedDate
+    ? yearExams.filter((e) => e.date === selectedDate)
+    : yearExams;
             
         return [...exams].sort((a, b) => {
             const partsA = a.date.split(".");
@@ -200,7 +200,7 @@ export function TimeTableDialog({ open, onOpenChange }: TimeTableDialogProps) {
             }
             return a.time.localeCompare(b.time);
         });
-    }, [yearExams, selectedDate]);
+    }, [selectedDate, selectedYear]);
 
     const handleCellTap = (cellKey: string, hasExams: boolean, dateStr: string) => {
         if (!hasExams) return;

@@ -19,7 +19,7 @@ import {
     Github,
 } from "lucide-react";
 import { WebsiteFeedback } from "../_components/WebsiteFeedback";
-import programs, { type Subject as ProgramSubject } from "@/lib/subjectList";
+import programs from "@/lib/subjectList";
 
 const gradePoints: { [key: string]: number } = {
     "A+": 4.0,
