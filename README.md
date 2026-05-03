@@ -1,4 +1,4 @@
-﻿# 📚 FOT Past Papers Portal
+# 📚 FOT Past Papers Portal
 
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -42,19 +42,19 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 ### Installation
 
 1. **Clone the repository:**
-   \\\ash
+   ```bash
    git clone https://github.com/viduwaa/past-paper-portal.git
    cd past-paper-portal
-   \\\
+   ```
 
 2. **Install dependencies:**
-   \\\ash
+   ```bash
    pnpm install
-   \\\
+   ```
 
 3. **Set up Environment Variables:**
-   Create a \.env\ file in the root directory and add your credentials:
-   \\\env
+   Create a `.env` file in the root directory and add your credentials:
+   ```env
    POSTGRES_URL="postgres://default:xyz@ep-your-db-region.postgres.vercel-storage.com:5432/verceldb"
    POSTGRES_PRISMA_URL="postgres://default:xyz@ep-your-db-region.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
    POSTGRES_URL_NON_POOLING="postgres://default:xyz@ep-your-db-region.postgres.vercel-storage.com:5432/verceldb"
@@ -65,16 +65,15 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 
    UPSTASH_REDIS_REST_URL="https://your-upstash-url.upstash.io"
    UPSTASH_REDIS_REST_TOKEN="your_upstash_token"
-   \\\
+   ```
 
 4. **Initialize the Database:**
-   Run the SQL commands found in \database-setup.sql\ on your connected PostgreSQL instance to create the \past_papers\ and \website_feedback\ schemas.
-   *(Optional)* Use \scripts/generate_seed.py\ to generate seed combinations from raw data files.
+   Run the SQL commands found in `database-setup.sql` on your connected PostgreSQL instance to create the `past_papers` and `website_feedback` schemas.
 
 5. **Start the Development Server:**
-   \\\ash
+   ```bash
    pnpm run dev
-   \\\
+   ```
    Visit [http://localhost:3000](http://localhost:3000) to view the portal.
 
 ---
@@ -90,9 +89,9 @@ To contribute past papers, please create an Issue or submit a Pull Request. Sinc
 
 ### Contributing Code
 1. Fork the repository
-2. Create a feature branch (\git checkout -b feature/amazing-feature\)
-3. Commit your changes (\git commit -m "Add some amazing feature"\)
-4. Push to the branch (\git push origin feature/amazing-feature\)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m "Add some amazing feature"`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ---
@@ -108,9 +107,9 @@ past-paper-portal/
 │   └── page.tsx                  # Home Portal view
 ├── components/
 │   └── ui/                       # Shadcn/UI primitive components
-├── lib/                          # Database interfaces and API logic (ratelimits)
+├── data/                         # Seed and static data resources
+├── lib/                          # Database interfaces and API logic (rate limits)
 ├── public/                       # Static assets
-├── scripts/                      # Python ETL scripts for seed formatting
 ├── database-setup.sql            # PostgreSQL core tables setup
 ├── next.config.ts                # Next.js configuration
 ├── tsconfig.json                 # TypeScript configuration
@@ -123,7 +122,7 @@ past-paper-portal/
 
 ## 🚨 Important Notice
 
-**Paper Privacy:** Many of the physical papers hosted on the associated drive domains can **only be viewed with a valid 	ec.rjt.ac.lk domain email**. You need to use your university active student email to access them successfully.
+**Paper Privacy:** Many of the physical papers hosted on the associated drive domains can **only be viewed with a valid tec.rjt.ac.lk domain email**. You need to use your university active student email to access them successfully.
 
 ---
 
