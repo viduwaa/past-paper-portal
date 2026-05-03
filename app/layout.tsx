@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "./_components/ThemeProvider";
 import { TopNavigation } from "./_components/TopNavigation";
@@ -145,19 +146,10 @@ export default function RootLayout({
                     content="RYaAiNrcPHHq2GcpqImIhWliNIJJ_U-VtbLAbcGwSoE"
                 />
                 <link rel="manifest" href="/site.webmanifest" />
-                <script
+                <Script
                     async
                     src="https://www.googletagmanager.com/gtag/js?id=G-0T13ZDQZC8"
-                />
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            window.dataLayer = window.dataLayer || [];
-                            function gtag(){dataLayer.push(arguments);}
-                            gtag('js', new Date());
-                            gtag('config', 'G-0T13ZDQZC8');
-                        `,
-                    }}
+                    strategy="afterInteractive"
                 />
             </head>
             <body className={`${aeonik.variable} antialiased font-sans`}>
@@ -167,6 +159,18 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
+                    <Script
+                        id="gtag-init"
+                        strategy="afterInteractive"
+                        dangerouslySetInnerHTML={{
+                            __html: `
+                                window.dataLayer = window.dataLayer || [];
+                                function gtag(){dataLayer.push(arguments);}
+                                gtag('js', new Date());
+                                gtag('config', 'G-0T13ZDQZC8');
+                            `,
+                        }}
+                    />
                     <script
                         type="application/ld+json"
                         dangerouslySetInnerHTML={{
