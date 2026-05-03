@@ -145,6 +145,20 @@ export default function RootLayout({
                     content="RYaAiNrcPHHq2GcpqImIhWliNIJJ_U-VtbLAbcGwSoE"
                 />
                 <link rel="manifest" href="/site.webmanifest" />
+                <script
+                    async
+                    src="https://www.googletagmanager.com/gtag/js?id=G-0T13ZDQZC8"
+                />
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'G-0T13ZDQZC8');
+                        `,
+                    }}
+                />
             </head>
             <body className={`${aeonik.variable} antialiased font-sans`}>
                 <ThemeProvider
