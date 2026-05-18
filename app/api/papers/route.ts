@@ -3,9 +3,9 @@ export const runtime = "edge";
 import { NextResponse } from "next/server";
 import { Database, PaperFilters } from "@/lib/db";
 import { ratelimit } from "@/lib/ratelimit";
+import { getCachedPapers, setCachedPapers, getCachedFilterOptions, setCachedFilterOptions } from "@/lib/cache";
 
 export async function GET(request: Request) {
-    // Determine user IP for rate limiting
     const ip =
         request.headers.get("cf-connecting-ip") ||
         request.headers.get("x-forwarded-for") ||
@@ -21,15 +21,17 @@ export async function GET(request: Request) {
             );
         }
     } catch (error) {
-        // If Redis fails, log it but don't block the user (fail open)
         console.error("Rate limiting error:", error);
     }
 
     const { searchParams } = new URL(request.url);
 
-    // Check if the request is for filter options
     if (searchParams.get("options") === "true") {
-        const options = await Database.getFilterOptions();
+        let options = await getCachedFilterOptions();
+        if (!options) {
+            options = await Database.getFilterOptions();
+            await setCachedFilterOptions(options).catch(() => {});
+        }
         return NextResponse.json(options);
     }
 
@@ -42,9 +44,15 @@ export async function GET(request: Request) {
             searchQuery: searchParams.get("searchQuery") || undefined,
         };
 
-        const papers = await Database.getPapers(filters);
+        let papers = await getCachedPapers();
+        if (!papers) {
+            papers = await Database.getAllPapers();
+            await setCachedPapers(papers).catch(() => {});
+        }
 
-        return NextResponse.json(papers);
+        const filtered = Database.filterPapers(papers, filters);
+
+        return NextResponse.json(filtered);
     } catch (error) {
         console.error("Papers API Error:", error);
         return NextResponse.json(

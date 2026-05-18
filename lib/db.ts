@@ -44,6 +44,43 @@ export class Database {
     // Past Papers Methods
     // ============================================================
 
+    static async getAllPapers(): Promise<PastPaper[]> {
+        const result = await sql`SELECT * FROM past_papers ORDER BY exam_year DESC, course_code ASC`;
+        return result.rows as PastPaper[];
+    }
+
+    static filterPapers(papers: PastPaper[], filters: PaperFilters): PastPaper[] {
+        const { year, semester, department, courseCode, searchQuery } = filters;
+
+        return papers.filter((p) => {
+            if (year && p.academic_year !== year) return false;
+            if (semester && p.semester !== semester) return false;
+            if (department) {
+                const common = ["CMT", "CML"];
+                if (department === "ITT" || department === "ICT") {
+                    const allowed = [department, "ICT", "ITT", ...common];
+                    if (!allowed.includes(p.department_code)) return false;
+                } else {
+                    const allowed = [department, ...common];
+                    if (!allowed.includes(p.department_code)) return false;
+                }
+            }
+            if (courseCode) {
+                if (!p.course_code.toLowerCase().includes(courseCode.toLowerCase())) return false;
+            }
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                if (
+                    !p.course_name.toLowerCase().includes(q) &&
+                    !p.file_name.toLowerCase().includes(q) &&
+                    !p.course_code.toLowerCase().includes(q)
+                )
+                    return false;
+            }
+            return true;
+        });
+    }
+
     static async getPapers(filters: PaperFilters): Promise<PastPaper[]> {
         const { year, semester, department, courseCode, searchQuery } = filters;
 
