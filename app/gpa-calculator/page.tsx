@@ -269,15 +269,10 @@ export default function GPACalculator() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.6 }}
                 >
-                    <p className="text-[10px] sm:text-xs text-orange-600 dark:text-orange-400 font-medium">
-                        Year 1, Year 2 & Year 3 S1 Subjects and credits are up
-                        to date.
+                    <p className="text-[10px] sm:text-xs text-green-500 dark:text-green-500 font-medium">
+                      All Subjects are uptodate with the 2022 Handbook
                     </p>
-                    <p className="text-[10px] sm:text-xs text-orange-600 dark:text-orange-400">
-                        Year 3 S2, Year 4 subjects & credit values are according
-                        to the Prospectus 2018/2019. These will update when we
-                        get the proper subject details.
-                    </p>
+                  
                     <p className="text-[10px] sm:text-xs text-muted-foreground">
                         There will be some inaccuracies like ±0.01 for GPA
                         results
