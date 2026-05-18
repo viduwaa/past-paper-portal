@@ -34,20 +34,19 @@ export function TopNavigation() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 text-white overflow-hidden"
+                        className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-yellow-200 overflow-hidden"
                     >
                         <div className="container mx-auto px-4 py-2">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
-                                    <Sparkles className="h-4 w-4 animate-pulse" />
-                                    <span className="text-sm font-medium">
-                                        Good luck for exams! All available
-                                        university past papers are here.
+                                    <Sparkles className="h-4 w-4 animate-pulse text-yellow-200" />
+                                    <span className="text-sm font-semibold">
+                                        Good luck for exams! Minor changes have to be done because of the high traffic 😓 
                                     </span>
                                 </div>
                                 <button
                                     onClick={() => setShowAlert(false)}
-                                    className="p-1 hover:bg-white/20 rounded transition-colors"
+                                    className="p-1 hover:bg-yellow-200/20 rounded transition-colors"
                                     aria-label="Close alert"
                                 >
                                     <X className="h-4 w-4" />

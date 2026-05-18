@@ -9,12 +9,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Github } from "lucide-react";
 import { WebsiteFeedback } from "./_components/WebsiteFeedback";
 import { PastPaper } from "@/lib/db";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import { TimeTableDialog } from "./_components/TimeTableDialog";
 
 export default function Home() {
     const [papers, setPapers] = useState<PastPaper[]>([]);
     const [isRateLimited, setIsRateLimited] = useState(false);
+    const [isLoadingPapers, setIsLoadingPapers] = useState(false);
     const [isTimeTableOpen, setIsTimeTableOpen] = useState(false);
 
     const [filters, setFilters] = useState({
@@ -32,6 +33,7 @@ export default function Home() {
     useEffect(() => {
         const fetchPapers = async () => {
             try {
+                setIsLoadingPapers(true);
                 // Build query params ensuring we match the URL structure from our new route
                 const params = new URLSearchParams();
 
@@ -63,6 +65,8 @@ export default function Home() {
                 setPapers(data);
             } catch (err) {
                 console.error("Error loading papers:", err);
+            } finally {
+                setIsLoadingPapers(false);
             }
         };
 
@@ -199,7 +203,7 @@ export default function Home() {
                 Showing {displayedPapers.length} of {filteredPapers.length}{" "}
                 papers
             </motion.div>
-            <PaperTable papers={displayedPapers} />
+            <PaperTable papers={displayedPapers} isLoading={isLoadingPapers} />
             {hasMorePapers && (
                 <motion.div
                     className="flex justify-center mt-8"

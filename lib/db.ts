@@ -53,6 +53,10 @@ export class Database {
         const { year, semester, department, courseCode, searchQuery } = filters;
 
         return papers.filter((p) => {
+            const courseCodeValue = (p.course_code ?? "").toLowerCase();
+            const courseNameValue = (p.course_name ?? "").toLowerCase();
+            const fileNameValue = (p.file_name ?? "").toLowerCase();
+
             if (year && p.academic_year !== year) return false;
             if (semester && p.semester !== semester) return false;
             if (department) {
@@ -66,14 +70,14 @@ export class Database {
                 }
             }
             if (courseCode) {
-                if (!p.course_code.toLowerCase().includes(courseCode.toLowerCase())) return false;
+                if (!courseCodeValue.includes(courseCode.toLowerCase())) return false;
             }
             if (searchQuery) {
                 const q = searchQuery.toLowerCase();
                 if (
-                    !p.course_name.toLowerCase().includes(q) &&
-                    !p.file_name.toLowerCase().includes(q) &&
-                    !p.course_code.toLowerCase().includes(q)
+                    !courseNameValue.includes(q) &&
+                    !fileNameValue.includes(q) &&
+                    !courseCodeValue.includes(q)
                 )
                     return false;
             }

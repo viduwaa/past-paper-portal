@@ -10,6 +10,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { motion, AnimatePresence } from "framer-motion";
+import { Loader2 } from "lucide-react";
 
 interface Paper {
     id: number;
@@ -26,9 +27,10 @@ interface Paper {
 interface PaperTableProps {
     papers: Paper[];
     onPaperClick?: (paperId: string) => void;
+    isLoading?: boolean;
 }
 
-export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
+export function PaperTable({ papers, onPaperClick, isLoading }: PaperTableProps) {
     const handleViewClick = (paper: Paper) => {
         onPaperClick?.(paper.id.toString());
         window.open(paper.view_url, "_blank");
@@ -73,7 +75,27 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
                     <TableBody>
                         {/* AnimatePresence without mode="wait" to prevent odd visual behavior */}
                         <AnimatePresence>
-                            {papers.length === 0 ? (
+                            {isLoading ? (
+                                <motion.tr
+                                    key="loading"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <TableCell
+                                        colSpan={7}
+                                        className="text-center py-10 text-muted-foreground"
+                                    >
+                                        <div className="inline-flex items-center gap-2">
+                                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                                            <span className="text-sm font-medium">
+                                                Searching papers...
+                                            </span>
+                                        </div>
+                                    </TableCell>
+                                </motion.tr>
+                            ) : papers.length === 0 ? (
                                 <motion.tr
                                     key="no-results"
                                     initial={{ opacity: 0, scale: 0.95 }}
@@ -139,7 +161,23 @@ export function PaperTable({ papers, onPaperClick }: PaperTableProps) {
             {/* Mobile Card View - Hidden on desktop */}
             <div className="md:hidden">
                 <AnimatePresence>
-                    {papers.length === 0 ? (
+                    {isLoading ? (
+                        <motion.div
+                            key="loading-mobile"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-center py-8 text-muted-foreground"
+                        >
+                            <div className="inline-flex items-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                                <span className="text-sm font-medium">
+                                    Searching papers...
+                                </span>
+                            </div>
+                        </motion.div>
+                    ) : papers.length === 0 ? (
                         <motion.div
                             key="no-results-mobile"
                             initial={{ opacity: 0, scale: 0.95 }}

@@ -8,19 +8,17 @@ const TTL = 3600;
 
 export async function getCachedPapers(): Promise<PastPaper[] | null> {
     try {
-        const cached = await redis.get<PastPaper[] | string>(PAPERS_KEY);
+        const cached = await redis.get<string>(PAPERS_KEY);
         if (!cached) return null;
-        if (typeof cached === "string") {
-            return JSON.parse(cached) as PastPaper[];
-        }
-        return cached;
+        const parsed = JSON.parse(cached) as unknown;
+        return Array.isArray(parsed) ? (parsed as PastPaper[]) : null;
     } catch {
         return null;
     }
 }
 
 export async function setCachedPapers(papers: PastPaper[]): Promise<void> {
-    await redis.set(PAPERS_KEY, papers, { ex: TTL });
+    await redis.set(PAPERS_KEY, JSON.stringify(papers), { ex: TTL });
 }
 
 export async function getCachedFilterOptions(): Promise<{
@@ -29,23 +27,15 @@ export async function getCachedFilterOptions(): Promise<{
     departments: string[];
 } | null> {
     try {
-        const cached = await redis.get<
-            | { years: string[]; semesters: string[]; departments: string[] }
-            | string
-        >(FILTERS_KEY);
+        const cached = await redis.get<string>(FILTERS_KEY);
         if (!cached) return null;
-        if (typeof cached === "string") {
-            return JSON.parse(cached) as {
-                years: string[];
-                semesters: string[];
-                departments: string[];
-            };
-        }
-        return cached as {
+        const parsed = JSON.parse(cached) as {
             years: string[];
             semesters: string[];
             departments: string[];
         };
+        if (!parsed || !Array.isArray(parsed.years)) return null;
+        return parsed;
     } catch {
         return null;
     }
@@ -54,5 +44,5 @@ export async function getCachedFilterOptions(): Promise<{
 export async function setCachedFilterOptions(
     options: { years: string[]; semesters: string[]; departments: string[] },
 ): Promise<void> {
-    await redis.set(FILTERS_KEY, options, { ex: TTL });
+    await redis.set(FILTERS_KEY, JSON.stringify(options), { ex: TTL });
 }
