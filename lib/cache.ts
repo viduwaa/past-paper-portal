@@ -8,17 +8,16 @@ const TTL = 3600;
 
 export async function getCachedPapers(): Promise<PastPaper[] | null> {
     try {
-        const cached = await redis.get<string>(PAPERS_KEY);
+        const cached = await redis.get<PastPaper[]>(PAPERS_KEY);
         if (!cached) return null;
-        const parsed = JSON.parse(cached) as unknown;
-        return Array.isArray(parsed) ? (parsed as PastPaper[]) : null;
+        return Array.isArray(cached) ? cached : null;
     } catch {
         return null;
     }
 }
 
 export async function setCachedPapers(papers: PastPaper[]): Promise<void> {
-    await redis.set(PAPERS_KEY, JSON.stringify(papers), { ex: TTL });
+    await redis.set(PAPERS_KEY, papers, { ex: TTL });
 }
 
 export async function getCachedFilterOptions(): Promise<{
@@ -27,15 +26,13 @@ export async function getCachedFilterOptions(): Promise<{
     departments: string[];
 } | null> {
     try {
-        const cached = await redis.get<string>(FILTERS_KEY);
-        if (!cached) return null;
-        const parsed = JSON.parse(cached) as {
+        const cached = await redis.get<{
             years: string[];
             semesters: string[];
             departments: string[];
-        };
-        if (!parsed || !Array.isArray(parsed.years)) return null;
-        return parsed;
+        }>(FILTERS_KEY);
+        if (!cached || !Array.isArray(cached.years)) return null;
+        return cached;
     } catch {
         return null;
     }
@@ -44,5 +41,6 @@ export async function getCachedFilterOptions(): Promise<{
 export async function setCachedFilterOptions(
     options: { years: string[]; semesters: string[]; departments: string[] },
 ): Promise<void> {
-    await redis.set(FILTERS_KEY, JSON.stringify(options), { ex: TTL });
+    await redis.set(FILTERS_KEY, options, { ex: TTL });
 }
+

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -17,9 +18,23 @@ import {
     Award,
     BookOpen,
     Github,
+    Save,
+    Trash2,
+    FileText,
 } from "lucide-react";
 import { WebsiteFeedback } from "../_components/WebsiteFeedback";
 import programs from "@/lib/subjectList";
+
+interface SavedCalculation {
+    id: string;
+    name: string;
+    program: string;
+    programName: string;
+    gpa: number;
+    credits: number;
+    timestamp: number;
+    grades: { [key: string]: string };
+}
 
 const gradePoints: { [key: string]: number } = {
     "A+": 4.0,
@@ -77,6 +92,16 @@ export default function GPACalculator() {
     );
     const [overallGPA, setOverallGPA] = useState<number | null>(null);
     const [totalCredits, setTotalCredits] = useState<number>(0);
+
+    // Saved GPA Calculations State
+    const [savedCalculations, setSavedCalculations] = useState<SavedCalculation[]>(() => {
+        if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("gpa-saved-calculations");
+            return saved ? JSON.parse(saved) : [];
+        }
+        return [];
+    });
+    const [saveName, setSaveName] = useState<string>("");
 
     const currentProgram = programs[selectedProgram];
     const availableSemesters = currentProgram
@@ -173,6 +198,66 @@ export default function GPACalculator() {
         if (typeof window !== "undefined") {
             localStorage.removeItem(`gpa-subject-grades-${selectedProgram}`);
         }
+    };
+
+    const resetSemesterGrades = (semesterName: string) => {
+        const subjects = currentProgram?.semesters[semesterName] || [];
+        setSubjectGrades((prev) => {
+            const updated = { ...prev };
+            subjects.forEach((subject) => {
+                delete updated[subject.code];
+            });
+            if (typeof window !== "undefined") {
+                localStorage.setItem(
+                    `gpa-subject-grades-${selectedProgram}`,
+                    JSON.stringify(updated),
+                );
+            }
+            return updated;
+        });
+    };
+
+    const saveCurrentCalculation = () => {
+        if (!saveName.trim() || overallGPA === null) return;
+
+        const newSave: SavedCalculation = {
+            id: typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9),
+            name: saveName.trim(),
+            program: selectedProgram,
+            programName: currentProgram?.name || selectedProgram,
+            gpa: overallGPA,
+            credits: totalCredits,
+            timestamp: Date.now(),
+            grades: { ...subjectGrades }
+        };
+
+        setSavedCalculations((prev) => {
+            const updated = [newSave, ...prev];
+            if (typeof window !== "undefined") {
+                localStorage.setItem("gpa-saved-calculations", JSON.stringify(updated));
+            }
+            return updated;
+        });
+        setSaveName("");
+    };
+
+    const loadSavedCalculation = (calc: SavedCalculation) => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("gpa-selected-program", calc.program);
+            localStorage.setItem(`gpa-subject-grades-${calc.program}`, JSON.stringify(calc.grades));
+        }
+        setSelectedProgram(calc.program);
+        setSubjectGrades(calc.grades);
+    };
+
+    const deleteSavedCalculation = (id: string) => {
+        setSavedCalculations((prev) => {
+            const updated = prev.filter((item) => item.id !== id);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("gpa-saved-calculations", JSON.stringify(updated));
+            }
+            return updated;
+        });
     };
 
     const getGPAColor = (gpa: number) => {
@@ -302,20 +387,34 @@ export default function GPACalculator() {
                                         <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-primary" />
                                         <span>{semester}</span>
                                     </h2>
-                                    {semesterGPA > 0 && (
-                                        <div className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 bg-primary/10 rounded-lg w-fit">
-                                            <span className="text-[10px] sm:text-xs md:text-sm text-muted-foreground">
-                                                Semester GPA:{" "}
-                                            </span>
-                                            <span
-                                                className={`text-sm sm:text-base md:text-lg font-bold ${getGPAColor(
-                                                    semesterGPA,
-                                                )}`}
+                                    <div className="flex items-center gap-2 sm:gap-3">
+                                        {semesterGPA > 0 && (
+                                            <div className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 bg-primary/10 rounded-lg w-fit">
+                                                <span className="text-[10px] sm:text-xs md:text-sm text-muted-foreground">
+                                                    Semester GPA:{" "}
+                                                </span>
+                                                <span
+                                                    className={`text-sm sm:text-base md:text-lg font-bold ${getGPAColor(
+                                                        semesterGPA,
+                                                    )}`}
+                                                >
+                                                    {semesterGPA.toFixed(2)}
+                                                </span>
+                                            </div>
+                                        )}
+                                        {subjects.some((sub) => subjectGrades[sub.code]) && (
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => resetSemesterGrades(semester)}
+                                                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 px-2 text-xs flex items-center gap-1"
+                                                title="Reset Semester Grades"
                                             >
-                                                {semesterGPA.toFixed(2)}
-                                            </span>
-                                        </div>
-                                    )}
+                                                <RotateCcw className="h-3.5 w-3.5" />
+                                                <span className="hidden sm:inline">Reset</span>
+                                            </Button>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Subjects Table */}
@@ -533,11 +632,11 @@ export default function GPACalculator() {
                 </div>
 
                 {/* Results Section */}
-                <div className="space-y-3 sm:space-y-4">
+                <div className="space-y-3 sm:space-y-4 lg:sticky lg:top-4 lg:self-start">
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border border-primary/20 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-lg lg:sticky lg:top-4"
+                        className="bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border border-primary/20 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-lg"
                     >
                         <div className="flex items-center space-x-2 mb-4 sm:mb-6">
                             <Award className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
@@ -680,6 +779,30 @@ export default function GPACalculator() {
                                             </Button>
                                         </motion.div>
                                     )}
+
+                                    {/* Save Profile Section */}
+                                    <div className="border-t pt-4 mt-4 space-y-3">
+                                        <p className="text-xs sm:text-sm font-semibold flex items-center gap-1.5 text-foreground">
+                                            <Save className="h-3.5 w-3.5 text-primary" />
+                                            <span>Save Calculation</span>
+                                        </p>
+                                        <div className="flex gap-2">
+                                            <Input
+                                                placeholder="e.g. My Y2S1 Target GPA"
+                                                value={saveName}
+                                                onChange={(e) => setSaveName(e.target.value)}
+                                                className="h-8 text-xs flex-1 dark:bg-muted/40 border-muted-foreground/20"
+                                            />
+                                            <Button
+                                                size="sm"
+                                                onClick={saveCurrentCalculation}
+                                                disabled={!saveName.trim()}
+                                                className="h-8 text-xs px-3"
+                                            >
+                                                Save
+                                            </Button>
+                                        </div>
+                                    </div>
                                 </motion.div>
                             ) : (
                                 <motion.div
@@ -697,6 +820,70 @@ export default function GPACalculator() {
                             )}
                         </AnimatePresence>
                     </motion.div>
+
+                    {/* Saved Profiles Section */}
+                    {savedCalculations.length > 0 && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-card border rounded-lg sm:rounded-xl p-4 sm:p-5 shadow-lg space-y-4"
+                        >
+                            <h3 className="text-base font-semibold flex items-center space-x-2 border-b pb-2">
+                                <FileText className="h-4 w-4 text-primary" />
+                                <span>Saved GPA Profiles Locally</span>
+                            </h3>
+                            <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+                                {savedCalculations.map((calc) => (
+                                    <div
+                                        key={calc.id}
+                                        className="p-3 bg-muted/20 border rounded-lg hover:bg-muted/45 transition-all flex items-center justify-between gap-3 text-xs"
+                                    >
+                                        <div className="space-y-1 min-w-0 flex-1">
+                                            <div className="flex items-center gap-1.5 flex-wrap">
+                                                <span className="font-semibold text-foreground truncate max-w-[120px] sm:max-w-full block" title={calc.name}>
+                                                    {calc.name}
+                                                </span>
+                                                <span className="text-[9px] px-1 py-0.5 bg-primary/10 text-primary font-medium rounded shrink-0">
+                                                    {calc.program}
+                                                </span>
+                                            </div>
+                                            <div className="text-muted-foreground flex gap-1.5 flex-wrap items-center">
+                                                <span>GPA: <strong className={getGPAColor(calc.gpa)}>{calc.gpa.toFixed(2)}</strong></span>
+                                                <span className="opacity-40">•</span>
+                                                <span>Credits: <strong className="text-foreground">{calc.credits}</strong></span>
+                                            </div>
+                                            <div className="text-[9px] text-muted-foreground/70">
+                                                {new Date(calc.timestamp).toLocaleDateString(undefined, {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-1 shrink-0">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => loadSavedCalculation(calc)}
+                                                className="h-7 px-2 text-[10px] gap-1 text-primary hover:bg-primary hover:text-white border-primary/20"
+                                            >
+                                                Load
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => deleteSavedCalculation(calc.id)}
+                                                className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
                 </div>
             </div>
 
