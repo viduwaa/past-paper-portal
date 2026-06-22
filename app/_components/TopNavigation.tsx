@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Calculator, Github, FileText, X, Sparkles } from "lucide-react";
+import { Calculator, Github, FileText, X, Sparkles, BookOpen } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function TopNavigation() {
     const [showAlert, setShowAlert] = useState(true);
+    const showAlertBanner = false; // Set to true to show the welcome alert banner during peak seasons
     const pathname = usePathname();
 
     useEffect(() => {
@@ -28,7 +29,7 @@ export function TopNavigation() {
         <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
             {/* Alert Banner */}
             <AnimatePresence>
-                {showAlert && (
+                {showAlertBanner && showAlert && (
                     <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
@@ -106,6 +107,27 @@ export function TopNavigation() {
                             <span className="hidden sm:block">GPA Calc</span>
                             <span className="sm:hidden">GPA</span>
                             {isActive("/gpa-calculator") && (
+                                <motion.div
+                                    layoutId="activeTab"
+                                    className="absolute inset-0 bg-background rounded-md shadow-sm -z-10"
+                                    transition={{
+                                        type: "spring",
+                                        duration: 0.5,
+                                    }}
+                                />
+                            )}
+                        </Link>
+                        <Link
+                            href="/notes"
+                            className={`relative flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-md transition-all duration-200 text-xs sm:text-sm font-medium ${
+                                isActive("/notes")
+                                    ? "bg-background shadow-sm text-primary"
+                                    : "hover:bg-background/50 text-muted-foreground hover:text-foreground"
+                            }`}
+                        >
+                            <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            <span>Notes</span>
+                            {isActive("/notes") && (
                                 <motion.div
                                     layoutId="activeTab"
                                     className="absolute inset-0 bg-background rounded-md shadow-sm -z-10"

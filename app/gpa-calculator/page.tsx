@@ -303,6 +303,48 @@ export default function GPACalculator() {
 
     return (
         <div className="space-y-6 sm:space-y-8 relative">
+            {/* Mobile Sticky GPA Bar */}
+            <AnimatePresence>
+                {overallGPA !== null && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -50 }}
+                        className="lg:hidden sticky top-[53px] sm:top-[61px] z-40 bg-background/95 backdrop-blur-md border-b px-4 py-2 sm:py-3 shadow-md flex items-center justify-between transition-all duration-300 -mx-4"
+                    >
+                        <div className="flex items-center gap-2 min-w-0">
+                            <TrendingUp className="h-4 w-4 text-primary shrink-0 animate-pulse" />
+                            <div className="flex items-baseline gap-1.5 min-w-0">
+                                <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider">GPA:</span>
+                                <span className={`text-base sm:text-lg font-extrabold ${getGPAColor(overallGPA)}`}>
+                                    {overallGPA.toFixed(2)}
+                                </span>
+                                <span className={`text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded font-bold bg-primary/5 truncate max-w-[80px] sm:max-w-full ${getGPAColor(overallGPA)}`}>
+                                    {getGPALabel(overallGPA)}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                            <div className="text-right">
+                                <span className="text-[9px] text-muted-foreground block leading-none">Credits</span>
+                                <span className="text-xs font-bold text-primary">{totalCredits} / 120</span>
+                            </div>
+                            <div className="h-6 w-[1px] bg-border" />
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={resetCalculator}
+                                className="h-8 px-2 text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10 flex items-center gap-1"
+                                title="Reset All"
+                            >
+                                <RotateCcw className="h-3.5 w-3.5" />
+                                <span className="hidden sm:inline">Reset</span>
+                            </Button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Header Section */}
             <motion.div
                 className="text-center space-y-4 sm:space-y-6"

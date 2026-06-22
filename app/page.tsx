@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Github } from "lucide-react";
 import { WebsiteFeedback } from "./_components/WebsiteFeedback";
 import { PastPaper } from "@/lib/db";
-import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { TimeTableDialog } from "./_components/TimeTableDialog";
 
 export default function Home() {
@@ -17,6 +17,7 @@ export default function Home() {
     const [isRateLimited, setIsRateLimited] = useState(false);
     const [isLoadingPapers, setIsLoadingPapers] = useState(false);
     const [isTimeTableOpen, setIsTimeTableOpen] = useState(false);
+    const showTimeTableBanner = false; // Set to true to show exam timetable banner during exam seasons
 
     const [filters, setFilters] = useState({
         department: "ITT",
@@ -150,28 +151,30 @@ export default function Home() {
                 </motion.p>
             </motion.div>
 
-<motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-                className="bg-blue-500/10 border border-blue-500/30 text-blue-800 dark:text-blue-300 p-4 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm"
-            >
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-500/20 rounded-full">
-                        <CalendarIcon className="h-5 w-5" />
-                    </div>
-                    <div>
-                        <h3 className="font-semibold text-left">Exam Time Table Released!</h3>
-                        <p className="text-sm opacity-90">The official exam time table for this semester is now available to view.</p>
-                    </div>
-                </div>
-                <Button
-                    onClick={() => setIsTimeTableOpen(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap shadow-sm text-center"
+            {showTimeTableBanner && (
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                    className="bg-blue-500/10 border border-blue-500/30 text-blue-800 dark:text-blue-300 p-4 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm"
                 >
-                    View Time Table
-                </Button>
-            </motion.div>
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-500/20 rounded-full">
+                            <CalendarIcon className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-left">Exam Time Table Released!</h3>
+                            <p className="text-sm opacity-90">The official exam time table for this semester is now available to view.</p>
+                        </div>
+                    </div>
+                    <Button
+                        onClick={() => setIsTimeTableOpen(true)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap shadow-sm text-center"
+                    >
+                        View Time Table
+                    </Button>
+                </motion.div>
+            )}
             
             <TimeTableDialog open={isTimeTableOpen} onOpenChange={setIsTimeTableOpen} />
             
