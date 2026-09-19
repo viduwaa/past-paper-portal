@@ -19,7 +19,8 @@ BASE = Path(__file__).resolve().parent.parent
 
 # Load the new papers data
 NEW_PAPERS_JSON = BASE / "data" / "scraped" / "new_fot_papers.json"
-CSV_MAPPING = BASE / "data" / "scraped" / "gdrive_papers_mapping.csv"
+# GDrive shareable links extracted from Google Drive via Apps Script
+CSV_MAPPING = BASE / "data" / "new_papers" / "FoT Past Papers - GDrive Links - GDrive Links.csv"
 
 
 def load_papers():
