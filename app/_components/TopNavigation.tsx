@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export function TopNavigation() {
     const [showAlert, setShowAlert] = useState(true);
-    const showAlertBanner = false; // Set to true to show the welcome alert banner during peak seasons
+    const showAlertBanner = true; // Set to true to show notification banner
     const pathname = usePathname();
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export function TopNavigation() {
                                 <div className="flex items-center space-x-2">
                                     <Sparkles className="h-4 w-4 animate-pulse text-yellow-200" />
                                     <span className="text-sm font-semibold">
-                                        Good luck for exams! Minor changes have to be done because of the high traffic 😓 
+                                        New papers added! Faculty of Technology past papers are now up to date through 2025.
                                     </span>
                                 </div>
                                 <button
