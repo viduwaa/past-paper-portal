@@ -10,8 +10,10 @@ function parseCSVLine(line: string): string[] {
     const result: string[] = [];
     let current = "";
     let inQuotes = false;
+
     for (let i = 0; i < line.length; i++) {
         const char = line[i];
+
         if (char === '"') {
             inQuotes = !inQuotes;
         } else if (char === "," && !inQuotes) {
@@ -21,230 +23,356 @@ function parseCSVLine(line: string): string[] {
             current += char;
         }
     }
+
     result.push(current.trim());
     return result;
 }
 
-const CSV_DATA = `Date,Time,Dept.,Subject,Title
-08.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 1303,Fundamentals of Mathematics for Technology
-28.04.2026,2.00 p.m. - 05.00 p.m.,ALL,CMT 1301,Fundamentals of Physics for Technology
 
-04.05.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1302,Fundamentals of Chemistry for Technology
-04.05.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1302,Fundamentals of Chemistry for Technology
-04.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1305,Program Designing and Programming (Theory)
+/*
+|--------------------------------------------------------------------------
+| OCTOBER / NOVEMBER 2026 EXAMINATION TIMETABLE
+|--------------------------------------------------------------------------
+|
+| 1 = First Year
+| 2 = Second Year
+| 3 = Third Year
+| 4 = Fourth Year
+|
+| Departments:
+| EET = Electrical & Electronic Technology
+| MTT = Materials Technology
+| ICT = Information & Communication Technology
+| BPT = Bioprocess Technology
+| FDT = Food Technology
+|
+*/
+
+const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
+19.10.2026,9.00 a.m. - 11.00 a.m.,BST,FDT 1201,Organic Chemistry,1
+19.10.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1207,Human Computer Interaction,1
+19.10.2026,9.00 a.m. - 11.00 a.m.,ENT,ENT 1203,Engineering Drawing,1
+19.10.2026,1.00 p.m. - 4.00 p.m.,MTT,MTT 2311,Ceramic Technology I,2
+19.10.2026,1.00 p.m. - 4.00 p.m.,ICT,ICT 3314,Embedded Systems,3
+
+20.10.2026,9.00 a.m. - 12.00 p.m.,EET,EET 4312,Power System Analysis,4
+20.10.2026,9.00 a.m. - 12.00 p.m.,MTT,MTT 4311,Advanced Materials,4
+
+21.10.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1307,Mathematics for Technology I,1
+21.10.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1307,Mathematics for Technology I,1
+21.10.2026,9.00 a.m. - 12.00 p.m.,ICT,CMT 1307,Mathematics for Technology I,1
+
+21.10.2026,2.00 p.m. - 3.00 p.m.,BPT,BPT 2108,Quality Assurance and Safety of Bio processed Product,2
+21.10.2026,2.00 p.m. - 3.30 p.m.,MTT,MTT 2112,Introduction to Thermodynamics,2
+21.10.2026,2.00 p.m. - 3.30 p.m.,FDT,FDT 2206,Food Physics,2
+21.10.2026,2.00 p.m. - 4.00 p.m.,EET,EET 2203,Electronic Devises and Circuits,2
+21.10.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3216,Research Methodology,3
+
+22.10.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4209,High Voltage Engineering,4
+22.10.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 4207,Nanotechnology,4
+22.10.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 4213,Manufacturing Systems,4
+
+23.10.2026,9.00 a.m. - 12.00 p.m.,ENT,ENT 1302,Fundamentals of Electricity and Magnetism,1
+23.10.2026,9.00 a.m. - 12.00 p.m.,ICT,ENT 1302,Fundamentals of Electricity and Magnetism,1
+23.10.2026,9.00 a.m. - 11.00 a.m.,BST,BPT 1202,Cell Biology,1
+23.10.2026,1.00 p.m. - 3.00 p.m.,EET,CMT 2203,Computational Mathematics,2
+23.10.2026,1.00 p.m. - 3.00 p.m.,MTT,CMT 2203,Computational Mathematics,2
+23.10.2026,1.00 p.m. - 3.00 p.m.,ICT,CMT 2203,Computational Mathematics,2
+23.10.2026,1.00 p.m. - 3.00 p.m.,BPT,CMT 2203,Computational Mathematics,2
+23.10.2026,1.00 p.m. - 3.00 p.m.,FDT,CMT 2203,Computational Mathematics,2
+23.10.2026,1.00 p.m. - 4.00 p.m.,ICT,ICT 2305,Computational Mathematics,2
+
+26.10.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4217,Electrical Machines and Drives,4
+26.10.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 4205,Food Marketing,4
+26.10.2026,9.00 a.m. - 10.30 a.m.,MTT,MTT 4114,Quality Management,4
+26.10.2026,1.00 p.m. - 3.00 p.m.,MTT,MTT 2207,Measurements, Error, Analysis and Instrumentations,2
+26.10.2026,1.00 p.m. - 3.00 p.m.,EET,EET 2204,Electrical Measurements and Instrumentations,2
+26.10.2026,1.00 p.m. - 3.00 p.m.,ICT,CML 3203,Basic of Accountancy,3
+
+27.10.2026,9.00 a.m. - 11.00 a.m.,ENT,ENT 1204,Workshop Technology I,1
+27.10.2026,9.00 a.m. - 11.00 a.m.,BST,BPT 1201,General Microbiology (Theory),1
+
+28.10.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4210,Electronic Product Design,4
+28.10.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 4204,Quality Assurance, Safety and Standards in Food Industry,4
+28.10.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 4215,Cleaner Production,4
+28.10.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3213,Advanced Software System Design,3
+
+29.10.2026,9.00 a.m. onwards,BST,BPT 1201,General Microbiology (Practical),1
+29.10.2026,9.00 a.m. - 12.00 p.m.,ENT,ENT 1301,Introduction to Basic Electronics,1
+29.10.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1210,Introduction to Multimedia,1
+29.10.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2206,Bioreactor Operation and Design,2
+29.10.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 2208,Food Microbiology,2
+29.10.2026,2.00 p.m. - 4.00 p.m.,EET,EET 2206,Signals and Systems,2
+29.10.2026,2.00 p.m. - 5.00 p.m.,ICT,ICT 2308,Database Systems (Theory),2
+29.10.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2209,Introduction to Polymer Technology,2
+
+30.10.2026,9.00 a.m. - 11.30 a.m.,EET,EET 4220,Graphical Programming and Data Acquisition,4
+30.10.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3204,E-Business Systems,3
+
+02.11.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1209,Web Technologies,1
+02.11.2026,9.00 a.m. - 11.00 a.m.,ENT,CMT 1208,Computer Programming for Technology,1
+02.11.2026,9.00 a.m. - 11.00 a.m.,BST,CMT 1208,Computer Programming for Technology,1
+02.11.2026,1.00 p.m. - 3.00 p.m.,EET,CML 2204,Foreign Language,2
+02.11.2026,1.00 p.m. - 3.00 p.m.,MTT,CML 2204,Foreign Language,2
+02.11.2026,1.00 p.m. - 3.00 p.m.,ICT,CML 2204,Foreign Language,2
+02.11.2026,1.00 p.m. - 3.00 p.m.,BPT,CML 2204,Foreign Language,2
+02.11.2026,1.00 p.m. - 3.00 p.m.,FDT,CML 2204,Foreign Language,2
+
+03.11.2026,9.00 a.m. - 12.00 p.m.,ICT,ICT 3311,Robotics,3
+
+04.11.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1209,Communication Skills II (Theory),1
+04.11.2026,9.00 a.m. - 12.00 p.m.,ICT,CMT 1209,Communication Skills II (Theory),1
+04.11.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1209,Communication Skills II (Theory),1
+04.11.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2211,Fundamentals of Statistics,2
+04.11.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 2210,Food Biotechnology,2
+04.11.2026,2.00 p.m. - 4.00 p.m.,EET,CML 2208,Introduction to Marketing,2
+04.11.2026,2.00 p.m. - 4.00 p.m.,MTT,CML 2208,Introduction to Marketing,2
+04.11.2026,2.00 p.m. - 4.00 p.m.,BPT,CML 2208,Introduction to Marketing,2
+
+05.11.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3219,Mobile Application Development,3
+
+06.11.2026,9.00 a.m. onwards,ENT,CMT 1209,Communication Skills II (Practical),1
+06.11.2026,9.00 a.m. onwards,BST,CMT 1209,Communication Skills II (Practical),1
+06.11.2026,9.00 a.m. onwards,ICT,CMT 1209,Communication Skills II (Practical),1
+
+06.11.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2214,Introduction to Information Systems,2
+06.11.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2210,Mechanical Behavior of Materials,2
+06.11.2026,2.00 p.m. - 5.00 p.m.,EET,EET 2305,Electrical Machines,2
+06.11.2026,2.00 p.m. - 5.00 p.m.,BPT,FDT 2305,Analytical Chemistry,2
+06.11.2026,2.00 p.m. - 5.00 p.m.,FDT,FDT 2305,Analytical Chemistry,2
+
+09.11.2026,9.00 a.m. onwards,ICT,ICT 2308,Database Systems (Practical),2
+09.11.2026,1.00 p.m. - 3.00 p.m.,MTT,MTT 2205,Introduction to Metallurgy,2
+09.11.2026,1.00 p.m. - 3.00 p.m.,BPT,BPT 2207,Basic Immunology,2
+09.11.2026,1.00 p.m. - 3.00 p.m.,FDT,FDT 2207,Food Chemistry,2
+09.11.2026,1.00 p.m. - 3.00 p.m.,ICT,ICT 3209,Computer Organization and Architecture,3
+
+10.11.2026,9.00 a.m. - 11.00 a.m.,ENT,CML 1203,Principles of Management,1
+10.11.2026,9.00 a.m. - 11.00 a.m.,BST,CML 1203,Principles of Management,1
+10.11.2026,9.00 a.m. - 11.00 a.m.,ICT,CML 1203,Principles of Management,1
 
 
-27.05.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1304,Fundamentals of Computer for Technology
-27.05.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1304,Fundamentals of Computer for Technology
+11.11.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 2209,Molecular Biotechnology (Theory),2
+11.11.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2209,Introduction to Human Nutrition,2
+11.11.2026,9.00 a.m. - 11.00 a.m.,EET,ICT 2213,Data Communication and Networking,2
+11.11.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 2213,Data Communication and Networking,2
+11.11.2026,9.00 a.m. - 10.30 a.m.,MTT,MTT 2108,Chemical Engineering Sciences,2
+11.11.2026,1.00 p.m. - 3.00 p.m.,ICT,ICT 3220,Basics of Game Development,3
 
-06.05.2026,9.00 a.m. onwards,ICT,ICT 1305,Program Designing and Programming (Practical)
+12.11.2026,9.00 a.m. onwards,ENT,CML 1204,Health and Wellbeing (Objective Structured Practical Exam),1
+12.11.2026,9.00 a.m. onwards,BST,CML 1204,Health and Wellbeing (Objective Structured Practical Exam),1
+12.11.2026,9.00 a.m. onwards,ICT,CML 1204,Health and Wellbeing (Objective Structured Practical Exam),1
 
-12.05.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1306,Fundamentals of Biology for Technology
+13.11.2026,9.00 a.m. onwards,BPT,BPT 2209,Molecular Biotechnology (Practical),2
+13.11.2026,9.00 a.m. - 10.00 a.m.,ICT,ICT 2109,Communication and Learning Skills,2
+13.11.2026,9.00 a.m. - 11.00 a.m.,MTT,ICT 2206,Multimedia and Web Technologies,2
+13.11.2026,2.00 p.m. - 5.00 p.m.,ICT,ICT 3310,Information Security,3
 
-12.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1202,Electronic Circuits
+16.11.2026,9.00 a.m. onwards,ICT,ICT 4808,Research Project,4
 
-13.05.2026,8.00 a.m. onwards,ENT,CML 1202,Presentation Skills - Group Presentations
-13.05.2026,8.00 a.m. onwards,BST,CML 1202,Presentation Skills - Group Presentations
+17.11.2026,9.00 a.m. onwards,ICT,ICT 1108,Skill Development Project I,1
 
-15.05.2026,9.00 a.m. onwards,ENT,CML 1202,Presentation Skills - Individual Speech (Group 01)
-15.05.2026,9.00 a.m. onwards,BST,CML 1202,Presentation Skills - Individual Speech (Group 01)
+18.11.2026,9.00 a.m. onwards,ICT,ICT 2212,Skill Development Project II,2
 
-15.05.2026,9.00 a.m. onwards,ICT,ICT 1111,Productivity & Collaborative Tools (Th & Pr)
+19.11.2026,9.00 a.m. onwards,ICT,ICT 3206,Skills Development Project III,3
+`;
 
-18.05.2026,9.00 a.m. onwards,ENT,CML 1202,Presentation Skills - Individual Speech (Group 02)
-18.05.2026,9.00 a.m. onwards,BST,CML 1202,Presentation Skills - Individual Speech (Group 02)
 
-19.05.2026,2.30 p.m. - 4.00 p.m.,ALL,CML 1201,Personality Development
-
-21.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 1205,Communication Skills I - English (Theory)
-
-06.05.2026,9.00 a.m. - 10.00 a.m.,ENT,CML 1202,Presentation Skills (Theory)
-06.05.2026,9.00 a.m. - 10.00 a.m.,BST,CML 1202,Presentation Skills (Theory)
-
-25.05.2026,9.00 a.m. onwards,ALL,CMT 1205,Communication Skills 1 - English (Practical)
-,,,,
-,,,,
-Date,Time,Dept.,Subject,Title
-27.04.2026,1.00 p.m. - 4.00 p.m.,ALL,CMT 2306,Mathematics For Technology II
-20.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2204,Food Preservation
-22.04.2026,9.00 a.m. - 11.00 a.m.,ALL,CML 2202,Engineering Economics
-29.04.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 2204,Plant Tissue Culture (Theory)
-29.04.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2203,Introduction to Food Industry
-29.04.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 2203,Introduction to Ceramic Technology
-29.04.2026,9.00 a.m. - 12.00 p.m.,EET,EET 2301,Digital & Analog Electronics
-13.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2205,Molecular Biology (Theory)
-15.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2304,Object Oriented Programming
-01.06.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 2304,Object Oriented Programming (Practical)
-05.05.2026,1.00 p.m. - 4.00 p.m.,ALL,CMT 2301,Fundamental of Statistics for Technology
-07.05.2026,9.00 a.m. - 12.00 p.m.,ALL,CMT 2202,Communication Skills III (English) (Theory)
-11.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2202,Basic Biochemistry
-11.05.2026,9.00 a.m. - 12.00 p.m.,ICT,ICT 2303,Data Structures and Algorithms
-11.05.2026,9.00 a.m. onwards,MTT,MTT 2206,Graphical Programming (Practical)
-13.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2207,Software System Design
-13.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 2208,Introduction to Electrical Power
-15.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2203,Genetics and Evolution
-15.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 2201,Physical Chemistry
-18.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2202,Operating Systems
-18.05.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2202,Chemistry for Materials Technology
-18.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2202,Introduction to Bioprocess Technology (Theory)
-20.05.2026,9.00 a.m. onwards,BPT,BPT 2202,Introduction to Bioprocess Technology (Practical)
-20.05.2026,9.00 a.m. onwards,MTT,MTT 2204,Computer Aided Design (CAD) (Practical)
-30.05.2026,9.00 a.m. onwards,BPT,BPT 2204,Plant Tissue Culture (Practical)
-25.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2201,Quality Management
-25.05.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2201,Fundamentals of Solid State Physics
-25.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 2202,Electricity Networks
-01.06.2026,9.00 a.m. onwards,BPT,BPT 2205,Molecular Biology (Practical)
-27.05.2026,9.00 a.m. onwards,ALL,CMT 2202,Communication Skills III - English (Practical)
-,,,,
-Date,Time,Dept.,Subject,Title
-20.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3204,Meat and Fish Processing Technology
-14.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3208,Industrial Microbiology - Theory
-18.05.2026,9.00 a.m. - 12.00 p.m.,EET,EET 3301,Electrical Power Systems
-18.05.2026,9.00 a.m. - 12.00 p.m.,MTT,MTT 3307,Metallurgy I
-05.05.2026,9.00 a.m. - 12.00 p.m.,ICT,ICT 3312,Software Verification and Validation
-28.04.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 3203,Scientific Computer Applications (Th & Pr)
-27.04.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3203,Bioprocess Instrumentation and Control
-28.04.2026,9.00 a.m. - 11.00 p.m.,FDT,FDT 3203,Food Analysis
-28.04.2026,9.00 a.m. - 12.00 p.m.,EET,EET 3304,Digital Signal Processing
-28.04.2026,9.00 a.m. - 12.00 p.m.,MTT,MTT 3308,Polymer Technology I
-30.04.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3209,Cereals and Pulses Processing Technology
-30.04.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3304,Molecular Modelling (Theory)
-30.04.2026,2.00 p.m. - 4.00 p.m.,EET,EET 3203,Computer Systems
-30.04.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 3204,Workshop Technology II
-14.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 3307,Computational Statistics (Theory)
-05.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3205,Bioprocess Optimization and Simulation
-05.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 3205,Functional Food and Food Toxicology
-05.05.2026,9.00 a.m. - 11.00 a.m.,EET,EET 3206,Automation Technology I
-05.05.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 3212,Non Destructive Testing of Materials
-11.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3208,Design and Analysis of Algorithm
-07.05.2026,2.00 p.m. - 5.00 p.m.,ICT,ICT 3315,Internet of Things
-07.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3207,Enzyme Technology
-07.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3207,Confectionary and Beverage Technology
-07.05.2026,2.00 p.m. - 3.30 p.m.,MTT,MTT 3111,Thermodynamics for Materials Technology
-11.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 3206,Dairy Product Technology
-11.05.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 3206,Molecular Immunology and Current Application
-11.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 3202,Communication Systems
-11.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 3306,Ceramic Technology II
-30.04.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3218,Basics of Virtual Reality
-14.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 3201,Fruits & Vegetables Processing Technology
-14.05.2026,9.00 a.m. - 12.00 p.m.,EET,EET 3305,Control Systems
-26.05.2026,9.00 a.m. onwards,ICT,ICT 3307,Computational Statistics (Practical)
-26.05.2026,9.00 a.m. onwards,BPT,BPT 3208,Industrial Microbiology (Practical)
-
-26.05.2026,9.00 a.m. - 11.00 a.m.,EET,EET 3210,Electrical Installations
-02.06.2026,9.00 a.m. onwards,BPT,BPT 3304,Molecular Modelling (Practical)
-18.05.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 3202,Food Engineering
-20.05.2026,2.00 p.m. -4.00 p.m.,MTT,MTT 3202,Degradation of Materials
-19.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3209,Scientific Writing (20-21 Batch)
-20.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 3302,Bioinformatics (Theory)
-20.05.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3217,Advance Computer Networks
-22.05.2026,2.00 p.m. - 3.00 p.m.,ALL,CML 3101,Legal and Patent Aspects
-18.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 3201,Molecular Microbiology
-18.05.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 3201,Software Project Management
-29.05.2026,9.00 a.m. onwards,BPT,BPT 3302,Bioinformatics (Practical)
-,,,,
-,,,,
-,,,,
-Date,Time,Dept.,Subject,Title
-21.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4203,Water Science & Technology
-21.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 4301,Drug Designing (Theory)
-04.05.2026,2.00 p.m. - 5.00 p.m.,EET,EET 4304,Power Electronics
-21.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 4303,Ceramic Technology III
-06.05.2026,1.00 p.m. - 3.00 p.m.,BPT,BPT 4205,Plant Cell Culture
-06.05.2026,1.00 p.m. - 3.00 p.m.,FDT,FDT 4209,Sensory Evaluation
-06.05.2026,1.00 p.m. - 3.00 p.m.,MTT,MTT 4201,Fluid Mechanics
-16.05.2026,1.00 p.m. - 3.00 p.m.,ALL,CML 4201,Entrepreneurship
-29.04.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 4206,Pharmaceutical Biotechnology
-29.04.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4206,Supply Chain Analysis
-29.04.2026,2.00 p.m. - 4.00 p.m.,EET,EET 4208,Fiber Optic Techniques
-29.04.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 4206,Mineral Processing
-06.05.2026,1.00 p.m. onwards,EET,EET 4301,Electronic Circuit Design and Simulations (Prac)
-04.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 4302,Downstream Process Technology
-04.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 4305,Polymer Technology II
-
-04.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4302,Food Product Development (Theory)
-
-08.05.2026,2.00 p.m. - 5.00 p.m.,BPT,BPT 4303,Bioremediation and Waste Management
-08.05.2026,2.00 p.m. - 5.00 p.m.,EET,EET 4303,Electrical Energy Utilizations
-08.05.2026,2.00 p.m. - 5.00 p.m.,MTT,MTT 4307,Metallurgy II
-12.05.2026,9.00 a.m. onwards,BPT,BPT 4301,Drug Designing (Practical)
-12.05.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 4208,Cleaner Production
-12.05.2026,2.00 p.m. - 4.00 p.m.,EET,EET 4216,Energy and Environment
-12.05.2026,2.00 p.m. - 3.30 p.m.,MTT,MTT 4121,Research Methodology and Scientific Writing
-21.05.2026,9.00 a.m. onwards,EET,EET 4206,Automation Technology II - Practical exam
-26.05.2026,9.00 a.m. - 10.00 a.m.,FDT,FDT 4107,Scientific Writing
-26.05.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 4204,Molecular Virology (Theory)
-26.05.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 4219,Applied Mechanics
-19.05.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4202,Embedded Systems
-19.05.2026,9.00 a.m. onwards,FDT,FDT 4302,Food Product Development (Viva)
-23.05.2026,9.00 a.m. - 11.00 a.m.,ALL,CML 4202,Human Resource Management
-01.06.2026,9.00 a.m. onwards,BPT,BPT 4204,Molecular Virology (Viva)`;
+/*
+|--------------------------------------------------------------------------
+| TIMETABLE
+|--------------------------------------------------------------------------
+*/
 
 export const TIMETABLE: Record<number, ExamEntry[]> = (() => {
-    const result: Record<number, ExamEntry[]> = { 1: [], 2: [], 3: [], 4: [] };
-    const sections = CSV_DATA.split(/Date,Time,Dept\.,Subject,Title/).filter(Boolean);
-    sections.forEach((section, index) => {
-        const year = index + 1;
-        section.trim().split("\n")
-            .filter((line) => line.trim() && !line.startsWith(",,"))
-            .forEach((line) => {
-                const row = parseCSVLine(line);
-                if (row[0] && row[0].trim()) {
-                    result[year].push({
-                        date: row[0].trim(),
-                        time: row[1]?.trim() || "",
-                        dept: row[2]?.trim() || "",
-                        subject: row[3]?.trim() || "",
-                        title: row[4]?.trim() || "",
-                    });
-                }
-            });
-    });
+    const result: Record<number, ExamEntry[]> = {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+    };
+
+    CSV_DATA
+        .trim()
+        .split("\n")
+        .forEach((line) => {
+            if (!line.trim()) return;
+
+            const row = parseCSVLine(line);
+
+            // Skip CSV header
+            if (row[0] === "Date") return;
+
+            const year = parseInt(row[5], 10);
+
+            if (year >= 1 && year <= 4) {
+                result[year].push({
+                    date: row[0].trim(),
+                    time: row[1]?.trim() || "",
+                    dept: row[2]?.trim() || "",
+                    subject: row[3]?.trim() || "",
+                    title: row[4]?.trim() || "",
+                });
+            }
+        });
+
     return result;
 })();
 
-export const CALENDAR_DATA: Record<number, Record<number, Record<string, ExamEntry[]>>> = (() => {
-    const data: Record<number, Record<number, Record<string, ExamEntry[]>>> = {};
+
+/*
+|--------------------------------------------------------------------------
+| CALENDAR DATA
+|--------------------------------------------------------------------------
+|
+| October = 10
+| November = 11
+|
+*/
+
+export const CALENDAR_DATA: Record<
+    number,
+    Record<number, Record<string, ExamEntry[]>>
+> = (() => {
+    const data: Record<
+        number,
+        Record<number, Record<string, ExamEntry[]>>
+    > = {};
+
     for (let year = 1; year <= 4; year++) {
-        data[year] = { 4: {}, 5: {} };
+        data[year] = {
+            10: {},
+            11: {},
+        };
+
         TIMETABLE[year].forEach((exam) => {
             const parts = exam.date.split(".");
-            if (parts.length === 3) {
-                const month = parseInt(parts[1], 10);
-                if (month === 4 || month === 5) {
-                    const dateStr = exam.date;
-                    if (!data[year][month][dateStr]) data[year][month][dateStr] = [];
-                    data[year][month][dateStr].push(exam);
-                }
+
+            if (parts.length !== 3) return;
+
+            const month = parseInt(parts[1], 10);
+
+            if (month !== 10 && month !== 11) return;
+
+            const dateStr = exam.date;
+
+            if (!data[year][month][dateStr]) {
+                data[year][month][dateStr] = [];
             }
+
+            data[year][month][dateStr].push(exam);
         });
     }
+
     return data;
 })();
 
-export const CALENDAR_DAYS: Record<number, Record<number, { day: number; dateStr: string; exams: ExamEntry[]; isPast: boolean }[]>> = (() => {
+
+/*
+|--------------------------------------------------------------------------
+| CALENDAR DAYS
+|--------------------------------------------------------------------------
+|
+| monthIndex:
+| 0 = October
+| 1 = November
+|
+*/
+
+export const CALENDAR_DAYS: Record<
+    number,
+    Record<
+        number,
+        {
+            day: number;
+            dateStr: string;
+            exams: ExamEntry[];
+            isPast: boolean;
+        }[]
+    >
+> = (() => {
     const today = new Date();
+
     today.setHours(0, 0, 0, 0);
-    const result: Record<number, Record<number, { day: number; dateStr: string; exams: ExamEntry[]; isPast: boolean }[]>> = {};
+
+    const result: Record<
+        number,
+        Record<
+            number,
+            {
+                day: number;
+                dateStr: string;
+                exams: ExamEntry[];
+                isPast: boolean;
+            }[]
+        >
+    > = {};
 
     for (let year = 1; year <= 4; year++) {
         result[year] = {};
-        for (let monthIndex = 0; monthIndex < 2; monthIndex++) {
-            const jsMonth = monthIndex + 3;
-            const csvMonth = jsMonth + 1;
-            const firstDay = new Date(2026, jsMonth, 1).getDay();
-            const daysInMonth = new Date(2026, jsMonth + 1, 0).getDate();
-            const days: { day: number; dateStr: string; exams: ExamEntry[]; isPast: boolean }[] = [];
 
+        for (let monthIndex = 0; monthIndex < 2; monthIndex++) {
+
+            // October = JavaScript month 9
+            // November = JavaScript month 10
+            const jsMonth = monthIndex + 9;
+
+            // Actual calendar month number
+            const calendarMonth = jsMonth + 1;
+
+            const firstDay = new Date(
+                2026,
+                jsMonth,
+                1
+            ).getDay();
+
+            const daysInMonth = new Date(
+                2026,
+                jsMonth + 1,
+                0
+            ).getDate();
+
+            const days: {
+                day: number;
+                dateStr: string;
+                exams: ExamEntry[];
+                isPast: boolean;
+            }[] = [];
+
+            // Empty days before the first day of the month
             for (let i = 0; i < firstDay; i++) {
-                days.push({ day: 0, dateStr: "", exams: [], isPast: false });
+                days.push({
+                    day: 0,
+                    dateStr: "",
+                    exams: [],
+                    isPast: false,
+                });
             }
 
+            // Actual days
             for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = `${day.toString().padStart(2, "0")}.${csvMonth.toString().padStart(2, "0")}.2026`;
-                const exams = CALENDAR_DATA[year][csvMonth]?.[dateStr] || [];
-                const examDate = new Date(2026, jsMonth, day);
-                days.push({ day, dateStr, exams, isPast: examDate < today });
+
+                const dateStr =
+                    `${day.toString().padStart(2, "0")}.` +
+                    `${calendarMonth.toString().padStart(2, "0")}.2026`;
+
+                const exams =
+                    CALENDAR_DATA[year][calendarMonth]?.[dateStr] || [];
+
+                const examDate = new Date(
+                    2026,
+                    jsMonth,
+                    day
+                );
+
+                examDate.setHours(0, 0, 0, 0);
+
+                days.push({
+                    day,
+                    dateStr,
+                    exams,
+                    isPast: examDate < today,
+                });
             }
 
             result[year][monthIndex] = days;
