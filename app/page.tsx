@@ -17,7 +17,7 @@ export default function Home() {
     const [isRateLimited, setIsRateLimited] = useState(false);
     const [isLoadingPapers, setIsLoadingPapers] = useState(false);
     const [isTimeTableOpen, setIsTimeTableOpen] = useState(false);
-    const showTimeTableBanner = false; // Set to true to show exam timetable banner during exam seasons
+    const showTimeTableBanner = true; // Set to true to show exam timetable banner during exam seasons
 
     const [filters, setFilters] = useState({
         department: "ITT",
