@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Calculator, Github, FileText, X, Sparkles, BookOpen } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import { LiveBadge } from "./LiveBadge";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -142,6 +143,7 @@ export function TopNavigation() {
 
                     {/* Right Side Actions */}
                     <div className="flex items-center space-x-1 sm:space-x-2">
+                        <LiveBadge />
                         <Link
                             href="https://github.com/viduwaa"
                             target="_blank"

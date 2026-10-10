@@ -165,3 +165,30 @@
 body {
     transition: all;
 }
+
+/* Live presence dot — CSS-only breathing pulse (LiveBadge) */
+.pstats-dot-ping {
+    animation: pstats-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pstats-ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    70% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pstats-dot-ping {
+        animation: none;
+        opacity: 0.4;
+    }
+}

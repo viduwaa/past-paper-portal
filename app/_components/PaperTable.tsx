@@ -33,6 +33,13 @@ interface PaperTableProps {
 export function PaperTable({ papers, onPaperClick, isLoading }: PaperTableProps) {
     const handleViewClick = (paper: Paper) => {
         onPaperClick?.(paper.id.toString());
+        // Fire-and-forget usage telemetry — must never block or fail the paper open.
+        fetch("/api/papers/open", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ department: paper.department_code }),
+            keepalive: true,
+        }).catch(() => {});
         window.open(paper.view_url, "_blank");
     };
 

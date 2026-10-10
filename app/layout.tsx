@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "./_components/ThemeProvider";
 import { TopNavigation } from "./_components/TopNavigation";
 import { PageTransition } from "./_components/PageTransition";
+import { Footer } from "./_components/Footer";
 
 const aeonik = localFont({
     src: [
@@ -208,11 +209,12 @@ export default function RootLayout({
                             }),
                         }}
                     />
-                    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+                    <div className="flex min-h-screen flex-col bg-gradient-to-br from-background via-background to-muted/20">
                         <TopNavigation />
-                        <main className="mx-auto px-4 py-8 md:w-[90%] sm:w-4/5">
+                        <main className="flex-1 mx-auto w-full px-4 py-8 md:w-[90%] sm:w-4/5">
                             <PageTransition>{children}</PageTransition>
                         </main>
+                        <Footer />
                     </div>
                 </ThemeProvider>
             </body>
