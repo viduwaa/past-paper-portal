@@ -9,10 +9,16 @@ import { Redis } from "@upstash/redis";
 //   - getLiveStats()                         → read live numbers (+ bumps peaks)
 //   - HEARTBEAT_INTERVAL_MS, LIVE_STATS_TTL  → cadence + caching hints
 //
-// Everything else (hashing, key layout, day buckets, peak compare-and-set,
-// pipelining, Redis client lifecycle) is implementation and may change
-// without callers noticing. All Redis failures degrade silently — stats
-// must never break the site. See STATS-PLAN.md for the architecture.
+// Everything else (hashing, key layout, Lua scripts, the per-isolate
+// live-stats memo, pipelining, Redis client lifecycle) is implementation
+// and may change without callers noticing. All Redis failures degrade
+// silently — stats must never break the site. See STATS-PLAN.md.
+//
+// Cost contract (free tier = 500K commands/month, 10 GB bandwidth/month):
+// each call to registerHeartbeat / recordOpen / getLiveStats is ONE Redis
+// command (a single EVAL). getLiveStats is additionally memoized per
+// isolate for LIVE_MEMO_MS so bursts (dashboard + badge polls in the
+// same furnace-isolate) cost at most one command per window.
 // ============================================================
 
 export interface LiveStats {
@@ -53,6 +59,8 @@ const PRESENCE_WINDOW_MS = 90_000;
 const DAY_TTL = 90 * 24 * 60 * 60;
 /** Per-session view-debounce marker lives one day + buffer. */
 const SESSION_DAY_TTL = 26 * 60 * 60;
+/** Per-isolate memo window for getLiveStats. */
+const LIVE_MEMO_MS = 10_000;
 
 /** Pepper so stored membership hashes can't be reversed to browser ids. */
 const PEPPER = process.env.STATS_PEPPER ?? "fot-portal-pstats-v1";
@@ -75,15 +83,88 @@ async function hashSession(browserId: string): Promise<string> {
 }
 
 /**
- * Monotonic max via compare-and-set Lua: writes newValue only when it
- * exceeds the stored value. Peaks can never regress.
+ * registerHeartbeat, atomically, in one Redis command.
+ *
+ * KEYS: 1 presence ZSET, 2 uniques HLL, 3 visits hash, 4 views counter,
+ *       5 today peak, 6 all-time peak
+ * ARGV: 1 now(ms), 2 session hash, 3 presence cutoff, 4 DAY_TTL, 5 SESSION_DAY_TTL
+ *
+ * Writes presence, prunes stale members, debounces the first-touch-today
+ * view counter, and lifts both peaks — where the old code spent ~10
+ * commands (two pipelines + two EVAL calls), this spends one.
  */
-const PEAK_LUA = `
-local cur = tonumber(redis.call('GET', KEYS[1]) or '-1')
-if tonumber(ARGV[1]) > cur then
-    redis.call('SET', KEYS[1], ARGV[1])
+const HEARTBEAT_LUA = `
+redis.call('ZADD', KEYS[1], ARGV[1], ARGV[2])
+redis.call('ZREMRANGEBYSCORE', KEYS[1], '-inf', ARGV[3])
+local firstTouch = redis.call('HSETNX', KEYS[3], ARGV[2], 1)
+redis.call('EXPIRE', KEYS[3], ARGV[5])
+redis.call('PFADD', KEYS[2], ARGV[2])
+redis.call('EXPIRE', KEYS[2], ARGV[4])
+if firstTouch == 1 then
+    redis.call('INCR', KEYS[4])
+    redis.call('EXPIRE', KEYS[4], ARGV[4])
 end
-return redis.call('GET', KEYS[1]) or '0'
+local online = redis.call('ZCARD', KEYS[1])
+if online > 0 then
+    local pt = tonumber(redis.call('GET', KEYS[5]) or '-1')
+    if online > pt then
+        redis.call('SET', KEYS[5], online)
+        redis.call('EXPIRE', KEYS[5], ARGV[4])
+    end
+    local pa = tonumber(redis.call('GET', KEYS[6]) or '-1')
+    if online > pa then
+        redis.call('SET', KEYS[6], online)
+    end
+end
+return online
+`;
+
+/**
+ * getLiveStats, atomically, in one Redis command. Prunes the presence
+ * ZSET (free accuracy upgrade: the old read path never pruned), lifts
+ * both peaks when `online` exceeds them, and returns every live number.
+ *
+ * KEYS: 1 presence ZSET, 2 uniques HLL, 3 views counter, 4 today peak,
+ *       5 all-time peak
+ * ARGV: 1 presence cutoff, 2 DAY_TTL
+ * Returns: { online, peakToday, peakAllTime, viewsToday, uniquesToday }
+ */
+const LIVE_LUA = `
+redis.call('ZREMRANGEBYSCORE', KEYS[1], '-inf', ARGV[1])
+local online = redis.call('ZCARD', KEYS[1])
+if online > 0 then
+    local pt = tonumber(redis.call('GET', KEYS[4]) or '-1')
+    if online > pt then
+        redis.call('SET', KEYS[4], online)
+        redis.call('EXPIRE', KEYS[4], ARGV[2])
+    end
+    local pa = tonumber(redis.call('GET', KEYS[5]) or '-1')
+    if online > pa then
+        redis.call('SET', KEYS[5], online)
+    end
+end
+local pt = tonumber(redis.call('GET', KEYS[4]) or 0)
+local pa = tonumber(redis.call('GET', KEYS[5]) or 0)
+local views = tonumber(redis.call('GET', KEYS[3]) or 0)
+local uniques = redis.call('PFCOUNT', KEYS[2])
+return {online, pt, pa, views, uniques}
+`;
+
+/**
+ * recordOpen, atomically, in one Redis command (was a 7-command pipeline).
+ *
+ * KEYS: 1 lifetime opens, 2 today opens, 3 lifetime dept, 4 today dept
+ * ARGV: 1 DAY_TTL (also re-arms the lifetime dept key, as before)
+ */
+const OPEN_LUA = `
+redis.call('INCR', KEYS[1])
+redis.call('INCR', KEYS[2])
+redis.call('EXPIRE', KEYS[2], ARGV[1])
+redis.call('INCR', KEYS[3])
+redis.call('INCR', KEYS[4])
+redis.call('EXPIRE', KEYS[3], ARGV[1])
+redis.call('EXPIRE', KEYS[4], ARGV[1])
+return 1
 `;
 
 /**
@@ -102,20 +183,16 @@ export async function recordOpen(
         .slice(0, 10);
 
     try {
-        const opensKey = `${PREFIX}:opens`;
-        const deptKey = `${PREFIX}:dept:${dept}`;
-        const openDayKey = `${PREFIX}:opens:${dayKey()}`;
-        const deptDayKey = `${PREFIX}:dept:${dept}:${dayKey()}`;
-        await redis
-            .pipeline()
-            .incr(opensKey)
-            .incr(openDayKey)
-            .expire(openDayKey, DAY_TTL)
-            .incr(deptKey)
-            .incr(deptDayKey)
-            .expire(deptKey, DAY_TTL)
-            .expire(deptDayKey, DAY_TTL)
-            .exec();
+        await redis.eval(
+            OPEN_LUA,
+            [
+                `${PREFIX}:opens`,
+                `${PREFIX}:opens:${dayKey()}`,
+                `${PREFIX}:dept:${dept}`,
+                `${PREFIX}:dept:${dept}:${dayKey()}`,
+            ],
+            [String(DAY_TTL)],
+        );
         return true;
     } catch (error) {
         if (process.env.NODE_ENV === "development") {
@@ -292,27 +369,25 @@ export async function registerHeartbeat(
     try {
         const session = await hashSession(browserId);
         const now = Date.now();
-        const presenceKey = `${PREFIX}:presence`;
-        const uniquesKey = `${PREFIX}:uniques:${dayKey()}`;
-        const visitsKey = `${PREFIX}:mark:${dayKey()}`;
-
-        const pipeline = redis.pipeline();
-        pipeline.zadd(presenceKey, { score: now, member: session });
-        pipeline.zremrangebyscore(presenceKey, "-inf", now - PRESENCE_WINDOW_MS);
-        pipeline.pfadd(uniquesKey, session);
-        pipeline.hsetnx(visitsKey, session, 1);
-        pipeline.expire(uniquesKey, DAY_TTL);
-        pipeline.expire(visitsKey, SESSION_DAY_TTL);
-        const results = await pipeline.exec();
-
-        // First touch today (HSETNX returns 1 only when the field was
-        // newly created) → count a single page view for this session.
-        if (num(results?.[3]) === 1) {
-            const viewsKey = `${PREFIX}:views:${dayKey()}`;
-            await redis.pipeline().incr(viewsKey).expire(viewsKey, DAY_TTL).exec();
-        }
-
-        await bumpPeaks(redis);
+        const day = dayKey();
+        await redis.eval(
+            HEARTBEAT_LUA,
+            [
+                `${PREFIX}:presence`,
+                `${PREFIX}:uniques:${day}`,
+                `${PREFIX}:mark:${day}`,
+                `${PREFIX}:views:${day}`,
+                `${PREFIX}:peak:${day}`,
+                `${PREFIX}:peak:alltime`,
+            ],
+            [
+                String(now),
+                session,
+                String(now - PRESENCE_WINDOW_MS),
+                String(DAY_TTL),
+                String(SESSION_DAY_TTL),
+            ],
+        );
         return true;
     } catch (error) {
         if (process.env.NODE_ENV === "development") {
@@ -322,45 +397,67 @@ export async function registerHeartbeat(
     }
 }
 
+// --- getLiveStats: one EVAL + a short per-isolate memo -------------------
+
+const EMPTY_LIVE: LiveStats = {
+    online: 0,
+    peakToday: 0,
+    peakAllTime: 0,
+    viewsToday: 0,
+    uniquesToday: 0,
+};
+
+let _liveMemo: { t: number; value: LiveStats } | null = null;
+
+async function fetchLiveStats(redis: Redis): Promise<LiveStats> {
+    const day = dayKey();
+    const results = (await redis.eval(
+        LIVE_LUA,
+        [
+            `${PREFIX}:presence`,
+            `${PREFIX}:uniques:${day}`,
+            `${PREFIX}:views:${day}`,
+            `${PREFIX}:peak:${day}`,
+            `${PREFIX}:peak:alltime`,
+        ],
+        [String(Date.now() - PRESENCE_WINDOW_MS), String(DAY_TTL)],
+    )) as unknown[];
+
+    const online = num(results?.[0]);
+    return {
+        online,
+        peakToday: Math.max(online, num(results?.[1])),
+        peakAllTime: Math.max(online, num(results?.[2])),
+        viewsToday: num(results?.[3]),
+        // uniques today includes whoever is online right now
+        uniquesToday: Math.max(online, num(results?.[4])),
+    };
+}
+
 /**
- * Live snapshot. Also runs the peak compare-and-set, so any reader that
- * observes a higher-than-recorded concurrency silently updates records.
- * Resolves the safe zero-state on Redis failure.
+ * Live snapshot. Internally one Redis command, memoized per isolate for
+ * LIVE_MEMO_MS — the badge polls every 30s per open tab and the history
+ * dashboard fans getLiveStats out to three internal call sites, so the
+ * memo (plus the single-command read) is what keeps the free tier alive.
  */
 export async function getLiveStats(): Promise<LiveStats> {
-    const redis = getRedis();
-    if (!redis) {
-        return { online: 0, peakToday: 0, peakAllTime: 0, viewsToday: 0, uniquesToday: 0 };
+    const now = Date.now();
+    if (_liveMemo && now - _liveMemo.t < LIVE_MEMO_MS) {
+        return _liveMemo.value;
     }
 
+    const redis = getRedis();
+    if (!redis) return EMPTY_LIVE;
+
     try {
-        const day = dayKey();
-        const results = await redis
-            .pipeline()
-            .zcard(`${PREFIX}:presence`)
-            .get(`${PREFIX}:peak:${day}`)
-            .get(`${PREFIX}:peak:alltime`)
-            .get(`${PREFIX}:views:${day}`)
-            .pfcount(`${PREFIX}:uniques:${day}`)
-            .exec();
-
-        const online = num(results?.[0]);
-        await bumpPeaks(redis, online);
-
-        const peakToday = Math.max(online, num(results?.[1]));
-        const peakAllTime = Math.max(peakToday, num(results?.[2]));
-        return {
-            online,
-            peakToday,
-            peakAllTime,
-            viewsToday: num(results?.[3]),
-            uniquesToday: Math.max(online, num(results?.[4])),
-        };
+        const value = await fetchLiveStats(redis);
+        _liveMemo = { t: Date.now(), value };
+        return value;
     } catch (error) {
         if (process.env.NODE_ENV === "development") {
             console.warn("[presence] getLiveStats failed:", error);
         }
-        return { online: 0, peakToday: 0, peakAllTime: 0, viewsToday: 0, uniquesToday: 0 };
+        return EMPTY_LIVE;
     }
 }
 
@@ -448,35 +545,18 @@ export async function getHistory(days: number): Promise<HistorySummary> {
             }
         }
 
-        return { days: dayRows, totals: { views: viewsTotal, uniques: uniquesTotal, bestPeak } };
+        return {
+            days: dayRows,
+            totals: {
+                views: viewsTotal,
+                uniques: uniquesTotal,
+                bestPeak,
+            },
+        };
     } catch (error) {
         if (process.env.NODE_ENV === "development") {
             console.warn("[presence] getHistory failed:", error);
         }
         return { days: [], totals: { views: 0, uniques: 0, bestPeak: 0 } };
-    }
-}
-
-async function bumpPeaks(redis: Redis, knownOnline?: number): Promise<void> {
-    let online = knownOnline;
-    if (online === undefined) {
-        try {
-            online = num(await redis.zcard(`${PREFIX}:presence`));
-        } catch {
-            return;
-        }
-    }
-    if (online <= 0) return;
-
-    const key = `${PREFIX}:peak:${dayKey()}`;
-    try {
-        await Promise.all([
-            redis.eval(PEAK_LUA, [key], [online]),
-            redis.eval(PEAK_LUA, [`${PREFIX}:peak:alltime`], [online]),
-        ]);
-    } catch (error) {
-        if (process.env.NODE_ENV === "development") {
-            console.warn("[presence] bumpPeaks failed:", error);
-        }
     }
 }

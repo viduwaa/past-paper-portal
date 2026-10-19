@@ -17,6 +17,20 @@ const PAPERS_KEY = "papers:all:v2";
 const FILTERS_KEY = "papers:filter-options:v2";
 const TTL = 86400; // 24 hours — papers don't change often, minimize DB hits
 
+// --- Bandwidth shield (per-isolate papers memo) -------------------------
+//
+// The full papers list is the single biggest payload stored in Redis:
+// every /api/papers request re-reads it as JSON (search keystrokes,
+// filter toggles, retries, multiple tabs). Each of those reads transfers
+// the whole dataset over the connection. Upstash bills bandwidth, so a
+// burst of paper browsing used to devour the budget fast. Serving
+// repeat reads from a short-lived in-isolate memo caps Redis reads at
+// one per TTL per isolate — with a staleness window of only 2 minutes,
+// far below the 24h Redis TTL that already applies.
+
+let _papersMemo: { t: number; value: PastPaper[] } | null = null;
+const PAPERS_MEMO_TTL_MS = 120_000;
+
 /**
  * Safely retrieve all cached papers from Redis.
  * Returns null if cache miss, Redis unavailable, or data is malformed.
@@ -24,12 +38,17 @@ const TTL = 86400; // 24 hours — papers don't change often, minimize DB hits
  */
 export async function getCachedPapers(): Promise<PastPaper[] | null> {
     try {
+        const memo = _papersMemo;
+        if (memo && Date.now() - memo.t < PAPERS_MEMO_TTL_MS) {
+            return memo.value;
+        }
         const redis = getRedis();
         if (!redis) return null;
         const cached = await redis.get<PastPaper[]>(PAPERS_KEY);
         if (!cached) return null;
-        // Ensure the cached value is a proper array of objects
-        return Array.isArray(cached) ? (cached as PastPaper[]) : null;
+        if (!Array.isArray(cached)) return null;
+        _papersMemo = { t: Date.now(), value: cached };
+        return cached;
     } catch (error) {
         // Log in dev, silently fail in edge runtime
         if (process.env.NODE_ENV === "development") {
@@ -48,6 +67,8 @@ export async function setCachedPapers(papers: PastPaper[]): Promise<void> {
         const redis = getRedis();
         if (!redis) return;
         await redis.set(PAPERS_KEY, papers, { ex: TTL });
+        // A fresh write also arms the memo: next read is served locally.
+        _papersMemo = { t: Date.now(), value: papers };
     } catch (error) {
         if (process.env.NODE_ENV === "development") {
             console.warn("[cache] setCachedPapers failed:", error);

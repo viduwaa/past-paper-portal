@@ -5,6 +5,7 @@ import { ratelimit } from "@/lib/ratelimit";
 import {
     registerHeartbeat,
     HEARTBEAT_INTERVAL_MS,
+    isBot,
 } from "@/lib/presence";
 
 export async function POST(request: NextRequest) {
@@ -62,9 +63,32 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
     // A GET is treated the same as a heartbeat for simple <img>/sendBeacon
-    // style clients, minus body parsing.
+    // style clients, minus body parsing — but ONLY when the client can name
+    // a real session. Anything else landing here (crawlers, uptime probes)
+    // used to write a fake "anon" heartbeat to Redis on every hit, with no
+    // rate limit at all. Those requests now get a free 204 and never touch
+    // Redis or the rate limiter.
     const userAgent = request.headers.get("user-agent");
-    await registerHeartbeat("anon", userAgent);
+    const browserId = request.nextUrl.searchParams.get("browserId");
+    if (!browserId || isBot(userAgent)) {
+        return new NextResponse(null, {
+            status: 204,
+            headers: { "Cache-Control": "no-store" },
+        });
+    }
+
+    const ip =
+        request.headers.get("cf-connecting-ip") ||
+        request.headers.get("x-forwarded-for") ||
+        "127.0.0.1";
+    try {
+        const { success } = await ratelimit.limit(ip);
+        if (!success) return new NextResponse(null, { status: 429 });
+    } catch {
+        // Rate limiter down: the heartbeat write itself stays best-effort.
+    }
+
+    await registerHeartbeat(browserId, userAgent);
     return new NextResponse(null, {
         status: 204,
         headers: { "Cache-Control": "no-store" },
