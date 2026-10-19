@@ -122,6 +122,16 @@ interface Bucket {
     startDate: string;
 }
 
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
+
+/** "2026-10-19" → "Mon 19/10" — weekday name + short date. */
+function dayLabel(iso: string): string {
+    const [y, m, d] = iso.split("-").map(Number);
+    if (!y || !m || !d) return iso;
+    const date = new Date(Date.UTC(y, m - 1, d));
+    return `${WEEKDAYS[date.getUTCDay()]} ${d}/${m}`;
+}
+
 function aggregateDays(
     days: HistoryDayView[],
     mode: "daily" | "weekly" | "monthly",
@@ -139,7 +149,7 @@ function aggregateDays(
                 const start = new Date(date);
                 start.setUTCDate(date.getUTCDate() - dayOfWeek);
                 key = start.toISOString().slice(0, 10);
-                label = `w/c ${key.slice(5)}/${key.slice(0, 4)}`;
+                label = `w/c ${dayLabel(key)}`;
             } else {
                 key = d.date.slice(0, 7);
                 label = date.toLocaleString("en", {
@@ -162,12 +172,17 @@ function aggregateDays(
             a.startDate.localeCompare(b.startDate),
         );
     }
-    return days.map((d) => ({
-        label: d.date.slice(5),
-        views: d.views,
-        uniques: d.uniques,
-        startDate: d.date,
-    }));
+    // The history API hands days back newest-first (today first); the
+    // time axis must run oldest → newest left-to-right like every other
+    // mode, so sort ascending here too (weekly/monthly already sort).
+    return [...days]
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .map((d) => ({
+            label: dayLabel(d.date),
+            views: d.views,
+            uniques: d.uniques,
+            startDate: d.date,
+        }));
 }
 
 /* ------------------------------------------------------------------ */
@@ -364,7 +379,7 @@ function LineChart({ data }: { data: Bucket[] }) {
                         transform: "translateX(-50%)",
                     }}
                 >
-                    <div className="font-semibold">{hb.startDate}</div>
+                    <div className="font-semibold">{dayLabel(hb.startDate)}</div>
                     <div className="mt-1 flex flex-col gap-0.5">
                         <span className="flex items-center gap-1.5">
                             <span className="h-2 w-2 rounded-full bg-chart-2" />
