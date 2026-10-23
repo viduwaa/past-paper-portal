@@ -15,10 +15,12 @@ import { Redis } from "@upstash/redis";
 // silently — stats must never break the site. See STATS-PLAN.md.
 //
 // Cost contract (free tier = 500K commands/month, 10 GB bandwidth/month):
-// each call to registerHeartbeat / recordOpen / getLiveStats is ONE Redis
-// command (a single EVAL). getLiveStats is additionally memoized per
-// isolate for LIVE_MEMO_MS so bursts (dashboard + badge polls in the
-// same furnace-isolate) cost at most one command per window.
+// Upstash bills an EVAL as ONE command plus ONE for every internal
+// `redis.call` the script makes, so the scripts below are written to
+// minimise *internal* calls, not just round trips. A repeat heartbeat
+// costs 5 internal calls (ZADD, ZREMRANGEBYSCORE, ZCARD, HSETNX, MGET);
+// a first-touch-of-day heartbeat adds 5 more. getLiveStats costs 4.
+// See docs/adr/0004-upstash-bills-eval-internals.md.
 // ============================================================
 
 export interface LiveStats {
@@ -85,36 +87,51 @@ async function hashSession(browserId: string): Promise<string> {
 /**
  * registerHeartbeat, atomically, in one Redis command.
  *
- * KEYS: 1 presence ZSET, 2 uniques HLL, 3 visits hash, 4 views counter,
+ * KEYS: 1 presence ZSET, 2 uniques HLL, 3 mark HASH, 4 views counter,
  *       5 today peak, 6 all-time peak
  * ARGV: 1 now(ms), 2 session hash, 3 presence cutoff, 4 DAY_TTL, 5 SESSION_DAY_TTL
  *
- * Writes presence, prunes stale members, debounces the first-touch-today
- * view counter, and lifts both peaks — where the old code spent ~10
- * commands (two pipelines + two EVAL calls), this spends one.
+ * Writes presence, prunes stale members, debounces the first-touch-of-day
+ * view counter, and lifts both peaks.
+ *
+ * Billed-call budget (see docs/adr/0004-upstash-bills-eval-internals.md):
+ * Upstash charges one command for the EVAL plus one for every internal
+ * redis.call, so the script is written to minimise *internal* calls, not
+ * just round trips. A repeat heartbeat — the common case, since the
+ * client beats every 60s — costs 5 internal calls:
+ *   ZADD, ZREMRANGEBYSCORE, ZCARD, HSETNX, MGET
+ * A session's first touch of the day adds 5 more (expire, view counter,
+ * unique HLL). The previous version made 9 internal calls on every
+ * heartbeat and up to 14 on a first touch.
  */
 const HEARTBEAT_LUA = `
 redis.call('ZADD', KEYS[1], ARGV[1], ARGV[2])
 redis.call('ZREMRANGEBYSCORE', KEYS[1], '-inf', ARGV[3])
+local online = redis.call('ZCARD', KEYS[1])
+
+-- First touch of the day for this session. HSETNX returns 1 only when the
+-- member is new, which is exactly the debounce signal the view counter
+-- and the unique-visitor HLL need. Both are idempotent per session per
+-- day, so skipping them on later heartbeats changes nothing.
 local firstTouch = redis.call('HSETNX', KEYS[3], ARGV[2], 1)
-redis.call('EXPIRE', KEYS[3], ARGV[5])
-redis.call('PFADD', KEYS[2], ARGV[2])
-redis.call('EXPIRE', KEYS[2], ARGV[4])
 if firstTouch == 1 then
+    redis.call('EXPIRE', KEYS[3], ARGV[5])
     redis.call('INCR', KEYS[4])
     redis.call('EXPIRE', KEYS[4], ARGV[4])
+    redis.call('PFADD', KEYS[2], ARGV[2])
+    redis.call('EXPIRE', KEYS[2], ARGV[4])
 end
-local online = redis.call('ZCARD', KEYS[1])
-if online > 0 then
-    local pt = tonumber(redis.call('GET', KEYS[5]) or '-1')
-    if online > pt then
-        redis.call('SET', KEYS[5], online)
-        redis.call('EXPIRE', KEYS[5], ARGV[4])
-    end
-    local pa = tonumber(redis.call('GET', KEYS[6]) or '-1')
-    if online > pa then
-        redis.call('SET', KEYS[6], online)
-    end
+
+-- Both peaks are string keys, so one MGET reads both instead of two
+-- separate GETs.
+local vals = redis.call('MGET', KEYS[5], KEYS[6])
+local pt = tonumber(vals[1] or '-1')
+local pa = tonumber(vals[2] or '-1')
+if online > pt then
+    redis.call('SET', KEYS[5], online, 'EX', ARGV[4])
+end
+if online > pa then
+    redis.call('SET', KEYS[6], online)
 end
 return online
 `;
@@ -132,20 +149,21 @@ return online
 const LIVE_LUA = `
 redis.call('ZREMRANGEBYSCORE', KEYS[1], '-inf', ARGV[1])
 local online = redis.call('ZCARD', KEYS[1])
-if online > 0 then
-    local pt = tonumber(redis.call('GET', KEYS[4]) or '-1')
-    if online > pt then
-        redis.call('SET', KEYS[4], online)
-        redis.call('EXPIRE', KEYS[4], ARGV[2])
-    end
-    local pa = tonumber(redis.call('GET', KEYS[5]) or '-1')
-    if online > pa then
-        redis.call('SET', KEYS[5], online)
-    end
+-- The two peaks and the view counter are all string keys, so one MGET
+-- replaces four separate GETs. Billed-call budget: 1 MGET + 1 ZCARD +
+-- 1 ZREMRANGEBYSCORE + 1 PFCOUNT, plus a SET only when a peak rises.
+local vals = redis.call('MGET', KEYS[4], KEYS[5], KEYS[3])
+local pt = tonumber(vals[1] or '0')
+local pa = tonumber(vals[2] or '0')
+local views = tonumber(vals[3] or '0')
+if online > pt then
+    pt = online
+    redis.call('SET', KEYS[4], online, 'EX', ARGV[2])
 end
-local pt = tonumber(redis.call('GET', KEYS[4]) or 0)
-local pa = tonumber(redis.call('GET', KEYS[5]) or 0)
-local views = tonumber(redis.call('GET', KEYS[3]) or 0)
+if online > pa then
+    pa = online
+    redis.call('SET', KEYS[5], online)
+end
 local uniques = redis.call('PFCOUNT', KEYS[2])
 return {online, pt, pa, views, uniques}
 `;
@@ -155,15 +173,25 @@ return {online, pt, pa, views, uniques}
  *
  * KEYS: 1 lifetime opens, 2 today opens, 3 lifetime dept, 4 today dept
  * ARGV: 1 DAY_TTL (also re-arms the lifetime dept key, as before)
+ *
+ * Billed-call budget: the day-scoped keys only need their TTL set when
+ * they are created, and INCR returns the new value — so an INCR that
+ * returns 1 means the key is brand new. The lifetime department key
+ * keeps its re-arm because it spans days and must survive as long as
+ * the department keeps being opened.
  */
 const OPEN_LUA = `
 redis.call('INCR', KEYS[1])
-redis.call('INCR', KEYS[2])
-redis.call('EXPIRE', KEYS[2], ARGV[1])
+local today = redis.call('INCR', KEYS[2])
+if today == 1 then
+    redis.call('EXPIRE', KEYS[2], ARGV[1])
+end
 redis.call('INCR', KEYS[3])
-redis.call('INCR', KEYS[4])
 redis.call('EXPIRE', KEYS[3], ARGV[1])
-redis.call('EXPIRE', KEYS[4], ARGV[1])
+local deptToday = redis.call('INCR', KEYS[4])
+if deptToday == 1 then
+    redis.call('EXPIRE', KEYS[4], ARGV[1])
+end
 return 1
 `;
 

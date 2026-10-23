@@ -52,12 +52,16 @@
 
 ### Key facts
 
-- Heartbeat = one **pipelined** batch of ~3 Redis commands
-  (`ZADD` + `ZREMRANGEBYSCORE` + `PFADD/INCR`).
-- Badge poll = ~2 commands (`ZCARD` + peak compare-and-set).
-- Free tier: 10K commands/day → supports ~500 visitors/day free; exam-season
-  spikes cost pay-as-you-go pennies. If burn matters, throttle heartbeat to
-  90s and badge poll to 60s.
+- Heartbeat = **one** Redis request: a single `EVAL` running the heartbeat
+  script. Billed cost is higher than one command, because Upstash bills
+  every internal `redis.call` separately — see
+  `docs/adr/0004-upstash-bills-eval-internals.md`. A repeat heartbeat
+  costs five internal calls; a first touch of the day costs ten.
+- Badge poll = one `EVAL` (four internal calls), memoized per isolate for
+  10s so bursts of tabs share one read.
+- Free tier: 500K commands/month → supports ~500 visitors/day free;
+  exam-season spikes cost pay-as-you-go pennies. If burn matters, throttle
+  heartbeat to 90s and badge poll to 60s.
 - Peak concurrency is **sampled** at poll time (monotonic, never regresses) —
   an unobserved literal peak second may be off by a few; acceptable.
 - 30–45s refresh granularity — "live enough", not instant. Sub-second would
