@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Calculator, Github, FileText, X, Sparkles, BookOpen, HeartHandshake } from "lucide-react";
+import { Calculator, Github, FileText, X, Sparkles, BookOpen, HeartHandshake, Users } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { LiveBadge } from "./LiveBadge";
 import { useState, useEffect } from "react";
@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export function TopNavigation() {
     const [showAlert, setShowAlert] = useState(true);
+    const [showContributeHint, setShowContributeHint] = useState(false);
     const showAlertBanner = true; // Set to true to show notification banner
     const pathname = usePathname();
 
@@ -21,6 +22,21 @@ export function TopNavigation() {
 
         return () => clearTimeout(timer);
     }, []);
+
+    // A one-off nudge on the papers page: points at the Contributors button
+    // and clears itself after five seconds. Starts false and is enabled in
+    // an effect so the server and client render the same markup.
+    useEffect(() => {
+        if (pathname !== "/") {
+            setShowContributeHint(false);
+            return;
+        }
+
+        setShowContributeHint(true);
+        const timer = setTimeout(() => setShowContributeHint(false), 5000);
+
+        return () => clearTimeout(timer);
+    }, [pathname]);
 
     const isActive = (path: string) => {
         return pathname === path;
@@ -36,14 +52,14 @@ export function TopNavigation() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-yellow-200 overflow-hidden"
+                        className="bg-gradient-to-r from-yellow-200 via-yellow-300 to-yellow-400 text-black overflow-hidden"
                     >
                         <div className="container mx-auto px-4 py-2">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
                                     <Sparkles className="h-4 w-4 animate-pulse text-yellow-200" />
-                                    <span className="text-sm font-semibold">
-                                        New papers added! Faculty of Technology past papers are now up to date through 2025.
+                                    <span className="text-sm font-medium">
+                                        Good Luck on your Exams, and make sure to contriubte the pass papers of this year for future!
                                     </span>
                                 </div>
                                 <button
@@ -139,34 +155,72 @@ export function TopNavigation() {
                                 />
                             )}
                         </Link>
-                        <Link
-                            href="/contribute"
-                            className={`relative flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-md transition-all duration-200 text-xs sm:text-sm font-medium ${
-                                isActive("/contribute")
-                                    ? "bg-background shadow-sm text-primary"
-                                    : "hover:bg-background/50 text-muted-foreground hover:text-foreground"
-                            }`}
-                        >
-                            <HeartHandshake className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                            <span className="hidden sm:block">Contribute</span>
-                            <span className="sm:hidden">Upload</span>
-                            {isActive("/contribute") && (
-                                <motion.div
-                                    layoutId="activeTab"
-                                    className="absolute inset-0 bg-background rounded-md shadow-sm -z-10"
-                                    transition={{
-                                        type: "spring",
-                                        duration: 0.5,
-                                    }}
-                                />
-                            )}
-                        </Link>
+                        <div className="relative">
+                            <Link
+                                href="/contribute"
+                                className={`relative flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-md transition-all duration-200 text-xs sm:text-sm font-medium ${
+                                    isActive("/contribute")
+                                        ? "bg-background shadow-sm text-primary"
+                                        : "hover:bg-background/50 text-muted-foreground hover:text-foreground"
+                                }`}
+                            >
+                                <HeartHandshake className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                                <span className="hidden sm:block">Contribute</span>
+                                <span className="sm:hidden">Upload</span>
+                                {isActive("/contribute") && (
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute inset-0 bg-background rounded-md shadow-sm -z-10"
+                                        transition={{
+                                            type: "spring",
+                                            duration: 0.5,
+                                        }}
+                                    />
+                                )}
+                            </Link>
+
+                            {/* Transient hint, papers page only: sits under the
+                                Contribute tab and clears itself after 5s. */}
+                            <AnimatePresence>
+                                {showContributeHint && (
+                                    <motion.div
+                                        role="status"
+                                        initial={{ opacity: 0, y: -6 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -6 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-max max-w-[210px] rounded-lg border bg-popover/95 px-3 py-2 text-xs font-medium leading-relaxed text-popover-foreground shadow-lg backdrop-blur-md"
+                                    >
+                                        <span
+                                            aria-hidden="true"
+                                            className="absolute -top-1 right-6 h-2 w-2 rotate-45 rounded-[2px] border-l border-t border-border bg-popover"
+                                        />
+                                        Now you can contribute past papers!
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </div>
 
                     {/* Right Side Actions */}
                     <div className="flex items-center space-x-1 sm:space-x-2">
-                        <LiveBadge />
                         <Link
+                            href="/contributors"
+                            aria-label="Contributors"
+                            className={`flex items-center gap-1.5 rounded-md px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-colors ${
+                                isActive("/contributors")
+                                    ? "bg-muted text-primary"
+                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                            }`}
+                        >
+                            <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            <span className="hidden md:inline">
+                                Contributors
+                            </span>
+                        </Link>
+
+                        <LiveBadge />
+                        {/* <Link
                             href="https://github.com/viduwaa"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -174,7 +228,7 @@ export function TopNavigation() {
                             aria-label="GitHub Profile"
                         >
                             <Github className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                        </Link>
+                        </Link> */}
 
                         <ThemeSwitcher />
                     </div>

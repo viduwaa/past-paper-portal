@@ -169,21 +169,31 @@ export class Database {
     }
 
     /**
-     * Every exam year the catalogue already contains, newest first.
-     * Used to populate the contribute form's year dropdown so a
-     * contributor cannot invent a year that no paper will ever match.
+     * Every exam year a paper can belong to, newest first.
+     *
+     * The catalogue's own years plus the current calendar year, because a
+     * student should be able to upload this year's paper as soon as it is
+     * out — before any 2026 row exists, `SELECT DISTINCT` alone would not
+     * offer it and the server-side whitelist would reject it.
      */
     static async getExamYears() {
+        const currentYear = String(new Date().getUTCFullYear());
         try {
             const result = await sql`
                 SELECT DISTINCT exam_year FROM past_papers
                 WHERE exam_year IS NOT NULL
                 ORDER BY exam_year DESC
             `;
-            return result.rows.map((r) => r.exam_year) as string[];
+            const years = new Set(
+                result.rows.map((r) => r.exam_year as string),
+            );
+            years.add(currentYear);
+            return Array.from(years)
+                .filter(Boolean)
+                .sort((a, b) => Number(b) - Number(a));
         } catch (error) {
             console.error("Failed to fetch exam years:", error);
-            return [];
+            return [currentYear];
         }
     }
 

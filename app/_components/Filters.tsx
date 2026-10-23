@@ -56,7 +56,16 @@ const departmentsByYear: Record<string, { value: string; label: string }[]> = {
     ],
 };
 
-const pastPaperYears = ["2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017"];
+// Newest first, generated rather than hardcoded so the current exam year is
+// always offered. The catalogue has no 2026 paper yet, but a student should
+// still be able to filter for one — and adding a paper should not also mean
+// editing this list.
+const FIRST_EXAM_YEAR = 2017;
+const currentExamYear = new Date().getFullYear();
+const pastPaperYears = Array.from(
+    { length: currentExamYear - FIRST_EXAM_YEAR + 1 },
+    (_, index) => String(currentExamYear - index),
+);
 const semesters = ["1st Semester", "2nd Semester"];
 
 interface FiltersProps {
