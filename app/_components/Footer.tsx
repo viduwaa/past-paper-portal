@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Github, BarChart3, FileText } from "lucide-react";
+import { Github, BarChart3, FileText, Users } from "lucide-react";
 
 export function Footer() {
     return (
@@ -24,6 +24,13 @@ export function Footer() {
                     </div>
 
                     <nav className="flex items-center gap-1 sm:gap-2">
+                        <Link
+                            href="/contributors"
+                            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        >
+                            <Users className="h-3.5 w-3.5" />
+                            Contributors
+                        </Link>
                         <Link
                             href="/stats"
                             className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

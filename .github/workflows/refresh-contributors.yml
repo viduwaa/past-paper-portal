@@ -1,0 +1,48 @@
+name: Refresh contributor data
+
+# The Contributors Wall reads code-contribution counts from
+# data/github-contributors.json, which is baked at build time so the app
+# never calls the GitHub API at runtime (the unauthenticated limit is
+# 60 requests per hour per IP).
+#
+# This workflow refreshes that file and opens a pull request when it
+# changes. The portal's own build picks it up on merge.
+
+on:
+  schedule:
+    - cron: "23 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Bake contributor data
+        env:
+          # Optional. Without it the script uses the unauthenticated
+          # GitHub API limit, which is enough for one run per day.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/fetch-contributors.mjs
+
+      - name: Open a pull request if the data changed
+        run: |
+          if git diff --quiet -- data/github-contributors.json; then
+            echo "No change in contributor data."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b chore/refresh-contributors
+          git add data/github-contributors.json
+          git commit -m "chore: refresh contributor data"
+          git push --force origin chore/refresh-contributors

@@ -10,18 +10,20 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { Loader2, HeartHandshake } from "lucide-react";
 
 interface Paper {
     id: number;
     file_name: string;
-    course_name: string;
-    course_code: string;
-    department_code: string;
+    course_name: string | null;
+    course_code: string | null;
+    department_code: string | null;
     academic_year: string;
     semester: string;
     exam_year: string;
     view_url: string;
+    source?: "official" | "contributed";
+    contributor_name?: string | null;
 }
 
 interface PaperTableProps {
@@ -132,13 +134,24 @@ export function PaperTable({ papers, onPaperClick, isLoading }: PaperTableProps)
                                         className="hover:bg-muted/30 transition-colors"
                                     >
                                         <TableCell className="font-mono text-sm">
-                                            {paper.course_code}
+                                            {paper.course_code ?? "—"}
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            {paper.file_name}
+                                            <div className="flex flex-col gap-1">
+                                                <span>{paper.file_name}</span>
+                                                {paper.source ===
+                                                    "contributed" && (
+                                                    <span className="inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
+                                                        <HeartHandshake className="h-2.5 w-2.5" />
+                                                        {paper.contributor_name
+                                                            ? `Contributed by ${paper.contributor_name}`
+                                                            : "Contributed"}
+                                                    </span>
+                                                )}
+                                            </div>
                                         </TableCell>
                                         <TableCell>
-                                            {paper.department_code}
+                                            {paper.department_code ?? "—"}
                                         </TableCell>
                                         <TableCell>
                                             {paper.academic_year}
@@ -216,6 +229,15 @@ export function PaperTable({ papers, onPaperClick, isLoading }: PaperTableProps)
                                             <h3 className="font-semibold text-lg leading-tight">
                                                 {paper.file_name}
                                             </h3>
+                                            {paper.source ===
+                                                "contributed" && (
+                                                <span className="inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
+                                                    <HeartHandshake className="h-2.5 w-2.5" />
+                                                    {paper.contributor_name
+                                                        ? `Contributed by ${paper.contributor_name}`
+                                                        : "Contributed"}
+                                                </span>
+                                            )}
                                             <Button
                                                 variant="default"
                                                 size="sm"
@@ -236,7 +258,7 @@ export function PaperTable({ papers, onPaperClick, isLoading }: PaperTableProps)
                                                     Subject Code:
                                                 </span>
                                                 <div className="font-mono mt-1">
-                                                    {paper.course_code}
+                                                    {paper.course_code ?? "—"}
                                                 </div>
                                             </div>
                                             <div>
@@ -244,7 +266,7 @@ export function PaperTable({ papers, onPaperClick, isLoading }: PaperTableProps)
                                                     Department:
                                                 </span>
                                                 <div className="mt-1">
-                                                    {paper.department_code}
+                                                    {paper.department_code ?? "—"}
                                                 </div>
                                             </div>
                                             <div>
