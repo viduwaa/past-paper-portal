@@ -78,19 +78,79 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 
 ---
 
+## 📊 Upstash Redis quota
+
+The free tier allows **500,000 commands per month**, and Upstash bills a
+Lua script as one command *plus one for every internal `redis.call` it
+makes*. The presence scripts are written to minimise internal calls for
+exactly this reason — see `docs/adr/0004-upstash-bills-eval-internals.md`.
+
+When the quota is exhausted every Redis command fails, including
+`PING`. The site keeps working because each Redis path degrades to the
+database, but the live badge, the presence tracking and the Redis rate
+limiter all go quiet until the monthly reset. Check the Upstash
+dashboard's command count rather than assuming the badge is broken.
+
+The upload endpoint does not rely on Redis for its daily limit. It counts
+attempts in Postgres, so the limit holds even with Redis completely
+unavailable.
+
 ## 🤝 Contributing
 
 This is a totally open-source project aimed at helping RUSL FOT students. If you have past papers, or want to enhance the site's code, we welcome your PRs!
 
 ### Adding New Past Papers
-To contribute past papers, please create an Issue or submit a Pull Request. Since the database is relational (PostgreSQL), data edits will need to be made via SQL seeds provided to the repository maintainer.
-1. Upload your past paper PDF to Google Drive and ensure it's restricted to **tec.rjt.ac.lk** domain or accessible publicly.
-2. Provide the Subject Name, Subject Code, Year, Semester, and URL via an Issue.
+
+Use the **Contribute** page in the site's navigation. Upload a PDF and
+fill in the subject, study year, semester and exam year it belongs to.
+
+- PDFs only, up to 10 MB.
+- Every submission is **reviewed before it is published** — you will see
+  your paper on the site once a maintainer approves it.
+- You can add your name and/or GitHub username to be credited on the
+  [Contributors page](https://past-paper-portal.pages.dev/contributors).
+  Both are optional; leave them blank to stay anonymous.
+- Up to 5 submissions a day. Unreviewed submissions expire after 30 days.
+
+Contributions are credited on the Contributors wall, which lists both
+paper contributions and code contributions to this repository.
+
+#### Maintainer setup
+
+The upload flow talks to Google Drive on the server. To run it you need:
+
+1. A Google Cloud project with the Drive API enabled and an OAuth client
+   of type **Web application**.
+2. The consent screen published in **Production** status with the
+   `drive.file` scope. An app left in **Testing** issues refresh tokens
+   that expire after seven days, which silently breaks uploads.
+3. A refresh token, obtained by authorising once at
+   `https://accounts.google.com/o/oauth2/v2/auth` (with
+   `access_type=offline&prompt=consent`) and exchanging the returned code
+   at `https://oauth2.googleapis.com/token` with
+   `grant_type=authorization_code`.
+4. These Cloudflare Pages environment variables — see `.env.example`
+   for the full list:
+   - `GOOGLE_CLIENT_ID`
+   - `GOOGLE_CLIENT_SECRET`
+   - `GOOGLE_REFRESH_TOKEN`
+5. A `Contributions/` folder in the same Drive account, with a `Pending/`
+   subfolder shared with the reviewers' email addresses, and a
+   `Rejected/` subfolder.
+6. `CLEANUP_SECRET` — a shared secret for the daily expiry job, matching
+   the `CLEANUP_SECRET` GitHub Actions secret.
+7. `SUBMISSIONS_PEPPER` — a salt for hashing submitter IPs.
+
+Apply the database changes with:
+
+```bash
+node --env-file=.env scripts/migrate-contributions.mjs
+```
 
 ### Contributing Code
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m "Add some amazing feature"`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
