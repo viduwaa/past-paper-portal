@@ -13,8 +13,11 @@ function getRedis(): Redis | null {
     }
 }
 
-const PAPERS_KEY = "papers:all:v2";
-const FILTERS_KEY = "papers:filter-options:v2";
+// v3: the papers table gained the `source` / `contributor_name` /
+// `contributor_github` columns, and the semester vocabulary was
+// normalised. Cached v2 rows lack those fields, so the key is bumped.
+const PAPERS_KEY = "papers:all:v3";
+const FILTERS_KEY = "papers:filter-options:v3";
 const TTL = 86400; // 24 hours — papers don't change often, minimize DB hits
 
 // --- Bandwidth shield (per-isolate papers memo) -------------------------
@@ -72,6 +75,27 @@ export async function setCachedPapers(papers: PastPaper[]): Promise<void> {
     } catch (error) {
         if (process.env.NODE_ENV === "development") {
             console.warn("[cache] setCachedPapers failed:", error);
+        }
+    }
+}
+
+/**
+ * Drop the cached paper list so the next request rebuilds it.
+ *
+ * Called when a submission is approved: without this the newly
+ * published paper would not appear for up to a day, because the papers
+ * list is cached for 24 hours and the per-isolate memo holds it for
+ * another 2 minutes.
+ */
+export async function invalidatePapersCache(): Promise<void> {
+    _papersMemo = null;
+    try {
+        const redis = getRedis();
+        if (!redis) return;
+        await redis.del(PAPERS_KEY);
+    } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+            console.warn("[cache] invalidatePapersCache failed:", error);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Calculator, Github, FileText, X, Sparkles, BookOpen } from "lucide-react";
+import { Calculator, Github, FileText, X, Sparkles, BookOpen, HeartHandshake } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { LiveBadge } from "./LiveBadge";
 import { useState, useEffect } from "react";
@@ -129,6 +129,28 @@ export function TopNavigation() {
                             <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                             <span>Notes</span>
                             {isActive("/notes") && (
+                                <motion.div
+                                    layoutId="activeTab"
+                                    className="absolute inset-0 bg-background rounded-md shadow-sm -z-10"
+                                    transition={{
+                                        type: "spring",
+                                        duration: 0.5,
+                                    }}
+                                />
+                            )}
+                        </Link>
+                        <Link
+                            href="/contribute"
+                            className={`relative flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-md transition-all duration-200 text-xs sm:text-sm font-medium ${
+                                isActive("/contribute")
+                                    ? "bg-background shadow-sm text-primary"
+                                    : "hover:bg-background/50 text-muted-foreground hover:text-foreground"
+                            }`}
+                        >
+                            <HeartHandshake className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            <span className="hidden sm:block">Contribute</span>
+                            <span className="sm:hidden">Upload</span>
+                            {isActive("/contribute") && (
                                 <motion.div
                                     layoutId="activeTab"
                                     className="absolute inset-0 bg-background rounded-md shadow-sm -z-10"

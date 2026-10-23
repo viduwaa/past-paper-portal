@@ -13,14 +13,19 @@ export interface PastPaper {
     file_name: string;
     view_url: string;
     preview_url: string;
-    department_code: string;
-    department_name: string;
+    /** Nullable in the database — a handful of legacy rows have no code. */
+    department_code: string | null;
+    department_name: string | null;
     academic_year: string;
     semester: string;
     exam_year: string;
-    course_code: string;
-    course_name: string;
+    course_code: string | null;
+    course_name: string | null;
     created_at: Date;
+    /** 'official' = imported by a maintainer, 'contributed' = community. */
+    source: "official" | "contributed";
+    contributor_name: string | null;
+    contributor_github: string | null;
 }
 
 export interface PaperFilters {
@@ -61,12 +66,13 @@ export class Database {
             if (semester && p.semester !== semester) return false;
             if (department) {
                 const common = ["CMT", "CML"];
+                const deptCode = p.department_code ?? "";
                 if (department === "ITT" || department === "ICT") {
                     const allowed = [department, "ICT", "ITT", ...common];
-                    if (!allowed.includes(p.department_code)) return false;
+                    if (!allowed.includes(deptCode)) return false;
                 } else {
                     const allowed = [department, ...common];
-                    if (!allowed.includes(p.department_code)) return false;
+                    if (!allowed.includes(deptCode)) return false;
                 }
             }
             if (courseCode) {
@@ -159,6 +165,68 @@ export class Database {
         } catch (error) {
             console.error("Failed to fetch filter options:", error);
             return { years: [], semesters: [], departments: [] };
+        }
+    }
+
+    /**
+     * Every exam year the catalogue already contains, newest first.
+     * Used to populate the contribute form's year dropdown so a
+     * contributor cannot invent a year that no paper will ever match.
+     */
+    static async getExamYears() {
+        try {
+            const result = await sql`
+                SELECT DISTINCT exam_year FROM past_papers
+                WHERE exam_year IS NOT NULL
+                ORDER BY exam_year DESC
+            `;
+            return result.rows.map((r) => r.exam_year) as string[];
+        } catch (error) {
+            console.error("Failed to fetch exam years:", error);
+            return [];
+        }
+    }
+
+    /**
+     * Every subject code in the catalogue, with its name, for the
+     * contribute form's datalist. Codes are stored in more than one
+     * shape across the corpus ("ICT 1209", "CMT- 2301", "FDT1201"), so
+     * they are normalised on the way out to avoid duplicate suggestions.
+     */
+    static async getDistinctCourseCodes() {
+        try {
+            const result = await sql`
+                SELECT course_code, min(course_name) AS course_name
+                FROM past_papers
+                WHERE course_code IS NOT NULL
+                  AND course_code <> ''
+                GROUP BY course_code
+                ORDER BY course_code
+            `;
+
+            const seen = new Map<string, string>();
+            for (const row of result.rows as {
+                course_code: string;
+                course_name: string | null;
+            }[]) {
+                const normalised = row.course_code
+                    .trim()
+                    .replace(/^([A-Za-z]{2,4})\s*-?\s*(\d{3,4})$/, "$1 $2")
+                    .toUpperCase();
+                if (!normalised) continue;
+                if (!seen.has(normalised) && row.course_name) {
+                    seen.set(normalised, row.course_name);
+                } else if (!seen.has(normalised)) {
+                    seen.set(normalised, "");
+                }
+            }
+
+            return Array.from(seen.entries())
+                .map(([code, name]) => ({ code, name }))
+                .sort((a, b) => a.code.localeCompare(b.code));
+        } catch (error) {
+            console.error("Failed to fetch course codes:", error);
+            return [];
         }
     }
 

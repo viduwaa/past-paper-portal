@@ -1,0 +1,38 @@
+name: Expire stale submissions
+
+# Pending Paper Submissions expire after 30 days. Cloudflare Pages has no
+# cron trigger, so this workflow calls the cleanup endpoint once a day.
+#
+# The endpoint is protected by a shared secret rather than by Cloudflare
+# Access, because a scheduled job cannot present an Access session.
+# Set the same value in the GitHub secret CLEANUP_SECRET and in the
+# Pages environment variable CLEANUP_SECRET.
+
+on:
+  schedule:
+    # 03:17 UTC daily. Deliberately off the hour — every workflow that
+    # runs at :00 competes for the same runner pool.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  expire:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Expire stale submissions
+        env:
+          CLEANUP_SECRET: ${{ secrets.CLEANUP_SECRET }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          if [ -z "$CLEANUP_SECRET" ]; then
+            echo "CLEANUP_SECRET is not set; skipping."
+            exit 0
+          fi
+          if [ -z "$SITE_URL" ]; then
+            echo "SITE_URL repository variable is not set; skipping."
+            exit 0
+          fi
+          curl --fail-with-body --silent --show-error \
+            --max-time 120 \
+            -X POST "$SITE_URL/api/admin/cleanup" \
+            -H "x-cleanup-secret: $CLEANUP_SECRET"
