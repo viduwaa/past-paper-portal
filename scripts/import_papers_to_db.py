@@ -76,7 +76,14 @@ def build_insert_records(papers, gdrive_mapping):
 
 
 def deduplicate(records):
-    """Remove duplicate records based on (course_code, exam_year, academic_year)."""
+    """Remove duplicate records based on (course_code, exam_year, academic_year, semester, file_name).
+
+    `file_name` is part of the key because one subject legitimately holds
+    several papers in a single period — CMT 1205 in 2025 Semester 1 has
+    both a Written Test and an Oral Test, and the corpus also holds
+    Theory/Practical pairs. The key must match the unique constraint on
+    past_papers.
+    """
     seen = set()
     unique = []
 
@@ -85,6 +92,8 @@ def deduplicate(records):
             r["course_code"].strip(),
             r["exam_year"].strip(),
             r["academic_year"].strip(),
+            r["semester"].strip(),
+            r["file_name"].strip(),
         )
         if key not in seen:
             seen.add(key)
@@ -92,7 +101,10 @@ def deduplicate(records):
 
     removed = len(records) - len(unique)
     if removed > 0:
-        print(f"Removed {removed} duplicate records (same course_code + exam_year + academic_year)")
+        print(
+            f"Removed {removed} duplicate records "
+            "(same course_code + exam_year + academic_year + semester + file_name)"
+        )
 
     return unique
 
@@ -152,10 +164,23 @@ def main():
     conn = psycopg2.connect(db_url)
     cursor = conn.cursor()
 
-    # Check existing records to avoid conflicts
-    cursor.execute("SELECT course_code, exam_year, academic_year FROM past_papers")
-    existing_keys = set((row[0], row[1], row[2]) for row in cursor.fetchall())
-    print(f"Existing records: {len(existing_keys)} unique (course_code, exam_year, academic_year) combos")
+    # Check existing records to avoid conflicts.
+    #
+    # The dedup key is (course_code, exam_year, academic_year, semester,
+    # file_name) — it must match the unique constraint on past_papers, or
+    # Postgres rejects the ON CONFLICT target. `file_name` is part of the
+    # key because one subject legitimately holds several papers in a
+    # single period (CMT 1205 2025 Semester 1 has both a Written Test and
+    # an Oral Test).
+    cursor.execute(
+        "SELECT course_code, exam_year, academic_year, semester, file_name "
+        "FROM past_papers"
+    )
+    existing_keys = set(tuple(row) for row in cursor.fetchall())
+    print(
+        f"Existing records: {len(existing_keys)} unique "
+        "(course_code, exam_year, academic_year, semester, file_name) combos"
+    )
 
     # Filter out records that already exist
     new_records = []
@@ -164,8 +189,11 @@ def main():
             r["course_code"].strip(),
             r["exam_year"].strip(),
             r["academic_year"].strip(),
+            r["semester"].strip(),
+            r["file_name"].strip(),
         )
         if key not in existing_keys:
+            existing_keys.add(key)
             new_records.append(r)
 
     print(f"New records to insert: {len(new_records)}")
@@ -176,7 +204,8 @@ def main():
         insert_query = f"""
             INSERT INTO past_papers ({', '.join(columns)})
             VALUES %s
-            ON CONFLICT (course_code, exam_year, academic_year) DO NOTHING
+            ON CONFLICT (course_code, exam_year, academic_year, semester, file_name)
+            DO NOTHING
         """
 
         # Truncate values to fit column constraints
