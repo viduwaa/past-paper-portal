@@ -1,4 +1,5 @@
 import { Redis } from "@upstash/redis";
+import { STATS_ENABLED } from "./flags";
 
 // ============================================================
 // lib/presence.ts — Live usage statistics engine (Phase 1)
@@ -21,6 +22,11 @@ import { Redis } from "@upstash/redis";
 // costs 5 internal calls (ZADD, ZREMRANGEBYSCORE, ZCARD, HSETNX, MGET);
 // a first-touch-of-day heartbeat adds 5 more. getLiveStats costs 4.
 // See docs/adr/0004-upstash-bills-eval-internals.md.
+//
+// Costs are further gated by STATS_ENABLED (lib/flags.ts). When it is
+// false every exported function returns an empty result before touching
+// Redis, so tracking costs zero commands. The Lua scripts below are kept
+// intact so re-enabling is a flag flip, not a rewrite.
 // ============================================================
 
 export interface LiveStats {
@@ -203,6 +209,7 @@ return 1
 export async function recordOpen(
     departmentCode: string | null,
 ): Promise<boolean> {
+    if (!STATS_ENABLED) return false;
     const redis = getRedis();
     if (!redis) return false;
     const dept = (departmentCode ?? "UNKNOWN")
@@ -241,6 +248,7 @@ export interface DeptInterest {
  * the backing keys). Sorted most-opened first. Empty array on failure.
  */
 export async function getDeptInterest(): Promise<DeptInterest[]> {
+    if (!STATS_ENABLED) return [];
     const redis = getRedis();
     if (!redis) return [];
     try {
@@ -269,6 +277,7 @@ export async function getDeptInterest(): Promise<DeptInterest[]> {
 
 /** Total paper opens ever (since 90-day retention window). */
 export async function getOpensTotal(): Promise<number> {
+    if (!STATS_ENABLED) return 0;
     const redis = getRedis();
     if (!redis) return 0;
     try {
@@ -297,6 +306,7 @@ export interface DaySnapshot {
 export async function getDaySnapshots(
     days: number,
 ): Promise<DaySnapshot[]> {
+    if (!STATS_ENABLED) return [];
     const redis = getRedis();
     const range = Math.min(Math.max(Math.floor(days), 0), 90);
     if (!redis || range === 0) return [];
@@ -390,6 +400,7 @@ export async function registerHeartbeat(
     userAgent: string | null,
 ): Promise<boolean> {
     if (isBot(userAgent) || !browserId) return true; // honest no-op
+    if (!STATS_ENABLED) return true; // tracking paused: no Redis call
 
     const redis = getRedis();
     if (!redis) return false;
@@ -469,6 +480,8 @@ async function fetchLiveStats(redis: Redis): Promise<LiveStats> {
  * memo (plus the single-command read) is what keeps the free tier alive.
  */
 export async function getLiveStats(): Promise<LiveStats> {
+    if (!STATS_ENABLED) return EMPTY_LIVE;
+
     const now = Date.now();
     if (_liveMemo && now - _liveMemo.t < LIVE_MEMO_MS) {
         return _liveMemo.value;
@@ -517,6 +530,10 @@ export interface HistorySummary {
  * Redis failure, same contract as getLiveStats.
  */
 export async function getHistory(days: number): Promise<HistorySummary> {
+    if (!STATS_ENABLED) {
+        return { days: [], totals: { views: 0, uniques: 0, bestPeak: 0 } };
+    }
+
     const redis = getRedis();
     if (!redis || days <= 0) {
         return { days: [], totals: { views: 0, uniques: 0, bestPeak: 0 } };

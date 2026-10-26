@@ -12,7 +12,7 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 ## ✨ Features
 
 - **🔍 Advanced Search & Filtering**: Instantly search by title, subject code, department, study year, and semester.
-- **🛡️ Secure & Resilient**: Database queries are protected globally using Upstash Redis rate-limiting (sliding window).
+- **🛡️ Secure & Resilient**: Every API route is protected by a Cloudflare WAF rate-limiting rule at the edge.
 - **🧮 GPA Calculator**: Highly customized semester-wise GPA tracking tool specifically built for FOT grading standards.
 - **📱 Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices.
 - **🌙 Dark/Light Theme**: Native theme toggling integration for comfortable late-night studying.
@@ -27,7 +27,8 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 - **Styling**: Tailwind CSS, Shadcn UI (Radix)
 - **Animations**: Framer Motion
 - **Database**: PostgreSQL (via @vercel/postgres)
-- **Rate Limiting**: Upstash Redis (@upstash/ratelimit)
+- **Rate Limiting**: Cloudflare WAF rate-limiting rules (edge, no application code)
+- **Cache**: Upstash Redis (paper catalogue + Drive metadata)
 - **Deployment**: Cloudflare Pages
 
 ---
@@ -37,7 +38,7 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 ### Prerequisites
 - [Node.js](https://nodejs.org/en/) & pnpm (recommended)
 - A [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres) Database (or any valid Postgres instance)
-- An [Upstash Redis](https://upstash.com/) Database (for rate limiting)
+- An [Upstash Redis](https://upstash.com/) Database (for the paper catalogue cache)
 
 ### Installation
 
@@ -65,6 +66,9 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 
    UPSTASH_REDIS_REST_URL="https://your-upstash-url.upstash.io"
    UPSTASH_REDIS_REST_TOKEN="your_upstash_token"
+
+   # Usage tracking kill switch (build-time — needs a redeploy to flip).
+   NEXT_PUBLIC_STATS_ENABLED="false"
    ```
 
 4. **Initialize the Database:**
@@ -82,18 +86,46 @@ A responsive, open-source web portal for accessing **Rajarata University Faculty
 
 The free tier allows **500,000 commands per month**, and Upstash bills a
 Lua script as one command *plus one for every internal `redis.call` it
-makes*. The presence scripts are written to minimise internal calls for
-exactly this reason — see `docs/adr/0004-upstash-bills-eval-internals.md`.
+makes*. See `docs/adr/0004-upstash-bills-eval-internals.md`.
 
-When the quota is exhausted every Redis command fails, including
-`PING`. The site keeps working because each Redis path degrades to the
-database, but the live badge, the presence tracking and the Redis rate
-limiter all go quiet until the monthly reset. Check the Upstash
-dashboard's command count rather than assuming the badge is broken.
+Only the paper catalogue cache runs on Redis now (`lib/cache.ts` and
+`lib/drive.ts`). It reads at most once per 120 seconds per isolate, which
+fits comfortably inside the free tier.
 
-The upload endpoint does not rely on Redis for its daily limit. It counts
-attempts in Postgres, so the limit holds even with Redis completely
-unavailable.
+Two things deliberately do **not** run on Redis, because they were what
+exhausted the quota:
+
+- **Usage tracking** — presence heartbeats, the live badge, the view/open
+  counters and the `/stats` dashboard. Together they cost ~31 billed
+  commands per minute per open tab, and the free tier only affords
+  ~11.6/min. Tracking is behind `NEXT_PUBLIC_STATS_ENABLED` (default
+  `false`); with it off, `lib/presence.ts` returns empty results without
+  ever constructing a Redis client.
+- **Rate limiting** — handled at the edge instead. See below.
+
+When the quota is exhausted every Redis command fails, including `PING`.
+The site keeps working — the catalogue falls back to querying Postgres on
+every request — but it is slower until the monthly reset.
+
+### Edge rate limiting
+
+Cloudflare dashboard → **Security → WAF → Rate limiting rules**. The free
+plan includes one rule:
+
+| Field | Value |
+|---|---|
+| Expression | `(http.request.uri.path matches "^/api/")` |
+| Requests | `60` per `10 seconds`, per IP |
+| Action | Block for `10 seconds` |
+
+This runs before the Worker, so it costs no Redis commands and cannot be
+bypassed by the application failing open. It is configured in the
+dashboard, not in this repository — if you redeploy the project elsewhere,
+recreate it.
+
+The upload endpoint keeps its own authoritative daily limit in Postgres
+(`countAttemptsToday` in `lib/submissions.ts`), which counts attempts even
+when they fail, so a Drive outage cannot be used to hammer the Drive API.
 
 ## 🤝 Contributing
 

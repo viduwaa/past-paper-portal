@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Calculator, Github, FileText, X, Sparkles, BookOpen, HeartHandshake, Users } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { LiveBadge } from "./LiveBadge";
+import { STATS_ENABLED } from "@/lib/flags";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -219,7 +220,7 @@ export function TopNavigation() {
                             </span>
                         </Link>
 
-                        <LiveBadge />
+                        {STATS_ENABLED && <LiveBadge />}
                         {/* <Link
                             href="https://github.com/viduwaa"
                             target="_blank"

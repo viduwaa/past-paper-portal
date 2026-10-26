@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Database } from "@/lib/db";
 import { DriveError } from "@/lib/drive";
-import { uploadRatelimit } from "@/lib/ratelimit";
 import {
     DAILY_SUBMISSION_LIMIT,
     MAX_FILE_BYTES,
@@ -23,16 +22,17 @@ export const runtime = "edge";
  * catalogue until a reviewer approves it.
  *
  * Defence in depth, cheapest check first:
- *   1. Rate limit in Redis — stops a burst before any work is done.
- *      Fails open, because the free tier's command quota is easy to
- *      exhaust and "Redis is down" is a normal state, not an emergency.
- *   2. Authoritative daily attempt count in Postgres — survives a
- *      Redis outage, and counts attempts whether or not they succeed,
- *      so a Drive outage cannot be used to hammer the Drive API.
- *   3. Size cap — the body is rejected before it is buffered.
- *   4. PDF magic bytes — the declared type and extension are not trusted.
- *   5. Metadata whitelist — every field is checked against the
+ *   1. Authoritative daily attempt count in Postgres — counts attempts
+ *      whether or not they succeed, so a Drive outage cannot be used to
+ *      hammer the Drive API.
+ *   2. Size cap — the body is rejected before it is buffered.
+ *   3. PDF magic bytes — the declared type and extension are not trusted.
+ *   4. Metadata whitelist — every field is checked against the
  *      catalogue's own values, so a contributor cannot invent rows.
+ *
+ * Burst protection lives at the Cloudflare edge (a WAF rate-limiting
+ * rule over `/api/*`), not in Redis — see
+ * docs/adr/0004-upstash-bills-eval-internals.md.
  */
 
 function getClientIp(request: NextRequest): string {
@@ -48,26 +48,9 @@ export async function POST(request: NextRequest) {
         const ip = getClientIp(request);
         const ipHash = await hashIp(ip);
 
-        // 1. Rate limit (Redis). Fails open when Redis is unreachable —
-        //    the authoritative limit is the Postgres attempt count below.
-        try {
-            const { success } = await uploadRatelimit.limit(ip);
-            if (!success) {
-                return NextResponse.json(
-                    {
-                        error:
-                            "You have reached the daily upload limit. Please try again tomorrow.",
-                    },
-                    { status: 429 },
-                );
-            }
-        } catch (error) {
-            console.error("Upload rate limit error:", error);
-        }
-
-        // 2. Authoritative daily attempt count, independent of Redis.
-        //    Attempts are counted even when they fail, so an outage
-        //    cannot be used to hammer the Drive API.
+        // 1. Authoritative daily attempt count. Attempts are counted even
+        //    when they fail, so an outage cannot be used to hammer the
+        //    Drive API.
         const attemptsToday = await countAttemptsToday(ipHash);
         if (attemptsToday >= DAILY_SUBMISSION_LIMIT) {
             return NextResponse.json(
@@ -79,7 +62,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 3. Size cap, checked from the declared content length before
+        // 2. Size cap, checked from the declared content length before
         //    the body is parsed.
         const contentLength = Number(
             request.headers.get("content-length") ?? "0",
@@ -115,7 +98,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 4. PDF magic bytes. The declared MIME type and the filename
+        // 3. PDF magic bytes. The declared MIME type and the filename
         //    extension are both attacker-controlled; the header is not.
         if (!(await isPdfFile(file))) {
             return NextResponse.json(
@@ -124,7 +107,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 5. Metadata, whitelisted against the catalogue.
+        // 4. Metadata, whitelisted against the catalogue.
         const [options, examYears] = await Promise.all([
             Database.getFilterOptions(),
             Database.getExamYears(),

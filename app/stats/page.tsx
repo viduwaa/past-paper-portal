@@ -15,6 +15,7 @@ import {
     ExternalLink,
 } from "lucide-react";
 import type { LiveStats, HistorySummary } from "@/lib/presence";
+import { STATS_ENABLED } from "@/lib/flags";
 
 interface HistoryPayload {
     rangeDays: number;
@@ -456,6 +457,13 @@ export default function StatsPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Usage tracking is paused: no history fetch and no 30s poll. The
+        // paused notice below is rendered instead of the dashboard.
+        if (!STATS_ENABLED) {
+            setLoading(false);
+            return;
+        }
+
         let cancelled = false;
 
         const load = async () => {
@@ -493,6 +501,35 @@ export default function StatsPage() {
     const totalOpens = history?.opensTotal ?? 0;
     const depts = history?.deptInterest ?? [];
     const maxDept = Math.max(1, ...depts.map((d) => d.opens));
+
+    // All hooks above run in both modes, so the hook order is stable.
+    if (!STATS_ENABLED) {
+        return (
+            <div className="mx-auto max-w-4xl space-y-10 pb-16">
+                <motion.div
+                    className="text-center space-y-2"
+                    initial={{ opacity: 0, y: -16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                        Portal Usage
+                    </h1>
+                </motion.div>
+
+                <div className="flex flex-col items-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 p-8 text-center text-sm text-amber-700 dark:border-amber-400/30 dark:text-amber-300">
+                    <Info className="h-5 w-5 shrink-0" />
+                    <p className="font-medium">Live usage tracking is paused.</p>
+                    <p className="text-muted-foreground">
+                        The counters are switched off temporarily to stay within
+                        the statistics budget. Everything else on the portal —
+                        browsing, downloading and contributing papers — works
+                        normally.
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="mx-auto max-w-4xl space-y-10 pb-16">
