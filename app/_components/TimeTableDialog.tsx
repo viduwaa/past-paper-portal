@@ -282,7 +282,7 @@ export function TimeTableDialog({ open, onOpenChange }: TimeTableDialogProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="w-[98vw] sm:w-[95vw] max-w-[95vw] sm:max-w-[92vw] h-[95vh] sm:h-auto sm:max-h-[92vh] overflow-y-auto p-3 sm:p-6"
+                className="w-[98vw] sm:w-[95vw] max-w-[95vw] sm:max-w-[92vw] h-auto max-h-[90dvh] sm:max-h-[92vh] overflow-y-auto p-3 sm:p-6"
                 onClick={() => setTappedCell(null)}
             >
                 <DialogHeader className="pb-2 sm:pb-4">
