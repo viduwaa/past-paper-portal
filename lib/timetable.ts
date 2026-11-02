@@ -31,7 +31,7 @@ function parseCSVLine(line: string): string[] {
 
 /*
 |--------------------------------------------------------------------------
-| OCTOBER / NOVEMBER 2026 EXAMINATION TIMETABLE
+| OCTOBER / NOVEMBER 2026 REVISED EXAMINATION TIMETABLE
 |--------------------------------------------------------------------------
 |
 | 1 = First Year
@@ -49,7 +49,7 @@ function parseCSVLine(line: string): string[] {
 */
 
 const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
-19.10.2026,9.00 a.m. - 11.00 a.m.,BST,FDT 1201,Organic Chemistry,1
+19.10.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 1201,Organic Chemistry,1
 19.10.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1207,Human Computer Interaction,1
 19.10.2026,9.00 a.m. - 11.00 a.m.,ENT,ENT 1203,Engineering Drawing,1
 19.10.2026,1.00 p.m. - 4.00 p.m.,MTT,MTT 2311,Ceramic Technology I,2
@@ -61,7 +61,6 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 21.10.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1307,Mathematics for Technology I,1
 21.10.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1307,Mathematics for Technology I,1
 21.10.2026,9.00 a.m. - 12.00 p.m.,ICT,CMT 1307,Mathematics for Technology I,1
-
 21.10.2026,2.00 p.m. - 3.00 p.m.,BPT,BPT 2108,Quality Assurance and Safety of Bio processed Product,2
 21.10.2026,2.00 p.m. - 3.30 p.m.,MTT,MTT 2112,Introduction to Thermodynamics,2
 21.10.2026,2.00 p.m. - 3.30 p.m.,FDT,FDT 2206,Food Physics,2
@@ -75,12 +74,12 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 23.10.2026,9.00 a.m. - 12.00 p.m.,ENT,ENT 1302,Fundamentals of Electricity and Magnetism,1
 23.10.2026,9.00 a.m. - 12.00 p.m.,ICT,ENT 1302,Fundamentals of Electricity and Magnetism,1
 23.10.2026,9.00 a.m. - 11.00 a.m.,BST,BPT 1202,Cell Biology,1
-23.10.2026,1.00 p.m. - 3.00 p.m.,EET,CMT 2203,Computational Mathematics,2
-23.10.2026,1.00 p.m. - 3.00 p.m.,MTT,CMT 2203,Computational Mathematics,2
-23.10.2026,1.00 p.m. - 3.00 p.m.,ICT,CMT 2203,Computational Mathematics,2
-23.10.2026,1.00 p.m. - 3.00 p.m.,BPT,CMT 2203,Computational Mathematics,2
-23.10.2026,1.00 p.m. - 3.00 p.m.,FDT,CMT 2203,Computational Mathematics,2
-23.10.2026,1.00 p.m. - 4.00 p.m.,ICT,ICT 2305,Computational Mathematics,2
+23.10.2026,2.00 p.m. - 4.00 p.m.,EET,CMT 2203,Computational Mathematics,2
+23.10.2026,2.00 p.m. - 4.00 p.m.,MTT,CMT 2203,Computational Mathematics,2
+23.10.2026,2.00 p.m. - 4.00 p.m.,ICT,CMT 2203,Computational Mathematics,2
+23.10.2026,2.00 p.m. - 4.00 p.m.,BPT,CMT 2203,Computational Mathematics,2
+23.10.2026,2.00 p.m. - 4.00 p.m.,FDT,CMT 2203,Computational Mathematics,2
+23.10.2026,2.00 p.m. - 5.00 p.m.,ICT,ICT 2305,Computational Mathematics,2
 
 26.10.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4217,Electrical Machines and Drives,4
 26.10.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 4205,Food Marketing,4
@@ -89,24 +88,17 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 26.10.2026,1.00 p.m. - 3.00 p.m.,EET,EET 2204,Electrical Measurements and Instrumentations,2
 26.10.2026,1.00 p.m. - 3.00 p.m.,ICT,CML 3203,Basic of Accountancy,3
 
-27.10.2026,9.00 a.m. - 11.00 a.m.,ENT,ENT 1204,Workshop Technology I,1
-27.10.2026,9.00 a.m. - 11.00 a.m.,BST,BPT 1201,General Microbiology (Theory),1
-
-28.10.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4210,Electronic Product Design,4
-28.10.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 4204,Quality Assurance, Safety and Standards in Food Industry,4
+28.10.2026,9.00 a.m. - 11.30 a.m.,EET,EET 4220,Graphical Programming and Data Acquisition,4
 28.10.2026,9.00 a.m. - 11.00 a.m.,MTT,MTT 4215,Cleaner Production,4
 28.10.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3213,Advanced Software System Design,3
 
-29.10.2026,9.00 a.m. onwards,BST,BPT 1201,General Microbiology (Practical),1
-29.10.2026,9.00 a.m. - 12.00 p.m.,ENT,ENT 1301,Introduction to Basic Electronics,1
-29.10.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1210,Introduction to Multimedia,1
 29.10.2026,2.00 p.m. - 4.00 p.m.,BPT,BPT 2206,Bioreactor Operation and Design,2
 29.10.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 2208,Food Microbiology,2
 29.10.2026,2.00 p.m. - 4.00 p.m.,EET,EET 2206,Signals and Systems,2
 29.10.2026,2.00 p.m. - 5.00 p.m.,ICT,ICT 2308,Database Systems (Theory),2
 29.10.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2209,Introduction to Polymer Technology,2
 
-30.10.2026,9.00 a.m. - 11.30 a.m.,EET,EET 4220,Graphical Programming and Data Acquisition,4
+30.10.2026,9.00 a.m. - 11.00 a.m.,EET,EET 4210,Electronic Product Design,4
 30.10.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3204,E-Business Systems,3
 
 02.11.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1209,Web Technologies,1
@@ -118,11 +110,11 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 02.11.2026,1.00 p.m. - 3.00 p.m.,BPT,CML 2204,Foreign Language,2
 02.11.2026,1.00 p.m. - 3.00 p.m.,FDT,CML 2204,Foreign Language,2
 
+03.11.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 4204,Quality Assurance, Safety and Standards in Food Industry,4
 03.11.2026,9.00 a.m. - 12.00 p.m.,ICT,ICT 3311,Robotics,3
 
-04.11.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1209,Communication Skills II (Theory),1
-04.11.2026,9.00 a.m. - 12.00 p.m.,ICT,CMT 1209,Communication Skills II (Theory),1
-04.11.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1209,Communication Skills II (Theory),1
+04.11.2026,9.00 a.m. - 11.00 a.m.,ENT,ENT 1204,Workshop Technology I,1
+04.11.2026,9.00 a.m. - 11.00 a.m.,BST,BPT 1201,General Microbiology (Theory),1
 04.11.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2211,Fundamentals of Statistics,2
 04.11.2026,2.00 p.m. - 4.00 p.m.,FDT,FDT 2210,Food Biotechnology,2
 04.11.2026,2.00 p.m. - 4.00 p.m.,EET,CML 2208,Introduction to Marketing,2
@@ -131,10 +123,9 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 
 05.11.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 3219,Mobile Application Development,3
 
-06.11.2026,9.00 a.m. onwards,ENT,CMT 1209,Communication Skills II (Practical),1
-06.11.2026,9.00 a.m. onwards,BST,CMT 1209,Communication Skills II (Practical),1
-06.11.2026,9.00 a.m. onwards,ICT,CMT 1209,Communication Skills II (Practical),1
-
+06.11.2026,9.00 a.m. onwards,BST,BPT 1201,General Microbiology (Practical),1
+06.11.2026,9.00 a.m. - 12.00 p.m.,ENT,ENT 1301,Introduction to Basic Electronics,1
+06.11.2026,9.00 a.m. - 11.00 a.m.,ICT,ICT 1210,Introduction to Multimedia,1
 06.11.2026,2.00 p.m. - 4.00 p.m.,ICT,ICT 2214,Introduction to Information Systems,2
 06.11.2026,2.00 p.m. - 4.00 p.m.,MTT,MTT 2210,Mechanical Behavior of Materials,2
 06.11.2026,2.00 p.m. - 5.00 p.m.,EET,EET 2305,Electrical Machines,2
@@ -150,7 +141,6 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 10.11.2026,9.00 a.m. - 11.00 a.m.,ENT,CML 1203,Principles of Management,1
 10.11.2026,9.00 a.m. - 11.00 a.m.,BST,CML 1203,Principles of Management,1
 10.11.2026,9.00 a.m. - 11.00 a.m.,ICT,CML 1203,Principles of Management,1
-
 
 11.11.2026,9.00 a.m. - 11.00 a.m.,BPT,BPT 2209,Molecular Biotechnology (Theory),2
 11.11.2026,9.00 a.m. - 11.00 a.m.,FDT,FDT 2209,Introduction to Human Nutrition,2
@@ -168,6 +158,9 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 13.11.2026,9.00 a.m. - 11.00 a.m.,MTT,ICT 2206,Multimedia and Web Technologies,2
 13.11.2026,2.00 p.m. - 5.00 p.m.,ICT,ICT 3310,Information Security,3
 
+16.11.2026,9.00 a.m. onwards,ENT,CMT 1209,Communication Skills II (Practical),1
+16.11.2026,9.00 a.m. onwards,BST,CMT 1209,Communication Skills II (Practical),1
+16.11.2026,9.00 a.m. onwards,ICT,CMT 1209,Communication Skills II (Practical),1
 16.11.2026,9.00 a.m. onwards,ICT,ICT 4808,Research Project,4
 
 17.11.2026,9.00 a.m. onwards,ICT,ICT 1108,Skill Development Project I,1
@@ -175,6 +168,10 @@ const CSV_DATA = `Date,Time,Dept.,Subject,Title,Year
 18.11.2026,9.00 a.m. onwards,ICT,ICT 2212,Skill Development Project II,2
 
 19.11.2026,9.00 a.m. onwards,ICT,ICT 3206,Skills Development Project III,3
+
+20.11.2026,9.00 a.m. - 12.00 p.m.,ENT,CMT 1209,Communication Skills II (Theory),1
+20.11.2026,9.00 a.m. - 12.00 p.m.,BST,CMT 1209,Communication Skills II (Theory),1
+20.11.2026,9.00 a.m. - 12.00 p.m.,ICT,CMT 1209,Communication Skills II (Theory),1
 `;
 
 
