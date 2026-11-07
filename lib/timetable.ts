@@ -217,15 +217,6 @@ export const TIMETABLE: Record<number, ExamEntry[]> = (() => {
 })();
 
 
-/*
-|--------------------------------------------------------------------------
-| CALENDAR DATA
-|--------------------------------------------------------------------------
-|
-| October = 10
-| November = 11
-|
-*/
 
 export const CALENDAR_DATA: Record<
     number,
