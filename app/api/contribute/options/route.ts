@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Database } from "@/lib/db";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 /**
  * The dropdown options for the contribute form.

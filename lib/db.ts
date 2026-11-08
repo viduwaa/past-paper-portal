@@ -1,4 +1,4 @@
-import { sql } from "@/lib/sql";
+import { getSupabase } from "@/lib/supabase";
 
 export interface WebsiteFeedback {
     id: number;
@@ -36,10 +36,36 @@ export interface PaperFilters {
     searchQuery?: string;
 }
 
+type PaperRow = Omit<PastPaper, "created_at"> & { created_at: string };
+
+function toPaper(row: PaperRow): PastPaper {
+    return { ...row, created_at: new Date(row.created_at) };
+}
+
+function toFeedback(row: {
+    id: number;
+    rating: number;
+    browser_id: string;
+    user_agent: string | null;
+    timestamp: string;
+}): WebsiteFeedback {
+    return {
+        id: row.id,
+        rating: row.rating,
+        browserId: row.browser_id,
+        userAgent: row.user_agent,
+        timestamp: new Date(row.timestamp),
+    };
+}
+
 export class Database {
     static async testConnection(): Promise<void> {
         try {
-            await sql`SELECT 1`;
+            const { error } = await getSupabase()
+                .from("past_papers")
+                .select("id", { count: "exact", head: true })
+                .limit(1);
+            if (error) throw error;
         } catch (error) {
             throw new Error(`Database connection failed: ${error}`);
         }
@@ -50,8 +76,13 @@ export class Database {
     // ============================================================
 
     static async getAllPapers(): Promise<PastPaper[]> {
-        const result = await sql`SELECT * FROM past_papers ORDER BY exam_year DESC, course_code ASC`;
-        return result.rows as unknown as PastPaper[];
+        const { data, error } = await getSupabase()
+            .from("past_papers")
+            .select("*")
+            .order("exam_year", { ascending: false })
+            .order("course_code", { ascending: true });
+        if (error) throw error;
+        return (data as PaperRow[]).map(toPaper);
     }
 
     static filterPapers(papers: PastPaper[], filters: PaperFilters): PastPaper[] {
@@ -92,57 +123,12 @@ export class Database {
     }
 
     static async getPapers(filters: PaperFilters): Promise<PastPaper[]> {
-        const { year, semester, department, courseCode, searchQuery } = filters;
-
+        // PostgREST can't express the OR'd ILIKE search cleanly, and the
+        // catalogue is small enough that /api/papers already loads it all
+        // and filters in memory — so filter here the same way.
         try {
-            // Start the base query
-            let query = `SELECT * FROM past_papers WHERE 1=1`;
-            const params: (string | number)[] = [];
-            let paramIndex = 1;
-
-            if (year) {
-                query += ` AND academic_year = $${paramIndex}`;
-                params.push(year);
-                paramIndex++;
-            }
-
-            if (semester) {
-                query += ` AND semester = $${paramIndex}`;
-                params.push(semester);
-                paramIndex++;
-            }
-
-            if (department) {
-                // Include CMT and CML as they are common subjects for all departments
-                // Treat ITT and ICT as equivalent since they share/cross-list same core subjects
-                if (department === "ITT" || department === "ICT") {
-                    query += ` AND department_code IN ($${paramIndex}, 'ICT', 'ITT', 'CMT', 'CML')`;
-                } else {
-                    query += ` AND department_code IN ($${paramIndex}, 'CMT', 'CML')`;
-                }
-                params.push(department);
-                paramIndex++;
-            }
-
-            if (courseCode) {
-                query += ` AND course_code ILIKE $${paramIndex}`;
-                params.push(`%${courseCode}%`);
-                paramIndex++;
-            }
-
-            if (searchQuery) {
-                query += ` AND (course_name ILIKE $${paramIndex} OR file_name ILIKE $${paramIndex} OR course_code ILIKE $${paramIndex})`;
-                params.push(`%${searchQuery}%`);
-                paramIndex++;
-            }
-
-            query += ` ORDER BY exam_year DESC, course_code ASC`;
-
-            // Using raw query for dynamic filtering since the sql
-            // template tag doesn't support dynamic WHERE clauses easily
-            // without query builders
-            const result = await sql.query(query, params);
-            return result.rows as unknown as PastPaper[];
+            const papers = await Database.getAllPapers();
+            return Database.filterPapers(papers, filters);
         } catch (error) {
             console.error("Failed to fetch papers:", error);
             throw new Error("Failed to fetch papers");
@@ -151,20 +137,30 @@ export class Database {
 
     static async getFilterOptions() {
         try {
-            // Fetch unique values for the filter dropdowns efficiently
+            // PostgREST has no DISTINCT; fetch the single column and
+            // dedupe in JS (the catalogue is a few thousand rows).
+            const distinct = async (column: string): Promise<string[]> => {
+                const { data, error } = await getSupabase()
+                    .from("past_papers")
+                    .select(column)
+                    .not(column, "is", null)
+                    .order(column, { ascending: true });
+                if (error) throw error;
+                const values = new Set(
+                    (data as unknown as Record<string, unknown>[]).map(
+                        (r) => r[column] as string,
+                    ),
+                );
+                return Array.from(values);
+            };
+
             const [years, semesters, departments] = await Promise.all([
-                sql`SELECT DISTINCT academic_year FROM past_papers WHERE academic_year IS NOT NULL ORDER BY academic_year`,
-                sql`SELECT DISTINCT semester FROM past_papers WHERE semester IS NOT NULL ORDER BY semester`,
-                sql`SELECT DISTINCT department_code FROM past_papers WHERE department_code IS NOT NULL ORDER BY department_code`,
+                distinct("academic_year"),
+                distinct("semester"),
+                distinct("department_code"),
             ]);
 
-            return {
-                years: years.rows.map((r) => r.academic_year as string),
-                semesters: semesters.rows.map((r) => r.semester as string),
-                departments: departments.rows.map(
-                    (r) => r.department_code as string,
-                ),
-            };
+            return { years, semesters, departments };
         } catch (error) {
             console.error("Failed to fetch filter options:", error);
             return { years: [], semesters: [], departments: [] };
@@ -176,19 +172,19 @@ export class Database {
      *
      * The catalogue's own years plus the current calendar year, because a
      * student should be able to upload this year's paper as soon as it is
-     * out — before any 2026 row exists, `SELECT DISTINCT` alone would not
+     * out — before any 2026 row exists, a DISTINCT alone would not
      * offer it and the server-side whitelist would reject it.
      */
     static async getExamYears() {
         const currentYear = String(new Date().getUTCFullYear());
         try {
-            const result = await sql`
-                SELECT DISTINCT exam_year FROM past_papers
-                WHERE exam_year IS NOT NULL
-                ORDER BY exam_year DESC
-            `;
+            const { data, error } = await getSupabase()
+                .from("past_papers")
+                .select("exam_year")
+                .not("exam_year", "is", null);
+            if (error) throw error;
             const years = new Set(
-                result.rows.map((r) => r.exam_year as string),
+                (data as { exam_year: string }[]).map((r) => r.exam_year),
             );
             years.add(currentYear);
             return Array.from(years)
@@ -208,17 +204,16 @@ export class Database {
      */
     static async getDistinctCourseCodes() {
         try {
-            const result = await sql`
-                SELECT course_code, min(course_name) AS course_name
-                FROM past_papers
-                WHERE course_code IS NOT NULL
-                  AND course_code <> ''
-                GROUP BY course_code
-                ORDER BY course_code
-            `;
+            const { data, error } = await getSupabase()
+                .from("past_papers")
+                .select("course_code, course_name")
+                .not("course_code", "is", null)
+                .neq("course_code", "")
+                .order("course_code", { ascending: true });
+            if (error) throw error;
 
             const seen = new Map<string, string>();
-            for (const row of result.rows as {
+            for (const row of data as {
                 course_code: string;
                 course_name: string | null;
             }[]) {
@@ -227,10 +222,8 @@ export class Database {
                     .replace(/^([A-Za-z]{2,4})\s*-?\s*(\d{3,4})$/, "$1 $2")
                     .toUpperCase();
                 if (!normalised) continue;
-                if (!seen.has(normalised) && row.course_name) {
-                    seen.set(normalised, row.course_name);
-                } else if (!seen.has(normalised)) {
-                    seen.set(normalised, "");
+                if (!seen.has(normalised)) {
+                    seen.set(normalised, row.course_name ?? "");
                 }
             }
 
@@ -251,25 +244,26 @@ export class Database {
         browserId: string,
     ): Promise<WebsiteFeedback | null> {
         try {
-            const result = await sql`
-                SELECT id, rating, browser_id, user_agent, timestamp
-                FROM website_feedback
-                WHERE browser_id = ${browserId}
-                AND timestamp >= NOW() - INTERVAL '1 hour'
-                ORDER BY timestamp DESC
-                LIMIT 1
-            `;
-
-            if (result.rows.length === 0) return null;
-
-            const row = result.rows[0];
-            return {
-                id: row.id as number,
-                rating: row.rating as number,
-                browserId: row.browser_id as string,
-                userAgent: row.user_agent as string | null,
-                timestamp: row.timestamp as Date,
-            };
+            const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+            const { data, error } = await getSupabase()
+                .from("website_feedback")
+                .select("id, rating, browser_id, user_agent, timestamp")
+                .eq("browser_id", browserId)
+                .gte("timestamp", since)
+                .order("timestamp", { ascending: false })
+                .limit(1)
+                .maybeSingle();
+            if (error) throw error;
+            if (!data) return null;
+            return toFeedback(
+                data as {
+                    id: number;
+                    rating: number;
+                    browser_id: string;
+                    user_agent: string | null;
+                    timestamp: string;
+                },
+            );
         } catch (error) {
             throw new Error(`Failed to find recent feedback: ${error}`);
         }
@@ -281,26 +275,24 @@ export class Database {
         userAgent: string | null,
     ): Promise<WebsiteFeedback> {
         try {
-            // Use ON CONFLICT for upsert functionality
-            const result = await sql`
-                INSERT INTO website_feedback (rating, browser_id, user_agent)
-                VALUES (${rating}, ${browserId}, ${userAgent})
-                ON CONFLICT (browser_id)
-                DO UPDATE SET
-                    rating = EXCLUDED.rating,
-                    user_agent = EXCLUDED.user_agent,
-                    timestamp = CURRENT_TIMESTAMP
-                RETURNING id, rating, browser_id, user_agent, timestamp
-            `;
-
-            const row = result.rows[0];
-            return {
-                id: row.id as number,
-                rating: row.rating as number,
-                browserId: row.browser_id as string,
-                userAgent: row.user_agent as string | null,
-                timestamp: row.timestamp as Date,
-            };
+            const { data, error } = await getSupabase()
+                .from("website_feedback")
+                .upsert(
+                    { rating, browser_id: browserId, user_agent: userAgent },
+                    { onConflict: "browser_id" },
+                )
+                .select("id, rating, browser_id, user_agent, timestamp")
+                .single();
+            if (error) throw error;
+            return toFeedback(
+                data as {
+                    id: number;
+                    rating: number;
+                    browser_id: string;
+                    user_agent: string | null;
+                    timestamp: string;
+                },
+            );
         } catch (error) {
             throw new Error(`Failed to upsert feedback: ${error}`);
         }
@@ -308,30 +300,15 @@ export class Database {
 
     static async getAllFeedback(): Promise<WebsiteFeedback[]> {
         try {
-            const result = await sql`
-                SELECT id, rating, browser_id, user_agent, timestamp
-                FROM website_feedback
-                ORDER BY timestamp DESC
-            `;
-
-            return result.rows.map((row: unknown) => {
-                const r = row as {
-                    id: number;
-                    rating: number;
-                    browser_id: string;
-                    user_agent: string | null;
-                    timestamp: Date;
-                };
-                return {
-                    id: r.id,
-                    rating: r.rating,
-                    browserId: r.browser_id,
-                    userAgent: r.user_agent,
-                    timestamp: r.timestamp,
-                };
-            });
+            const { data, error } = await getSupabase()
+                .from("website_feedback")
+                .select("id, rating, browser_id, user_agent, timestamp")
+                .order("timestamp", { ascending: false });
+            if (error) throw error;
+            return (data as Parameters<typeof toFeedback>[0][]).map(toFeedback);
         } catch (error) {
             throw new Error(`Failed to get all feedback: ${error}`);
         }
     }
 }
+

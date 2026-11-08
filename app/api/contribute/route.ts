@@ -11,7 +11,7 @@ import {
     recordAttempt,
 } from "@/lib/submissions";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 /**
  * Accept a community-contributed past paper.

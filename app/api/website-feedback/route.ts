@@ -1,4 +1,4 @@
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 import { NextRequest, NextResponse } from "next/server";
 import { Database, WebsiteFeedback } from "@/lib/db";
@@ -6,8 +6,8 @@ import { Database, WebsiteFeedback } from "@/lib/db";
 export async function POST(request: NextRequest) {
     try {
         console.log(
-            "API called with POSTGRES_URL:",
-            process.env.POSTGRES_URL ? "Present" : "Missing"
+            "API called with SUPABASE_URL:",
+            process.env.SUPABASE_URL ? "Present" : "Missing"
         );
 
         const { rating, browserId } = await request.json();

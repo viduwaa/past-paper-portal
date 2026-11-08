@@ -16,7 +16,7 @@
 // nothing. See scripts/fetch-contributors.mjs.
 // ============================================================
 
-import { sql } from "@/lib/sql";
+import { getSupabase } from "@/lib/supabase";
 import githubContributors from "@/data/github-contributors.json";
 
 // --- Types --------------------------------------------------------
@@ -83,13 +83,30 @@ interface PaperContributionRow {
  */
 async function getPaperContributions(): Promise<PaperContributionRow[]> {
     try {
-        const result = await sql`
-            SELECT contributor_github, contributor_name, count(*)::int AS count
-            FROM past_papers
-            WHERE source = 'contributed'
-            GROUP BY contributor_github, contributor_name
-        `;
-        return result.rows as unknown as PaperContributionRow[];
+        // PostgREST has no GROUP BY; contributed papers are a small
+        // subset, so aggregate in JS.
+        const { data, error } = await getSupabase()
+            .from("past_papers")
+            .select("contributor_github, contributor_name")
+            .eq("source", "contributed");
+        if (error) throw error;
+
+        const counts = new Map<string, PaperContributionRow>();
+        for (const row of data as {
+            contributor_github: string | null;
+            contributor_name: string | null;
+        }[]) {
+            const key = `${row.contributor_github ?? ""}\0${row.contributor_name ?? ""}`;
+            const existing = counts.get(key);
+            if (existing) existing.count += 1;
+            else
+                counts.set(key, {
+                    contributor_github: row.contributor_github,
+                    contributor_name: row.contributor_name,
+                    count: 1,
+                });
+        }
+        return Array.from(counts.values());
     } catch (error) {
         console.error("Failed to aggregate paper contributions:", error);
         return [];

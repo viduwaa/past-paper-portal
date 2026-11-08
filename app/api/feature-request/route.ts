@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@/lib/sql";
+import { getSupabase } from "@/lib/supabase";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 // Browser fingerprinting function (same as feedback)
 function generateBrowserId(request: NextRequest): string {
@@ -42,14 +42,16 @@ export async function POST(request: NextRequest) {
         const finalBrowserId = browserId || generateBrowserId(request);
 
         // Check for recent requests from the same browser (rate limiting)
-        const recentCheck = await sql`
-            SELECT id FROM feature_requests
-            WHERE browser_id = ${finalBrowserId}
-            AND timestamp >= NOW() - INTERVAL '1 hour'
-            LIMIT 1
-        `;
+        const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+        const { data: recent, error: recentError } = await getSupabase()
+            .from("feature_requests")
+            .select("id")
+            .eq("browser_id", finalBrowserId)
+            .gte("timestamp", since)
+            .limit(1);
+        if (recentError) throw recentError;
 
-        if (recentCheck.rows.length > 0) {
+        if (recent && recent.length > 0) {
             return NextResponse.json(
                 {
                     error: "Rate limit exceeded. Please wait before submitting another request.",
@@ -59,10 +61,14 @@ export async function POST(request: NextRequest) {
         }
 
         // Insert the feature request
-        await sql`
-            INSERT INTO feature_requests (request_text, browser_id, user_agent, timestamp)
-            VALUES (${featureRequest}, ${finalBrowserId}, ${userAgent}, CURRENT_TIMESTAMP)
-        `;
+        const { error: insertError } = await getSupabase()
+            .from("feature_requests")
+            .insert({
+                request_text: featureRequest,
+                browser_id: finalBrowserId,
+                user_agent: userAgent,
+            });
+        if (insertError) throw insertError;
 
         return NextResponse.json(
             { message: "Feature request submitted successfully" },
@@ -80,29 +86,26 @@ export async function POST(request: NextRequest) {
 export async function GET() {
     try {
         // Get all feature requests (for admin purposes)
-        const result = await sql`
-            SELECT id, request_text, browser_id, user_agent, timestamp
-            FROM feature_requests
-            ORDER BY timestamp DESC
-            LIMIT 100
-        `;
+        const { data, error } = await getSupabase()
+            .from("feature_requests")
+            .select("id, request_text, browser_id, user_agent, timestamp")
+            .order("timestamp", { ascending: false })
+            .limit(100);
+        if (error) throw error;
 
-        const requests = result.rows.map((row: unknown) => {
-            const r = row as {
-                id: number;
-                request_text: string;
-                browser_id: string;
-                user_agent: string | null;
-                timestamp: Date;
-            };
-            return {
-                id: r.id,
-                requestText: r.request_text,
-                browserId: r.browser_id,
-                userAgent: r.user_agent,
-                timestamp: r.timestamp,
-            };
-        });
+        const requests = (data as {
+            id: number;
+            request_text: string;
+            browser_id: string;
+            user_agent: string | null;
+            timestamp: string;
+        }[]).map((r) => ({
+            id: r.id,
+            requestText: r.request_text,
+            browserId: r.browser_id,
+            userAgent: r.user_agent,
+            timestamp: r.timestamp,
+        }));
 
         return NextResponse.json({ requests });
     } catch (error) {

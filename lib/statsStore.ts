@@ -1,8 +1,8 @@
-import { sql } from "@/lib/sql";
+import { getSupabase } from "@/lib/supabase";
 import type { DaySnapshot } from "./presence";
 
 // ============================================================
-// lib/statsStore.ts — Permanent Postgres (Neon) mirror for stats
+// lib/statsStore.ts — Permanent Postgres (Supabase) mirror for stats
 //
 // Interface:
 //   - mirrorDailySnapshots(snapshots) → freeze Redis day rows into
@@ -10,9 +10,12 @@ import type { DaySnapshot } from "./presence";
 //   - mirrorMeta(name, value)         → monotonic all-time counters
 //   - getAllTimeStats()               → totals across ALL recorded days
 //
-// All merges are monotonic (GREATEST) and idempotent: re-snapshotting
-// an in-progress day never loses ground, and a Postgres failure must
-// never take the stats API down (callers treat it as best-effort).
+// PostgREST has no GREATEST/jsonb merge, so the monotonic merge is
+// done read-modify-write in JS. Snapshots are best-effort (callers
+// swallow failures), and concurrent mirrors of the same day can at
+// worst lose a merge — they can never go backwards, because every
+// write is max(existing, incoming) and re-snapshotting an
+// in-progress day never loses ground.
 // ============================================================
 
 export interface AllTimeStats {
@@ -26,45 +29,61 @@ export interface AllTimeStats {
     departments: { department: string; opens: number }[];
 }
 
+interface DailyRow {
+    day: string;
+    views: number;
+    uniques: number;
+    peak: number;
+    opens: number;
+    departments: Record<string, number>;
+}
+
+async function getDailyRow(day: string): Promise<DailyRow | null> {
+    const { data, error } = await getSupabase()
+        .from("pstats_daily")
+        .select("day, views, uniques, peak, opens, departments")
+        .eq("day", day)
+        .maybeSingle();
+    if (error) throw error;
+    return data as DailyRow | null;
+}
+
 /** Persist day rows to Postgres (idempotent GREATEST merge). */
 export async function mirrorDailySnapshots(
     snapshots: DaySnapshot[],
 ): Promise<void> {
     if (snapshots.length === 0) return;
     for (const s of snapshots) {
-        const depts = s.departments ?? {};
-        // Persist only non-zero entries so empty days don't write junk
-        // keys that would pin zeros in later GREATEST merges.
-        const deptJson = JSON.stringify(
-            Object.fromEntries(Object.entries(depts).filter(([, v]) => v > 0)),
+        const incoming: Record<string, number> = Object.fromEntries(
+            Object.entries(s.departments ?? {}).filter(([, v]) => v > 0),
         );
-        const deptTotal = Object.values(depts).reduce((a, b) => a + b, 0);
-        await sql`
-            INSERT INTO pstats_daily (day, views, uniques, peak, opens, departments)
-            VALUES (${s.date}::date, ${s.views}, ${s.uniques}, ${s.peak}, ${Math.max(s.opens, deptTotal)}, ${deptJson}::jsonb)
-            ON CONFLICT (day) DO UPDATE SET
-                views = GREATEST(pstats_daily.views, EXCLUDED.views),
-                uniques = GREATEST(pstats_daily.uniques, EXCLUDED.uniques),
-                peak = GREATEST(pstats_daily.peak, EXCLUDED.peak),
-                opens = GREATEST(pstats_daily.opens, EXCLUDED.opens),
-                departments =
-                    CASE
-                        WHEN pstats_daily.departments = '{}'::jsonb
-                        THEN EXCLUDED.departments
-                        ELSE (
-                            SELECT jsonb_object_agg(k, GREATEST(
-                                COALESCE((pstats_daily.departments ->> k)::int, 0),
-                                COALESCE((EXCLUDED.departments ->> k)::int, 0)
-                            ))
-                            FROM (
-                                SELECT jsonb_object_keys(pstats_daily.departments) AS k
-                                UNION
-                                SELECT jsonb_object_keys(EXCLUDED.departments)
-                            ) keys
-                        )
-                    END,
-                updated_at = now()
-        `;
+        const deptTotal = Object.values(incoming).reduce((a, b) => a + b, 0);
+        const existing = await getDailyRow(s.date);
+
+        const mergedDepts: Record<string, number> = {
+            ...(existing?.departments ?? {}),
+        };
+        for (const [k, v] of Object.entries(incoming)) {
+            mergedDepts[k] = Math.max(mergedDepts[k] ?? 0, v);
+        }
+
+        const row = {
+            day: s.date,
+            views: Math.max(existing?.views ?? 0, s.views),
+            uniques: Math.max(existing?.uniques ?? 0, s.uniques),
+            peak: Math.max(existing?.peak ?? 0, s.peak),
+            opens: Math.max(
+                existing?.opens ?? 0,
+                Math.max(s.opens, deptTotal),
+            ),
+            departments: mergedDepts,
+            updated_at: new Date().toISOString(),
+        };
+
+        const { error } = await getSupabase()
+            .from("pstats_daily")
+            .upsert(row, { onConflict: "day" });
+        if (error) throw error;
     }
     await mirrorMeta("opens", Math.max(
         ...(snapshots.map((s) =>
@@ -81,58 +100,54 @@ export async function mirrorDailySnapshots(
  * Only ever increases the stored value.
  */
 export async function mirrorMeta(name: string, value: number): Promise<void> {
-    await sql`
-        INSERT INTO pstats_meta (name, value)
-        VALUES (${name}, ${value})
-        ON CONFLICT (name) DO UPDATE SET
-            value = GREATEST(pstats_meta.value, EXCLUDED.value),
-            updated_at = now()
-    `;
+    const { data, error: readError } = await getSupabase()
+        .from("pstats_meta")
+        .select("value")
+        .eq("name", name)
+        .maybeSingle();
+    if (readError) throw readError;
+    const existing = (data as { value: number } | null)?.value ?? 0;
+
+    const { error } = await getSupabase()
+        .from("pstats_meta")
+        .upsert(
+            { name, value: Math.max(existing, value), updated_at: new Date().toISOString() },
+            { onConflict: "name" },
+        );
+    if (error) throw error;
 }
 
 /**
  * All-time totals across every day ever mirrored. Departments are
  * summed from the JSONB blobs (each day holds its own per-day counts).
+ * There is at most one row per day, so fetching them all is cheap.
  */
 export async function getAllTimeStats(): Promise<AllTimeStats> {
-    const rows = await sql<{
-        first_day: string | null;
-        last_day: string | null;
-        views: string | number;
-        uniques: string | number;
-    }>`
-        SELECT
-            MIN(day)::text  AS first_day,
-            MAX(day)::text  AS last_day,
-            COALESCE(SUM(views),   0) AS views,
-            COALESCE(SUM(uniques), 0) AS uniques
-        FROM pstats_daily
-    `;
+    const { data, error } = await getSupabase()
+        .from("pstats_daily")
+        .select("day, views, uniques, opens, departments");
+    if (error) throw error;
 
-    const opensRows = await sql<{ opens: string | number }>`
-        SELECT COALESCE(SUM(opens), 0) AS opens FROM pstats_daily
-    `;
+    const rows = (data ?? []) as DailyRow[];
+    const asNum = (v: number | undefined) => Math.max(0, Math.floor(v ?? 0));
 
-    const deptRows = await sql<{ department: string; opens: string | number }>`
-        SELECT d.key AS department, SUM(d.value::int) AS opens
-        FROM pstats_daily t, LATERAL jsonb_each_text(t.departments) AS d(key, value)
-        GROUP BY d.key
-        ORDER BY opens DESC
-    `;
-
-    const r = rows.rows[0];
-    const asNum = (v: string | number | undefined) =>
-        Math.max(0, Math.floor(Number(v ?? 0)));
+    const deptTotals = new Map<string, number>();
+    for (const row of rows) {
+        for (const [dept, count] of Object.entries(row.departments ?? {})) {
+            deptTotals.set(dept, (deptTotals.get(dept) ?? 0) + asNum(count));
+        }
+    }
 
     return {
-        firstDay: r?.first_day ?? null,
-        lastDay: r?.last_day ?? null,
-        views: asNum(r?.views),
-        uniques: asNum(r?.uniques),
-        opens: asNum(opensRows.rows[0]?.opens),
-        departments: deptRows.rows.map((d) => ({
-            department: d.department,
-            opens: asNum(d.opens),
-        })),
+        firstDay: rows.length ? rows.map((r) => r.day).sort()[0] : null,
+        lastDay: rows.length
+            ? rows.map((r) => r.day).sort()[rows.length - 1]
+            : null,
+        views: rows.reduce((sum, r) => sum + asNum(r.views), 0),
+        uniques: rows.reduce((sum, r) => sum + asNum(r.uniques), 0),
+        opens: rows.reduce((sum, r) => sum + asNum(r.opens), 0),
+        departments: Array.from(deptTotals.entries())
+            .map(([department, opens]) => ({ department, opens }))
+            .sort((a, b) => b.opens - a.opens),
     };
 }

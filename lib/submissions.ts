@@ -18,7 +18,7 @@
 // database or a Drive account.
 // ============================================================
 
-import { sql } from "@/lib/sql";
+import { getSupabase } from "@/lib/supabase";
 import {
     DRIVE_ROOT,
     PENDING_FOLDER,
@@ -273,13 +273,14 @@ export async function countAttemptsToday(
 ): Promise<number> {
     if (!ipHash) return 0;
     try {
-        const result = await sql`
-            SELECT count(*)::int AS n
-            FROM paper_submission_attempts
-            WHERE ip_hash = ${ipHash}
-              AND attempted_at >= NOW() - INTERVAL '1 day'
-        `;
-        return Number(result.rows[0]?.n ?? 0);
+        const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        const { count, error } = await getSupabase()
+            .from("paper_submission_attempts")
+            .select("id", { count: "exact", head: true })
+            .eq("ip_hash", ipHash)
+            .gte("attempted_at", since);
+        if (error) throw error;
+        return count ?? 0;
     } catch (error) {
         console.error("Failed to count daily attempts:", error);
         return 0;
@@ -298,10 +299,10 @@ export async function recordAttempt(
 ): Promise<void> {
     if (!ipHash) return;
     try {
-        await sql`
-            INSERT INTO paper_submission_attempts (ip_hash, succeeded)
-            VALUES (${ipHash}, ${succeeded})
-        `;
+        const { error } = await getSupabase()
+            .from("paper_submission_attempts")
+            .insert({ ip_hash: ipHash, succeeded });
+        if (error) throw error;
     } catch (error) {
         // Never fail an upload because the attempt could not be logged.
         console.error("Failed to record upload attempt:", error);
@@ -327,13 +328,14 @@ export async function countSubmissionsToday(
 ): Promise<number> {
     if (!ipHash) return 0;
     try {
-        const result = await sql`
-            SELECT count(*)::int AS n
-            FROM paper_submissions
-            WHERE ip_hash = ${ipHash}
-              AND submitted_at >= NOW() - INTERVAL '1 day'
-        `;
-        return Number(result.rows[0]?.n ?? 0);
+        const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        const { count, error } = await getSupabase()
+            .from("paper_submissions")
+            .select("id", { count: "exact", head: true })
+            .eq("ip_hash", ipHash)
+            .gte("submitted_at", since);
+        if (error) throw error;
+        return count ?? 0;
     } catch (error) {
         console.error("Failed to count daily submissions:", error);
         return 0;
@@ -367,92 +369,36 @@ export async function createSubmission(
 
     const ipHash = await hashIp(input.ip);
 
-    const result = await sql`
-        INSERT INTO paper_submissions (
-            file_name, file_size, view_url, preview_url,
-            drive_file_id, department_code, academic_year, semester,
-            exam_year, course_code, course_name,
-            contributor_name, contributor_github, notes, ip_hash
-        )
-        VALUES (
-            ${fileName}, ${input.file.size}, ${upload.viewUrl}, ${upload.previewUrl},
-            ${upload.fileId}, ${input.departmentCode.trim()},
-            ${input.academicYear.trim()}, ${input.semester.trim()},
-            ${input.examYear.trim()}, ${validation.normalised.courseCode},
-            ${validation.normalised.courseName},
-            ${validation.normalised.contributorName ?? null},
-            ${validation.normalised.contributorGithub ?? null},
-            ${input.notes?.trim() || null}, ${ipHash}
-        )
-        RETURNING id
-    `;
+    const { data, error } = await getSupabase()
+        .from("paper_submissions")
+        .insert({
+            file_name: fileName,
+            file_size: input.file.size,
+            view_url: upload.viewUrl,
+            preview_url: upload.previewUrl,
+            drive_file_id: upload.fileId,
+            department_code: input.departmentCode.trim(),
+            academic_year: input.academicYear.trim(),
+            semester: input.semester.trim(),
+            exam_year: input.examYear.trim(),
+            course_code: validation.normalised.courseCode,
+            course_name: validation.normalised.courseName,
+            contributor_name: validation.normalised.contributorName ?? null,
+            contributor_github: validation.normalised.contributorGithub ?? null,
+            notes: input.notes?.trim() || null,
+            ip_hash: ipHash,
+        })
+        .select("id")
+        .single();
+    if (error) throw error;
 
-    return { id: result.rows[0].id as number, viewUrl: upload.viewUrl };
+    return { id: (data as { id: number }).id, viewUrl: upload.viewUrl };
 }
 
-/** The review queue. */
-export async function listSubmissions(
-    status: "pending" | "approved" | "rejected" = "pending",
-    limit = 100,
-): Promise<SubmissionRecord[]> {
-    try {
-        const result = await sql`
-            SELECT id, status, file_name, file_size, view_url, preview_url,
-                   drive_file_id, department_code, department_name,
-                   academic_year, semester, exam_year, course_code, course_name,
-                   contributor_name, contributor_github, notes,
-                   submitted_at, reviewed_at, reviewed_by
-            FROM paper_submissions
-            WHERE status = ${status}
-            ORDER BY submitted_at DESC
-            LIMIT ${limit}
-        `;
+const SUBMISSION_COLUMNS =
+    "id, status, file_name, file_size, view_url, preview_url, drive_file_id, department_code, department_name, academic_year, semester, exam_year, course_code, course_name, contributor_name, contributor_github, notes, submitted_at, reviewed_at, reviewed_by";
 
-        return result.rows.map((row: unknown) => {
-            const r = row as Record<string, unknown>;
-            return {
-                id: r.id as number,
-                status: r.status as SubmissionRecord["status"],
-                fileName: r.file_name as string,
-                fileSize: r.file_size as number,
-                viewUrl: r.view_url as string,
-                previewUrl: r.preview_url as string,
-                driveFileId: r.drive_file_id as string,
-                departmentCode: r.department_code as string | null,
-                departmentName: r.department_name as string | null,
-                academicYear: r.academic_year as string | null,
-                semester: r.semester as string | null,
-                examYear: r.exam_year as string | null,
-                courseCode: r.course_code as string | null,
-                courseName: r.course_name as string | null,
-                contributorName: r.contributor_name as string | null,
-                contributorGithub: r.contributor_github as string | null,
-                notes: r.notes as string | null,
-                submittedAt: new Date(r.submitted_at as string).toISOString(),
-                reviewedAt: r.reviewed_at
-                    ? new Date(r.reviewed_at as string).toISOString()
-                    : null,
-                reviewedBy: r.reviewed_by as string | null,
-            };
-        });
-    } catch (error) {
-        console.error("Failed to list submissions:", error);
-        throw new Error("Failed to list submissions");
-    }
-}
-
-async function getSubmission(id: number): Promise<SubmissionRecord | null> {
-    const result = await sql`
-        SELECT id, status, file_name, file_size, view_url, preview_url,
-               drive_file_id, department_code, department_name,
-               academic_year, semester, exam_year, course_code, course_name,
-               contributor_name, contributor_github, notes,
-               submitted_at, reviewed_at, reviewed_by
-        FROM paper_submissions
-        WHERE id = ${id}
-    `;
-    if (result.rows.length === 0) return null;
-    const r = result.rows[0] as Record<string, unknown>;
+function toSubmissionRecord(r: Record<string, unknown>): SubmissionRecord {
     return {
         id: r.id as number,
         status: r.status as SubmissionRecord["status"],
@@ -477,6 +423,37 @@ async function getSubmission(id: number): Promise<SubmissionRecord | null> {
             : null,
         reviewedBy: r.reviewed_by as string | null,
     };
+}
+
+/** The review queue. */
+export async function listSubmissions(
+    status: "pending" | "approved" | "rejected" = "pending",
+    limit = 100,
+): Promise<SubmissionRecord[]> {
+    try {
+        const { data, error } = await getSupabase()
+            .from("paper_submissions")
+            .select(SUBMISSION_COLUMNS)
+            .eq("status", status)
+            .order("submitted_at", { ascending: false })
+            .limit(limit);
+        if (error) throw error;
+        return (data as Record<string, unknown>[]).map(toSubmissionRecord);
+    } catch (error) {
+        console.error("Failed to list submissions:", error);
+        throw new Error("Failed to list submissions");
+    }
+}
+
+async function getSubmission(id: number): Promise<SubmissionRecord | null> {
+    const { data, error } = await getSupabase()
+        .from("paper_submissions")
+        .select(SUBMISSION_COLUMNS)
+        .eq("id", id)
+        .maybeSingle();
+    if (error) throw error;
+    if (!data) return null;
+    return toSubmissionRecord(data as Record<string, unknown>);
 }
 
 /**
@@ -513,39 +490,46 @@ export async function approveSubmission(
         fileName: submission.fileName,
     });
 
-    // Publish and mark approved in one statement.
-    //
-    // The sql wrapper exposes no transaction API, so atomicity comes
-    // from a data-modifying CTE: both writes run inside a single
-    // statement, and Postgres executes every data-modifying CTE exactly
-    // once regardless of whether the outer query reads its output. The
-    // INSERT is idempotent (ON CONFLICT DO NOTHING) so re-approving a
-    // duplicate submission cannot create a second catalogue row.
-    await sql`
-        WITH published AS (
-            INSERT INTO past_papers (
-                file_name, view_url, preview_url, department_code,
-                department_name, academic_year, semester, exam_year,
-                course_code, course_name, source, contributor_name,
-                contributor_github
-            )
-            VALUES (
-                ${submission.fileName}, ${submission.viewUrl}, ${submission.previewUrl},
-                ${submission.departmentCode}, ${submission.departmentName},
-                ${submission.academicYear}, ${submission.semester},
-                ${submission.examYear}, ${submission.courseCode},
-                ${submission.courseName}, 'contributed',
-                ${submission.contributorName}, ${submission.contributorGithub}
-            )
-            ON CONFLICT (course_code, exam_year, academic_year, semester)
-            DO NOTHING
-        )
-        UPDATE paper_submissions
-        SET status = 'approved', reviewed_at = CURRENT_TIMESTAMP,
-            reviewed_by = ${reviewer}
-        WHERE id = ${id}
-        RETURNING id
-    `;
+    // Publish and mark approved. PostgREST has no CTE transaction, so
+    // these are two requests: the INSERT is idempotent
+    // (ignoreDuplicates on the catalogue unique key) so a retry after
+    // a crash cannot create a second catalogue row, and the status
+    // flip is a plain update.
+    const { error: publishError } = await getSupabase()
+        .from("past_papers")
+        .upsert(
+            {
+                file_name: submission.fileName,
+                view_url: submission.viewUrl,
+                preview_url: submission.previewUrl,
+                department_code: submission.departmentCode,
+                department_name: submission.departmentName,
+                academic_year: submission.academicYear,
+                semester: submission.semester,
+                exam_year: submission.examYear,
+                course_code: submission.courseCode,
+                course_name: submission.courseName,
+                source: "contributed",
+                contributor_name: submission.contributorName,
+                contributor_github: submission.contributorGithub,
+            },
+            {
+                onConflict:
+                    "course_code,exam_year,academic_year,semester,file_name",
+                ignoreDuplicates: true,
+            },
+        );
+    if (publishError) throw publishError;
+
+    const { error: approveError } = await getSupabase()
+        .from("paper_submissions")
+        .update({
+            status: "approved",
+            reviewed_at: new Date().toISOString(),
+            reviewed_by: reviewer,
+        })
+        .eq("id", id);
+    if (approveError) throw approveError;
 
     // Record the contributor so the wall can show them.
     await recordContributor(submission);
@@ -566,12 +550,15 @@ export async function rejectSubmission(
 
     await fileRejectedPaper(submission.driveFileId);
 
-    await sql`
-        UPDATE paper_submissions
-        SET status = 'rejected', reviewed_at = CURRENT_TIMESTAMP,
-            reviewed_by = ${reviewer}
-        WHERE id = ${id}
-    `;
+    const { error } = await getSupabase()
+        .from("paper_submissions")
+        .update({
+            status: "rejected",
+            reviewed_at: new Date().toISOString(),
+            reviewed_by: reviewer,
+        })
+        .eq("id", id);
+    if (error) throw error;
 
     return { id };
 }
@@ -584,29 +571,34 @@ export async function rejectSubmission(
 export async function expireStaleSubmissions(
     days = SUBMISSION_TTL_DAYS,
 ): Promise<{ expired: number }> {
-    const stale = await sql`
-        SELECT id, drive_file_id
-        FROM paper_submissions
-        WHERE status = 'pending'
-          AND submitted_at < NOW() - (${days} || ' days')::interval
-    `;
+    const cutoff = new Date(
+        Date.now() - days * 24 * 60 * 60 * 1000,
+    ).toISOString();
+    const { data: stale, error: staleError } = await getSupabase()
+        .from("paper_submissions")
+        .select("id, drive_file_id")
+        .eq("status", "pending")
+        .lt("submitted_at", cutoff);
+    if (staleError) throw staleError;
 
     let expired = 0;
-    for (const row of stale.rows) {
-        const r = row as { id: number; drive_file_id: string };
+    for (const row of stale as { id: number; drive_file_id: string }[]) {
         try {
-            await fileRejectedPaper(r.drive_file_id);
-            await sql`
-                UPDATE paper_submissions
-                SET status = 'rejected', reviewed_at = CURRENT_TIMESTAMP,
-                    reviewed_by = 'auto-expiry'
-                WHERE id = ${r.id}
-            `;
+            await fileRejectedPaper(row.drive_file_id);
+            const { error } = await getSupabase()
+                .from("paper_submissions")
+                .update({
+                    status: "rejected",
+                    reviewed_at: new Date().toISOString(),
+                    reviewed_by: "auto-expiry",
+                })
+                .eq("id", row.id);
+            if (error) throw error;
             expired += 1;
         } catch (error) {
             // A Drive failure must not abort the whole sweep — try the
             // next one and leave this row pending for the next run.
-            console.error(`[submissions] failed to expire ${r.id}:`, error);
+            console.error(`[submissions] failed to expire ${row.id}:`, error);
         }
     }
 
@@ -624,34 +616,36 @@ async function recordContributor(
 
     try {
         if (github) {
-            await sql`
-                INSERT INTO contributors (github_login, display_name)
-                VALUES (${github}, ${name ?? github})
-                ON CONFLICT (github_login) DO UPDATE
-                SET last_seen = CURRENT_TIMESTAMP,
-                    display_name = COALESCE(
-                        NULLIF(contributors.display_name, ''),
-                        EXCLUDED.display_name
-                    )
-            `;
+            const { error } = await getSupabase()
+                .from("contributors")
+                .upsert(
+                    { github_login: github, display_name: name ?? github },
+                    { onConflict: "github_login" },
+                );
+            if (error) throw error;
             return;
         }
 
         // No GitHub login — match on display name so repeat anonymous
         // submissions accumulate under one card.
-        await sql`
-            INSERT INTO contributors (display_name)
-            SELECT ${name}
-            WHERE NOT EXISTS (
-                SELECT 1 FROM contributors
-                WHERE github_login IS NULL AND display_name = ${name}
-            )
-        `;
-        await sql`
-            UPDATE contributors
-            SET last_seen = CURRENT_TIMESTAMP
-            WHERE github_login IS NULL AND display_name = ${name}
-        `;
+        const { data: existing } = await getSupabase()
+            .from("contributors")
+            .select("id")
+            .is("github_login", null)
+            .eq("display_name", name)
+            .maybeSingle();
+        if (existing) {
+            const { error } = await getSupabase()
+                .from("contributors")
+                .update({ last_seen: new Date().toISOString() })
+                .eq("id", (existing as { id: number }).id);
+            if (error) throw error;
+            return;
+        }
+        const { error } = await getSupabase()
+            .from("contributors")
+            .insert({ display_name: name });
+        if (error) throw error;
     } catch (error) {
         // Recording a contributor must never block an approval.
         console.error("Failed to record contributor:", error);
