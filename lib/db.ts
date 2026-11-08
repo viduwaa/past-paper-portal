@@ -1,4 +1,4 @@
-import { getSupabase } from "@/lib/supabase";
+import { describeError, getSupabase } from "@/lib/supabase";
 
 export interface WebsiteFeedback {
     id: number;
@@ -67,7 +67,7 @@ export class Database {
                 .limit(1);
             if (error) throw error;
         } catch (error) {
-            throw new Error(`Database connection failed: ${error}`);
+            throw new Error(`Database connection failed: ${describeError(error)}`);
         }
     }
 
@@ -265,7 +265,7 @@ export class Database {
                 },
             );
         } catch (error) {
-            throw new Error(`Failed to find recent feedback: ${error}`);
+            throw new Error(`Failed to find recent feedback: ${describeError(error)}`);
         }
     }
 
@@ -294,7 +294,7 @@ export class Database {
                 },
             );
         } catch (error) {
-            throw new Error(`Failed to upsert feedback: ${error}`);
+            throw new Error(`Failed to upsert feedback: ${describeError(error)}`);
         }
     }
 
@@ -307,7 +307,7 @@ export class Database {
             if (error) throw error;
             return (data as Parameters<typeof toFeedback>[0][]).map(toFeedback);
         } catch (error) {
-            throw new Error(`Failed to get all feedback: ${error}`);
+            throw new Error(`Failed to get all feedback: ${describeError(error)}`);
         }
     }
 }

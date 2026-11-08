@@ -2,6 +2,7 @@ export const runtime = "edge";
 
 import { NextRequest, NextResponse } from "next/server";
 import { Database, WebsiteFeedback } from "@/lib/db";
+import { describeError } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
     try {
@@ -40,10 +41,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 {
                     error: "Database connection failed",
-                    details:
-                        dbError instanceof Error
-                            ? dbError.message
-                            : "Unknown database error",
+                    details: describeError(dbError),
                 },
                 { status: 500 }
             );
@@ -83,7 +81,7 @@ export async function POST(request: NextRequest) {
             {
                 error: "Internal server error",
                 details:
-                    error instanceof Error ? error.message : "Unknown error",
+                    describeError(error),
                 timestamp: new Date().toISOString(),
             },
             { status: 500 }
@@ -104,10 +102,7 @@ export async function GET() {
             return NextResponse.json(
                 {
                     error: "Database connection failed",
-                    details:
-                        dbError instanceof Error
-                            ? dbError.message
-                            : "Unknown database error",
+                    details: describeError(dbError),
                 },
                 { status: 500 }
             );
@@ -142,7 +137,7 @@ export async function GET() {
             {
                 error: "Internal server error",
                 details:
-                    error instanceof Error ? error.message : "Unknown error",
+                    describeError(error),
                 timestamp: new Date().toISOString(),
             },
             { status: 500 }

@@ -23,18 +23,55 @@ let client: SupabaseClient | undefined;
 
 export function getSupabase(): SupabaseClient {
     if (!client) {
-        const url = process.env.SUPABASE_URL;
+        const rawUrl = process.env.SUPABASE_URL;
         const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-        if (!url || !key) {
+        if (!rawUrl || !key) {
             throw new Error(
                 "Missing Supabase config: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
             );
         }
+        // Tolerate common dashboard typos: a trailing slash or a pasted
+        // "/rest/v1" suffix would otherwise make supabase-js request
+        // ".../rest/v1/rest/v1/..." and PostgREST answers 404.
+        const url = rawUrl.replace(/\/+$/, "").replace(/\/rest\/v1$/, "");
         client = createClient(url, key, {
             auth: { persistSession: false, autoRefreshToken: false },
         });
     }
     return client;
+}
+
+/**
+ * Serialise an unknown thrown value for an error message.
+ *
+ * PostgREST errors from supabase-js are plain objects
+ * ({ message, code, details, hint, status }), NOT Error instances,
+ * so `${error}` renders them as "[object Object]" and hides the
+ * actual cause (401 bad key, 404 table/schema, ...). This always
+ * produces a readable one-liner.
+ */
+export function describeError(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    if (error && typeof error === "object") {
+        const e = error as Record<string, unknown>;
+        const parts = [
+            typeof e.message === "string" ? e.message : undefined,
+            typeof e.code === "string" || typeof e.code === "number"
+                ? `code=${e.code}`
+                : undefined,
+            typeof e.status === "number" ? `status=${e.status}` : undefined,
+            typeof e.details === "string" && e.details ? e.details : undefined,
+            typeof e.hint === "string" && e.hint ? `hint: ${e.hint}` : undefined,
+        ].filter(Boolean);
+        if (parts.length > 0) return parts.join(" ");
+        try {
+            const json = JSON.stringify(error);
+            if (json && json !== "{}") return json;
+        } catch {
+            /* fall through */
+        }
+    }
+    return String(error);
 }
 
 /** Throw a query error so callers' existing try/catch keeps working. */

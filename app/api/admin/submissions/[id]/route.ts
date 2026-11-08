@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminIdentity } from "@/lib/admin-auth";
 import { invalidatePapersCache } from "@/lib/cache";
 import { approveSubmission, rejectSubmission } from "@/lib/submissions";
+import { describeError } from "@/lib/supabase";
 
 export const runtime = "edge";
 
@@ -76,7 +77,7 @@ export async function POST(
         );
     } catch (error) {
         const message =
-            error instanceof Error ? error.message : "Unknown error";
+            describeError(error);
 
         if (message.includes("not found")) {
             return NextResponse.json(
