@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabase } from "@/lib/supabase";
+import { describeError, getSupabase } from "@/lib/supabase";
 
 export const runtime = "edge";
 
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error("Feature request error:", error);
         return NextResponse.json(
-            { error: "Internal server error" },
+            { error: "Internal server error", details: describeError(error) },
             { status: 500 }
         );
     }
@@ -111,7 +111,7 @@ export async function GET() {
     } catch (error) {
         console.error("Get feature requests error:", error);
         return NextResponse.json(
-            { error: "Internal server error" },
+            { error: "Internal server error", details: describeError(error) },
             { status: 500 }
         );
     }

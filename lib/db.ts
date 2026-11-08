@@ -67,7 +67,28 @@ export class Database {
                 .limit(1);
             if (error) throw error;
         } catch (error) {
-            throw new Error(`Database connection failed: ${describeError(error)}`);
+            // supabase-js/PostgREST sometimes return an empty-message error
+            // (e.g. Kong answers 401 with plain text, which fails JSON
+            // parsing downstream). A raw probe distinguishes "bad URL/key"
+            // (HTTP 401/404) from "unreachable host" (fetch throws), so
+            // include its status and body snippet in the message.
+            let probe = "";
+            try {
+                const url = process.env.SUPABASE_URL?.replace(/\/+$/, "").replace(/\/rest\/v1$/, "");
+                const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+                if (url && key) {
+                    const res = await fetch(`${url}/rest/v1/past_papers?select=id&limit=1`, {
+                        headers: { apikey: key, Authorization: `Bearer ${key}` },
+                    });
+                    const body = (await res.text()).slice(0, 200);
+                    probe = ` Probe: HTTP ${res.status} ${body}`;
+                } else {
+                    probe = " Probe: SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY missing or empty.";
+                }
+            } catch (probeError) {
+                probe = ` Probe failed: ${describeError(probeError)}`;
+            }
+            throw new Error(`Database connection failed: ${describeError(error)}.${probe}`);
         }
     }
 
