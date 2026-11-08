@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/sql";
 import type { DaySnapshot } from "./presence";
 
 // ============================================================

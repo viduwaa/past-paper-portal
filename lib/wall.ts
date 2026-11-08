@@ -16,7 +16,7 @@
 // nothing. See scripts/fetch-contributors.mjs.
 // ============================================================
 
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/sql";
 import githubContributors from "@/data/github-contributors.json";
 
 // --- Types --------------------------------------------------------
@@ -89,7 +89,7 @@ async function getPaperContributions(): Promise<PaperContributionRow[]> {
             WHERE source = 'contributed'
             GROUP BY contributor_github, contributor_name
         `;
-        return result.rows as PaperContributionRow[];
+        return result.rows as unknown as PaperContributionRow[];
     } catch (error) {
         console.error("Failed to aggregate paper contributions:", error);
         return [];

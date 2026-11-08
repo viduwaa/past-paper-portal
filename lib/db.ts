@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/sql";
 
 export interface WebsiteFeedback {
     id: number;
@@ -51,7 +51,7 @@ export class Database {
 
     static async getAllPapers(): Promise<PastPaper[]> {
         const result = await sql`SELECT * FROM past_papers ORDER BY exam_year DESC, course_code ASC`;
-        return result.rows as PastPaper[];
+        return result.rows as unknown as PastPaper[];
     }
 
     static filterPapers(papers: PastPaper[], filters: PaperFilters): PastPaper[] {
@@ -138,10 +138,11 @@ export class Database {
 
             query += ` ORDER BY exam_year DESC, course_code ASC`;
 
-            // Using raw query for dynamic filtering since Vercel Postgres template tags
-            // don't support dynamic WHERE clauses easily without query builders
+            // Using raw query for dynamic filtering since the sql
+            // template tag doesn't support dynamic WHERE clauses easily
+            // without query builders
             const result = await sql.query(query, params);
-            return result.rows as PastPaper[];
+            return result.rows as unknown as PastPaper[];
         } catch (error) {
             console.error("Failed to fetch papers:", error);
             throw new Error("Failed to fetch papers");
@@ -158,9 +159,11 @@ export class Database {
             ]);
 
             return {
-                years: years.rows.map((r) => r.academic_year),
-                semesters: semesters.rows.map((r) => r.semester),
-                departments: departments.rows.map((r) => r.department_code),
+                years: years.rows.map((r) => r.academic_year as string),
+                semesters: semesters.rows.map((r) => r.semester as string),
+                departments: departments.rows.map(
+                    (r) => r.department_code as string,
+                ),
             };
         } catch (error) {
             console.error("Failed to fetch filter options:", error);
@@ -261,11 +264,11 @@ export class Database {
 
             const row = result.rows[0];
             return {
-                id: row.id,
-                rating: row.rating,
-                browserId: row.browser_id,
-                userAgent: row.user_agent,
-                timestamp: row.timestamp,
+                id: row.id as number,
+                rating: row.rating as number,
+                browserId: row.browser_id as string,
+                userAgent: row.user_agent as string | null,
+                timestamp: row.timestamp as Date,
             };
         } catch (error) {
             throw new Error(`Failed to find recent feedback: ${error}`);
@@ -292,11 +295,11 @@ export class Database {
 
             const row = result.rows[0];
             return {
-                id: row.id,
-                rating: row.rating,
-                browserId: row.browser_id,
-                userAgent: row.user_agent,
-                timestamp: row.timestamp,
+                id: row.id as number,
+                rating: row.rating as number,
+                browserId: row.browser_id as string,
+                userAgent: row.user_agent as string | null,
+                timestamp: row.timestamp as Date,
             };
         } catch (error) {
             throw new Error(`Failed to upsert feedback: ${error}`);

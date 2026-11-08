@@ -18,7 +18,7 @@
 // database or a Drive account.
 // ============================================================
 
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/sql";
 import {
     DRIVE_ROOT,
     PENDING_FOLDER,
@@ -279,7 +279,7 @@ export async function countAttemptsToday(
             WHERE ip_hash = ${ipHash}
               AND attempted_at >= NOW() - INTERVAL '1 day'
         `;
-        return result.rows[0]?.n ?? 0;
+        return Number(result.rows[0]?.n ?? 0);
     } catch (error) {
         console.error("Failed to count daily attempts:", error);
         return 0;
@@ -333,7 +333,7 @@ export async function countSubmissionsToday(
             WHERE ip_hash = ${ipHash}
               AND submitted_at >= NOW() - INTERVAL '1 day'
         `;
-        return result.rows[0]?.n ?? 0;
+        return Number(result.rows[0]?.n ?? 0);
     } catch (error) {
         console.error("Failed to count daily submissions:", error);
         return 0;
@@ -387,7 +387,7 @@ export async function createSubmission(
         RETURNING id
     `;
 
-    return { id: result.rows[0].id, viewUrl: upload.viewUrl };
+    return { id: result.rows[0].id as number, viewUrl: upload.viewUrl };
 }
 
 /** The review queue. */
@@ -515,7 +515,7 @@ export async function approveSubmission(
 
     // Publish and mark approved in one statement.
     //
-    // `@vercel/postgres` exposes no transaction API, so atomicity comes
+    // The sql wrapper exposes no transaction API, so atomicity comes
     // from a data-modifying CTE: both writes run inside a single
     // statement, and Postgres executes every data-modifying CTE exactly
     // once regardless of whether the outer query reads its output. The

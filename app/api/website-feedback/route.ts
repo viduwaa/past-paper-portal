@@ -6,8 +6,8 @@ import { Database, WebsiteFeedback } from "@/lib/db";
 export async function POST(request: NextRequest) {
     try {
         console.log(
-            "API called with DATABASE_URL:",
-            process.env.DATABASE_URL ? "Present" : "Missing"
+            "API called with POSTGRES_URL:",
+            process.env.POSTGRES_URL ? "Present" : "Missing"
         );
 
         const { rating, browserId } = await request.json();
