@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminIdentity } from "@/lib/admin-auth";
 import { listSubmissions } from "@/lib/submissions";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 /**
  * The review queue. Protected by Cloudflare Access — see

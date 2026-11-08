@@ -8,9 +8,14 @@
 // not satisfy its check, so an IP:6543 POSTGRES_URL always
 // threw `invalid_connection_string` before any query ran.
 //
-// postgres.js speaks the wire protocol directly, accepts any
-// host/port, and ships a `workerd` build for Cloudflare Pages
-// (requires nodejs_compat, as already used by pages:preview).
+// postgres.js speaks the wire protocol directly and accepts any
+// host/port. It imports Node builtins (net/tls/crypto), so it
+// cannot be bundled for the Edge runtime — every route that
+// (transitively) imports this module must use
+// `export const runtime = "nodejs"`. On Cloudflare Pages that
+// runs in workerd with nodejs_compat (already set up for
+// next-on-pages), which selects postgres.js's workerd build;
+// on Node hosts it uses the regular Node build.
 //
 // API surface kept identical to the old @vercel/postgres `sql`:
 //   await sql`SELECT ... ${value}`      → { rows }

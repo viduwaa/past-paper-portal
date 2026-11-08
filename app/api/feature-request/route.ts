@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@/lib/sql";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // Browser fingerprinting function (same as feedback)
 function generateBrowserId(request: NextRequest): string {

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { secretsMatch } from "@/lib/admin-auth";
 import { expireStaleSubmissions } from "@/lib/submissions";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 /**
  * Expire pending submissions older than the TTL.

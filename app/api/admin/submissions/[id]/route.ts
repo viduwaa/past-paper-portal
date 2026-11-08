@@ -3,7 +3,7 @@ import { getAdminIdentity } from "@/lib/admin-auth";
 import { invalidatePapersCache } from "@/lib/cache";
 import { approveSubmission, rejectSubmission } from "@/lib/submissions";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 /**
  * Approve or reject a Paper Submission.
