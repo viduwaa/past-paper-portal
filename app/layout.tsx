@@ -153,7 +153,7 @@ export default function RootLayout({
                     strategy="afterInteractive"
                 />
                 <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8380721834811066"
-     crossorigin="anonymous"></Script>
+     crossOrigin="anonymous"></Script>
             </head>
             <body className={`${aeonik.variable} antialiased font-sans`}>
                 <ThemeProvider
