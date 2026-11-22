@@ -152,6 +152,8 @@ export default function RootLayout({
                     src="https://www.googletagmanager.com/gtag/js?id=G-0T13ZDQZC8"
                     strategy="afterInteractive"
                 />
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8380721834811066"
+     crossorigin="anonymous"></script>
             </head>
             <body className={`${aeonik.variable} antialiased font-sans`}>
                 <ThemeProvider
